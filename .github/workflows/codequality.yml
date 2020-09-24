@@ -1,0 +1,56 @@
+name: eDivorce - Code Quality
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install bandit
+        pip install radon
+        pip install prospector
+        pip install safety
+    - name: Run Bandit Checks
+      id: bandit
+      run: |
+        bandit -r edivorce
+      continue-on-error: true
+    - name: Run Radon Checks
+      id: radon
+      run: |
+        radon cc edivorce
+      continue-on-error: true
+    - name: Run Prospector Checks
+      id: prospector
+      run: |
+        prospector --profile prospector-profile.yml
+      continue-on-error: true
+    - name: Run Safety Checks
+      id: safety
+      run: |
+        safety check --full-report
+      continue-on-error: true
+    - name: Dump output
+      env:
+        STEPS_CONTEXT: ${{ toJson(steps) }}
+      run: echo "$$STEPS_CONTEXT"
+    - name: Validate errors
+      if: steps.bandit.outcome == 'failure' || steps.radon.outcome == 'failure' || steps.prospector.outcome == 'failure' || steps.safety.outcome == 'failure'
+      run: exit 1

@@ -1,0 +1,10 @@
+strictness: medium
+doc-warnings: false
+
+ignore-paths:
+  - openshift
+  - jenkins
+  - edivorce/settings
+
+mccabe:
+  run: false

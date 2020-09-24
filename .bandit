@@ -1,0 +1,8 @@
+[bandit]
+exclude_dir:
+  - ./edivorce/lib/
+  - ./edivorce/bin/
+  - ./conf/
+  - ./jenkins/
+  - ./openshift/
+  - ./requirements/
