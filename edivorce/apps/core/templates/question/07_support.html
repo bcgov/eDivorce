@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load input_field %}
+{% load format_utils %}
 {% load step_order %}
 
 {% block title %}{{ block.super }}: Declarations{% endblock %}
@@ -11,10 +12,10 @@
 
 <h1><small>Step 6:</small>Spousal Support</h1>
 
-<div class="question-well">
+<div class="question-well {% if spouse_support_details_error %}error{% endif %}">
     <h3>
-        {% if name_you %}{{ name_you }}{% else %}Claimant 1{% endif %}
-        and {% if name_spouse %}{{ name_spouse }}{% else %}Claimant 2{% endif %}
+        {% you_name if_blank="Claimant 1" %} and 
+        {% spouse_name if_blank="Claimant 2" %}
         are asking for an
         <span class="tooltip-link" data-toggle="tooltip" data-placement="auto" data-html="true" data-trigger="click"
               title="
@@ -22,7 +23,7 @@
               <p>A type of court ruling a judge or master makes that sets out
               what you must do or not do.</p>
               ">order<i class="fa fa-question-circle"  aria-hidden="true"></i></span>
-        for spousal support as follows:
+        for spousal support as follows:{% if spouse_support_details_error %}{% include 'partials/required.html' %}{% endif %}
     </h3>
     {% input_field type="textarea" name="spouse_support_details" rows="8" cols="65" class="response-textarea" placeholder="Please enter the spousal support details that you want to appear in the order issued by the court." %}
     <p>
@@ -62,7 +63,7 @@
                 or a <a href="{% url 'legal' %}" target="_blank">family justice
                 counsellor</a> for help. For more information, please see the
                 fact sheet
-                <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
+                <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
                 target="_blank">Spousal Support</a> on the Family Law in B.C.
               website.
             </p>
@@ -82,7 +83,7 @@
             detailed in a separation agreement.</p>
             <p>Many couples come to an agreement about spousal support  outside
             of court and capture the details in a
-            <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
+            <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
             target="_blank">separation agreement</a>.  "Agreements that are
             filed with the court can be enforced — they have the same force as a
             court order.  They can also be set aside (cancelled) if the situation
@@ -106,7 +107,7 @@
             <p>
                 For help on what factors to consider, and details to include in
                 your spousal support agreement, refer to the online tool,
-                <a href="http://www.familylaw.lss.bc.ca/guides/separation/supportSpouse.php"
+                <a href="https://familylaw.lss.bc.ca/guides/separation/supportSpouse.php"
                 target="_blank">How to Write Your Own Separation Agreement</a>,
                 on the Family Law in B.C. website.
             </p>
@@ -151,103 +152,75 @@
 </div>
 
 
-<div class="question-well">
-    {% if married_marriage_like == "Legally married" %}
-        <h3>Please indicate which act you are asking for support under.</h3>
-        <div class="radio">
-            <label>
-                {% input_field type="radio" name="spouse_support_act" value="The Divorce Act (Canada)" data_target_id="family_law_time_limit" data_reveal_target="false" %}
-                The Divorce Act (Canada)
-            </label> -
-            <a href="http://laws-lois.justice.gc.ca/eng/acts/D-3.4/index.html"
-              target="_blank">view the Divorce Act</a>
-        </div>
-        <div class="radio">
-            <label>
-                {% input_field type="radio" name="spouse_support_act" value="The Family Law Act" data_target_id="family_law_time_limit" data_reveal_target="true" %}
-                The Family Law Act
-            </label> -
-            <a href="http://www.bclaws.ca/civix/document/id/complete/statreg/11025_01"
-              target="_blank">view the Family Law Act</a></div>
+<div class="question-well {% if spouse_support_act_error %}error{% endif %}">
+    <h3>Please indicate which act you are asking for support under.{% if spouse_support_act_error %}{% include 'partials/required.html' %}{% endif %}
+    </h3>
+    <div class="radio">
+        <label>
+            {% input_field type="radio" name="spouse_support_act" value="The Divorce Act (Canada)" data_target_id="family_law_time_limit" data_reveal_target="false" %}
+            The Divorce Act (Canada)
+        </label> -
+        <a href="http://laws-lois.justice.gc.ca/eng/acts/D-3.4/index.html"
+          target="_blank">view the Divorce Act</a>
+    </div>
+    <div class="radio">
+        <label>
+            {% input_field type="radio" name="spouse_support_act" value="The Family Law Act" data_target_id="family_law_time_limit" data_reveal_target="true" %}
+            The Family Law Act
+        </label> -
+        <a href="http://www.bclaws.ca/civix/document/id/complete/statreg/11025_01"
+          target="_blank">view the Family Law Act</a></div>
 
-        <div class="information-message bg-danger" id="family_law_time_limit" hidden>
-            <h2>Time limit to apply for court order</h2>
+    <div class="information-message bg-danger" id="family_law_time_limit" hidden>
+        <h2>Time limit to apply for court order</h2>
+        <p>
+            If you were married, you must apply for spousal support under
+            the Family Law Act <b>within two years after you get an order
+            for divorce.</b> If you are applying for spousal support under
+            the Divorce Act, you do not have a time limit.
+        </p>
+    </div>
+
+    <div class="collapse-trigger collapsed" data-toggle="collapse"
+         aria-expanded="false" data-target="#collapse_support_act"
+         aria-controls="collapse_support_act">
+        <div>
+            How do I know which act applies to my situation?
+        </div>
+    </div>
+    <div class="collapse" id="collapse_support_act">
+        <div>
+            <p>Ok, you may be thinking, how the heck am I supposed to know
+            which act (a written law) applies. Let's see if we can help you
+            identify which act best fits with your
+            circumstances/situation.</p>
+
             <p>
-                If you were married, you must apply for spousal support under
-                the Family Law Act <b>within two years after you get an order
-                for divorce.</b> If you are applying for spousal support under
-                the Divorce Act, you do not have a time limit.
+                The Family Law Act and the Divorce Act overlap in some areas but not others. The Divorce Act applies
+                only if you're married but the Family Law Act can apply to both married and unmarried couples. Even
+                if you are getting a divorce, you must apply under the Family Law Act for the division of property
+                or debts, a family law protection order, or orders related to guardianship. The Divorce Act does not
+                deal with these.
+            </p>
+
+            <p>There are big differences in how the Divorce Act and the
+            Family Law Act deal with some issues, especially parenting. For
+            more information on
+            <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/parentingApart.php"
+               target="_blank">which laws apply to your situation</a>
+            please refer to the Family Law of B.C. website.</p>
+
+            <img src="{% static 'img/which_laws_apply.png' %}" />
+
+            <p></p>
+            <p><strong>Still have questions? - Get Help</strong></p>
+            <p>
+                If you're still not sure as to which act applies to your situation please refer to the
+                <a href="{% url 'legal' %}" target="_blank">Get Help section</a> for a list of resources you can
+                turn to for additional support.
             </p>
         </div>
-
-        <div class="collapse-trigger collapsed" data-toggle="collapse"
-             aria-expanded="false" data-target="#collapse_support_act"
-             aria-controls="collapse_support_act">
-            <div>
-                How do I know which act applies to my situation?
-            </div>
-        </div>
-        <div class="collapse" id="collapse_support_act">
-            <div>
-                <p>Ok, you may be thinking, how the heck am I supposed to know
-                which act (a written law) applies. Let's see if we can help you
-                identify which act best fits with your
-                circumstances/situation.</p>
-
-                <p>
-                    The Family Law Act and the Divorce Act overlap in some areas but not others. The Divorce Act applies
-                    only if you're married but the Family Law Act can apply to both married and unmarried couples. Even
-                    if you are getting a divorce, you must apply under the Family Law Act for the division of property
-                    or debts, a family law protection order, or orders related to guardianship. The Divorce Act does not
-                    deal with these.
-                </p>
-
-                <p>There are big differences in how the Divorce Act and the
-                Family Law Act deal with some issues, especially parenting. For
-                more information on
-                <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/parentingApart.php"
-                   target="_blank">which laws apply to your situation</a>
-                please refer to the Family Law of B.C. website.</p>
-
-                <img src="{% static 'img/which_laws_apply.png' %}" />
-
-                <p></p>
-                <p><strong>Still have questions? - Get Help</strong></p>
-                <p>
-                    If you're still not sure as to which act applies to your situation please refer to the
-                    <a href="{% url 'legal' %}" target="_blank">Get Help section</a> for a list of resources you can
-                    turn to for additional support.
-                </p>
-            </div>
-        </div>
-    {% else %}
-        <div class="common-law-support">
-            <div>
-                {% input_field type="hidden" id="spouse_support_act_common_law" name="spouse_support_act" value="The Family Law Act" %}
-                <p>
-                    As you and your spouse were never legally married, you must
-                    use the
-                    <a href="http://www.bclaws.ca/civix/document/id/complete/statreg/11025_01"
-                    target="_blank">Family Law Act</a> for your separation.
-                    Provincial and territorial laws apply when unmarried couples
-                    separate or when married couples separate but do not pursue a
-                    divorce.
-                </p>
-                <p>
-                    For more information on
-                    <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/what_laws_apply.php"
-                      target="_blank">which laws apply</a>
-                    to your situation please refer to the Family Law of B.C. website.
-                </p>
-            </div>
-            <div class="information-message bg-danger">
-                <h2>Time limit to apply for court order</h2>
-                <p>If you were unmarried, and you qualify for spousal support,
-                you must apply <b>within two years of the date you
-                separated</b>.</p>
-            </div>
-        </div>
-    {% endif %}
+    </div>
 </div>
 
 
@@ -259,8 +232,8 @@
                 <h1 class="modal-title">Spousal Support</h1>
             </div>
             <div class="modal-body">
-                <p>Okay {{ name_you }}, now we need to ask you several
-                questions about spousal support.</p>
+                <p>Okay {% you_name if_blank='Claimant 1' %}, now we need to ask 
+                you several questions about spousal support.</p>
 
                 <p>Spousal support is paid by one spouse to financially support
                 the other spouse after separation, under an agreement or order.
@@ -311,7 +284,7 @@
             into account the income of both spouses, how long you were married,
             and whether you have children.</p>
             <p>For more information, see the Department of Justice website on
-                <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
+                <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/spousal_support.php"
                   target="_blank">spousal support.</a></p>
         </div>
         <div>
@@ -348,7 +321,7 @@
           target="_blank">Financial Statement Form (F8)</a> and file it
         with the court for orders related to support. For help, refer to
         the guide
-        <a href="http://www.familylaw.lss.bc.ca/guides/mini/howToFillFinanState_SC.php"
+        <a href="https://familylaw.lss.bc.ca/guides/mini/howToFillFinanState_SC.php"
         target="_blank">How to deal with a Supreme Court Financial
         Statement,</a> produced by the Legal Services Society.</p>
 

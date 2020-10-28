@@ -1,11 +1,18 @@
+import re
+
 from django.contrib import admin
 from django.db import models
+from django.db.models import F
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.auth.models import AbstractUser
+
+from edivorce.apps.core import redis
 
 
 @python_2_unicode_compatible
-class BceidUser(models.Model):
+class BceidUser(AbstractUser):
     """
     BCeID user table
     """
@@ -18,12 +25,6 @@ class BceidUser(models.Model):
 
     sm_user = models.TextField(blank=True)
     """ SiteMinder user value """
-
-    date_joined = models.DateTimeField(default=timezone.now)
-    """ First login timestamp """
-
-    last_login = models.DateTimeField(default=timezone.now)
-    """ Most recent login timestamp """
 
     has_seen_orders_page = models.BooleanField(default=False)
     """ Flag for intercept page """
@@ -39,9 +40,9 @@ class BceidUser(models.Model):
     def is_anonymous(self):
         return False
 
-    is_staff = True
-
-    is_active = True
+    @property
+    def is_active(self):
+        return True
 
     def has_module_perms(self, *args):
         return True
@@ -109,6 +110,125 @@ class UserResponse(models.Model):
         return '%s -> %s' % (self.bceid_user, self.question.key)
 
 
+class Document(models.Model):
+    filename = models.CharField(max_length=128, null=True)  # saving the original filename separately
+    """ File name and extension """
+
+    size = models.IntegerField(default=0)
+    """ Size of the file (size and name uniquely identify each file on the input) """
+
+    file = models.FileField(upload_to=redis.generate_unique_filename, storage=redis.RedisStorage())
+    """ File temporarily stored in Redis """
+
+    doc_type = models.CharField(max_length=4, null=True, blank=True)
+    """ CEIS Document Type Code (2-4 letters) """
+
+    party_code = models.IntegerField(default=0)
+    """ 1 = You, 2 = Your Spouse, 0 = Shared """
+
+    sort_order = models.IntegerField(default=1)
+    """ File order (page number in the PDF) """
+
+    rotation = models.IntegerField(default=0)
+    """ 0, 90, 180 or 270 """
+
+    height = models.IntegerField(default=0)
+    """ Initial image height (before rotation) """
+
+    width = models.IntegerField(default=0)
+    """ Initial image width (before rotation) """
+
+    bceid_user = models.ForeignKey(BceidUser, related_name='uploads', on_delete=models.CASCADE)
+    """ User who uploaded the attachment """
+
+    date_uploaded = models.DateTimeField(auto_now_add=True)
+    """ Date the record was last updated """
+
+    form_types = {
+        'AAI': "Agreement as to Annual Income (F9)",
+        'AFDO': "Affidavit - Desk Order Divorce Form (F38)",
+        'AFTL': "Affidavit of Translation Form",
+        'CSA': "Child Support Affidavit (F37)",
+        'EFSS': "Electronic Filing Statement (F96)",
+        'MC': "Proof of Marriage",
+        'NCV': "Identification of Applicant (VSA 512)",
+        'NJF': "Notice of Joint Family Claim (F1)",
+        'OFI': "Draft Final Order Form (F52)",
+        'RCP': "Certificate of Pleadings Form (F36)",
+        'RDP': "Registration of Joint Divorce Proceedings (JUS280)",
+        'RFO': "Requisition Form (F35)"
+    }
+
+    class Meta:
+        unique_together = ("bceid_user", "doc_type", "party_code", "filename", "size")
+        ordering = ('sort_order',)
+
+    def save(self, *args, **kwargs):
+        if not self.filename:
+            self.filename = self.file.name
+        if not self.size:
+            self.size = self.file.size
+        if not self.sort_order:
+            num_docs = self.get_documents_in_form().count()
+            self.sort_order = num_docs + 1
+        if self.doc_type not in self.form_types:
+            raise ValueError(f"Invalid doc_type '{self.doc_type}'")
+
+        super(Document, self).save(*args, **kwargs)
+
+    def delete(self, **kwargs):
+        """
+        Override delete so we can delete the Redis object when this instance is deleted.
+        """
+        self.file.delete(save=False)
+        self.update_sort_orders()
+        super(Document, self).delete(**kwargs)
+
+    def __str__(self):
+        return f'User {self.bceid_user.display_name}: {self.filename} ({self.doc_type} - {self.party_code})'
+
+    def get_file_url(self):
+        return reverse('document', kwargs={'filename': self.filename, 'doc_type': self.doc_type, 'party_code': self.party_code, 'size': self.size})
+
+    def get_content_type(self):
+        return Document.content_type_from_filename(self.filename)
+
+    def update_sort_orders(self):
+        q = self.get_documents_in_form().filter(sort_order__gt=self.sort_order)
+        q.update(sort_order=F('sort_order') - 1)
+
+    @staticmethod
+    def get_file(file_key):
+        if redis.RedisStorage().exists(file_key):
+            return redis.RedisStorage().open(file_key)
+
+    def file_exists(self):
+        return redis.RedisStorage().exists(self.file.name)
+
+    def get_documents_in_form(self):
+        return Document.objects.filter(bceid_user=self.bceid_user, doc_type=self.doc_type, party_code=self.party_code)
+
+    @staticmethod
+    def content_type_from_filename(filename):
+        content_types = {
+            "pdf": "application/pdf",
+            "gif": "image/gif",
+            "png": "image/png",
+            "jpe": "image/jpeg",
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg"
+        }
+        extension = re.split(r'[\._]', filename.lower())[-1]
+        content_type = content_types.get(extension)
+        if not content_type:
+            return "application/unknown"
+        return content_type
+
+    @property
+    def is_pdf(self):
+        return self.filename.split('.')[-1].lower() == 'pdf'
+
+
 class DontLog:
     def log_addition(self, *args):
         return
@@ -120,7 +240,11 @@ class DontLog:
         return
 
 
-class UserResponseAdmin(DontLog, admin.ModelAdmin):
+class BaseAdmin(DontLog, admin.ModelAdmin):
+    pass
+
+
+class UserResponseAdmin(BaseAdmin):
     list_display = ['get_user_name', 'question', 'value']
 
     def get_user_name(self, obj):
@@ -130,10 +254,7 @@ class UserResponseAdmin(DontLog, admin.ModelAdmin):
     get_user_name.short_description = 'User'
 
 
-class QuestionAdmin(DontLog, admin.ModelAdmin):
-    pass
-
-
 admin.site.register(BceidUser)
-admin.site.register(Question, QuestionAdmin)
+admin.site.register(Question, BaseAdmin)
 admin.site.register(UserResponse, UserResponseAdmin)
+admin.site.register(Document, BaseAdmin)

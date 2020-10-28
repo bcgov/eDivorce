@@ -10,11 +10,27 @@
 
 <h1><small>Step 2:</small>Your Information (Claimant 1)</h1>
 
-<div class="question-well">
-    <h3>Please enter your name (as it appears on your marriage certificate or registration of marriage)</h3>
-    <span class="form-group">
-        {% input_field type="text" name="name_you" class="form-block input-wide response-textbox name" %}
-    </span>
+<div class="question-well {% if last_name_you_error or given_name_1_you_error %}error{% endif %}">
+    <h3>Please enter your name (as it appears on your marriage certificate or registration of marriage)
+        {% if last_name_you_error or given_name_1_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
+    <div class="form-group name-group">
+        <div>
+            <p>First Name</p>
+            {% input_field type="text" name="given_name_1_you" class="form-block response-textbox" %}
+        </div>
+        <div>
+            <p>Middle Name 1</p>
+            {% input_field type="text" name="given_name_2_you" class="form-block response-textbox" %}
+        </div>        
+        <div>
+            <p>Middle Name 2</p>        
+            {% input_field type="text" name="given_name_3_you" class="form-block response-textbox" %}
+        </div>
+        <div>
+            <p>Last Name</p>
+            {% input_field type="text" name="last_name_you" class="form-block response-textbox" %}
+        </div>        
+    </div>
 
     <div class="collapse-trigger collapsed" data-toggle="collapse" aria-expanded="false" data-target="#collapse_changed_name" aria-controls="collapse_changed_name">
         <div>
@@ -40,8 +56,8 @@
     </div>
 </div>
 
-<div class="question-well">
-    <h3>Do you go by any other names?</h3>
+<div class="question-well {% if any_other_name_you_error %}error{% endif %}">
+    <h3>Do you go by any other names?{% if any_other_name_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
 
     <div class="btn-radio-group" data-toggle="buttons">
         <label class="btn btn-radio">
@@ -73,16 +89,18 @@
     </div>
 
     <div id="enter_name" hidden>
-        <h3>Please enter the name</h3>
+        <h3>Please enter the name{% if other_name_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
         <!-- This is used for adding a new other name field when add button is clicked -->
         <div id="other_names_group" hidden>
             {% include "partials/alias_field.html" with name="other_name_you" %}
         </div>
         <div id="other_names_fields">
 
-                    {% if other_name_you %}
+                {% if other_name_you %}
                     {% multiple_values_to_list source=other_name_you as values %}
-                    {% for alias_type, value in values %} {% include "partials/alias_field.html" with name="other_name_you" alias_type=alias_type value=value delete_button="true" %} {% endfor %}
+                    {% for value in values %}
+                        {% include "partials/alias_field.html" with name="other_name_you" alias_type=value.0 last_name=value.1 given_1=value.2 given_2=value.3 given_3=value.4 delete_button="true" %} 
+                    {% endfor %}
                 {% else %}
                     {% include "partials/alias_field.html" with name="other_name_you" %}
                 {% endif %}
@@ -94,7 +112,7 @@
 </div>
 
 <div class="question-well">
-    <h3>What was your last name when you were born?</h3>
+    <h3>What was your last name when you were born?{% include 'partials/optional.html' %}</h3>
     <span class="form-group">
         <div>{% input_field type="text" name="last_name_born_you" class="form-block input-wide response-textbox name" %}</div>
     </span>
@@ -102,15 +120,15 @@
 </div>
 
 <div class="question-well">
-    <h3>What was your last name immediately before you were married?</h3>
+    <h3>What was your last name immediately before you were married?{% include 'partials/optional.html' %}</h3>
     <span class="form-group">
         {% input_field type="text" name="last_name_before_married_you" class="form-block input-wide response-textbox name" %}
     </span>
     <p>This is often referred to as Family name or Surname</p>
 </div>
 
-<div class="question-well">
-    <h3>What is your date of birth?</h3>
+<div class="question-well {% if birthday_you_error %}error{% endif %}">
+    <h3>What is your date of birth?{% if birthday_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <p>
         <span class="input-group date date-picker-group">
             {% input_field type="text" name="birthday_you" class="date-picker form-control" id="birth_date" placeholder="MMM D, YYYY" %}
@@ -121,14 +139,14 @@
     </p>
 </div>
 
-<div class="question-well">
-    <h3>What is your occupation?</h3>
+<div class="question-well {% if occupation_you_error %}error{% endif %}">
+    <h3>What is your occupation?{% if occupation_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <div>{% input_field type="text" name="occupation_you" class="form-block input-wide response-textbox" %}</div>
-    <p>This refers to the type of work you do. For example,  janitor, banker, student, nurse etc.</p>
+    <p>This refers to the type of work you do. For example, janitor, banker, student, nurse etc.</p>
 </div>
 
-<div class="question-well">
-    <h3>How long have you lived in B.C.?</h3>
+<div class="question-well {% if lived_in_bc_you_error or moved_to_bc_date_you_error %}error{% endif %}">
+    <h3>How long have you lived in B.C.?{% if lived_in_bc_you_error or moved_to_bc_date_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <p>Please select one</p>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other" name="lived_in_bc_you" value="Since birth" %}Since birth</label></div>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="lived_in_bc_you" value="Moved to B.C. on" %}Moved to B.C. on

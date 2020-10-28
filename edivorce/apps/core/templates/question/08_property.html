@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load input_field %}
+{% load format_utils %}
 {% load step_order %}
 
 {% block title %}{{ block.super }}: Application Location{% endblock %}
@@ -58,10 +59,10 @@
     </p>
 </div>
 
-<div class="question-well">
-    <h3>How have you and
-      {% if name_spouse %}{{ name_spouse }}{% else %}your spouse{% endif %}
-      agreed to deal with your property and debt?</h3>
+<div class="question-well {% if deal_with_property_debt_error %}error{% endif %}">
+    <h3>How have you and {% spouse_name %}
+      agreed to deal with your property and debt?{% if deal_with_property_debt_error %}{% include 'partials/required.html' %}{% endif %}
+    </h3>
     <div class="radio">
         <label>
             {% input_field type="radio" name="deal_with_property_debt" value="Equal division" data_target_id="property_debt_division_method" data_reveal_target="false" %}
@@ -87,7 +88,7 @@
     <div class="collapse" id="collapse_unequal_division">
         <div>
             <p>A court will divide family property or debt unequally only if it
-            would be “significantly unfair” to divide it equally. This means
+            would be &ldquo;significantly unfair&rdquo; to divide it equally. This means
             that a court will not order an unequal division in most cases. The
             court can look at a number of factors when deciding whether to
             divide property or debt unequally.</p>
@@ -103,9 +104,9 @@
 
 </div>
 
-<div id="property_debt_division_method" class="question-well" hidden>
+<div id="property_debt_division_method" class="question-well {% if how_to_divide_property_debt_error %}error{% endif %}" hidden>
     <h3>Please describe how you and your spouse plan to divide your property,
-      assets and your debts. </h3>
+      assets and your debts.{% if how_to_divide_property_debt_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <p>Because the division of family property and debt can be complex we
     recommend you get
         <a href="http://www2.gov.bc.ca/gov/content/life-events/divorce/family-justice/who-can-help/lawyers"
@@ -131,8 +132,8 @@
             </ul>
             <p>The Family Law web site has an online separation agreement tool
             that details some of the items to consider when
-                <a href="http://www.familylaw.lss.bc.ca/guides/separation/property.php" target="_blank">dividing property</a> and
-                <a href="http://www.familylaw.lss.bc.ca/guides/separation/debt.php" target="_blank">debt</a>.</p>
+                <a href="https://familylaw.lss.bc.ca/guides/separation/property.php" target="_blank">dividing property</a> and
+                <a href="https://familylaw.lss.bc.ca/guides/separation/debt.php" target="_blank">debt</a>.</p>
         </div>
     </div>
     {% input_field type="textarea" name="how_to_divide_property_debt" rows="8" cols="65" class="response-textarea" %}
@@ -146,7 +147,7 @@
 </div>
 
 <div class="question-well">
-    <h3>Other Property Claims</h3>
+    <h3>Other Property Claims{% include 'partials/optional.html' %}</h3>
     <p>This section is for property claims not covered by the Family Law
     Act—property that is not family property. This includes:</p>
     <ul>
@@ -165,8 +166,8 @@
     </p>
     <div>
         <label>
-            {% if name_you %}{{ name_you }}{% else %}Claimant 1{% endif %}
-            and {% if name_spouse %}{{ name_spouse }}{% else %}Claimant 2{% endif %}
+            {% you_name if_blank="Claimant 1" %} and 
+            {% spouse_name if_blank="Claimant 2" %}
             ask for an order respecting an interest in property or for
             compensation instead of an interest in that property, as follows:
         </label>
@@ -182,10 +183,10 @@
                 <h1 class="modal-title">Property and Debt</h1>
             </div>
             <div class="modal-body">
-                <p>{{ name_you }}, next up let's go over some questions
-                pertaining to the division of property and debt. The answers
-                you provide will be used to populate what's called a Draft
-                Final Order (Form 52). </p>
+                <p>{% you_name if_blank="Claimant 1" %}, next up let's go over 
+                some questions pertaining to the division of property and debt. 
+                The answers you provide will be used to populate what's called 
+                a Draft Final Order (Form 52). </p>
 
                 <p>A draft final order sets out what orders (decisions) you
                 want the court to make. This will be reviewed by a judge or
@@ -222,11 +223,11 @@
             target="_blank">Family Justice section</a> of the BC Government web
         site. </li>
         <li><a
-            href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/dividePropertyAndDebts.php"
+            href="https://familylaw.lss.bc.ca/resources/fact_sheets/dividePropertyAndDebts.php"
             target="_blank">Dividing family property and debts</a> on the
         Family Law in British Columbia website</li>
         <li><a
-            href="http://www.familylaw.lss.bc.ca/resources/publications/pub.php?pub=347"
+            href="https://familylaw.lss.bc.ca/resources/publications/pub.php?pub=347"
             target="_blank">Living Together or Living Apart</a>, a booklet
         about the family law basics in B.C.</li>
         <li><a

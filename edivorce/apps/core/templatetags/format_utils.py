@@ -21,7 +21,7 @@ def linebreaksli(value):
     value = re.sub(r'\r\n|\r|\n', '\n', value.strip())  # normalize newlines
     lines = re.split('\n', value)
     lines = ['<li>%s</li>' % line for line in lines if line and not line.isspace()]
-    return mark_safe('\n'.join(lines))
+    return mark_safe('\n'.join(lines)) # nosec
 
 
 @register.filter
@@ -81,10 +81,19 @@ def checkbox(context, *args, **kwargs):
     pass a False value as an argument.
     """
     args_pass = all(args)
-    kwargs_pass = all([value in context['responses'].get(question, '')
-                       for question, value in kwargs.items()])
+    kwargs_list = []
+    for question, value in kwargs.items():
+        dict_with_question = None
+        if question in context['responses']:
+            dict_with_question = context['responses']
+        elif question in context['derived']:
+            dict_with_question = context['derived']
+        if dict_with_question:
+            kwargs_list.append(str(value) in str(dict_with_question[question]))
+    kwargs_pass = all(kwargs_list)
 
-    return mark_safe('<i class="fa fa%s-square-o" aria-hidden="true"></i>' %
+    
+    return mark_safe('<i class="fa fa%s-square-o" aria-hidden="true"></i>' % # nosec
                      ('-check' if args_pass and kwargs_pass else ''))
 
 
@@ -109,7 +118,7 @@ def age(date):
     printing '46 years' instead of print '46 years, 7 months'.
     """
     try:
-        birth = datetime.strptime(date, '%b %d, %Y')
+        birth = datetime.strptime(date, strptime)
     except ValueError:
         try:
             birth = datetime.strptime(date, '%b %d, %Y')
@@ -123,13 +132,18 @@ def age(date):
 @register.filter
 def money(amount, symbol=True):
     """ Return a properly formatted currency string including symbol """
-
+    if not amount:
+        amount = 0
     try:
         return locale.currency(float(amount), symbol, grouping=True)
     except ValueError:
         pass
 
-    return ''
+    try:
+        amount = float(amount)
+        return '{:.2f}'.format(amount)
+    except ValueError:
+        return amount
 
 
 @register.simple_tag(takes_context=True)
@@ -137,12 +151,12 @@ def payorize(context):
     payor = 'the payor'
     child_support_payor = context.get('child_support_payor', None)
     if child_support_payor == 'Myself (Claimant 1)':
-        payor = context.get('name_you', child_support_payor)
+        payor = you_name(context, child_support_payor)
     elif child_support_payor == 'My Spouse (Claimant 2)':
-        payor = context.get('name_spouse', child_support_payor)
+        payor = spouse_name(context, child_support_payor)
     elif child_support_payor == 'Both myself and my spouse':
-        payor = '{} and {}'.format(context.get('name_you', 'myself'),
-                                   context.get('name_spouse', 'my spouse'))
+        payor = '{} and {}'.format(you_name(context, 'myself'),
+                                   spouse_name(context, 'my spouse'))
     return payor
 
 
@@ -178,9 +192,53 @@ def lookup(obj, property):
 
 
 @register.simple_tag(takes_context=True)
+def lookup_context(context, property):
+    """ Return the value of a dynamic property from context"""
+    return context.get(property, '')
+
+
+@register.simple_tag(takes_context=True)
 def agreed_child_support_amount(context, claimant_id, line_breaks=True):
     """Return the agree amount for the specific claimant fact sheet table."""
     if not line_breaks:
         return context.get('amount_income_over_high_income_limit_{}'.format(claimant_id), '')
     else:
         return linebreaksli(context.get('amount_income_over_high_income_limit_{}'.format(claimant_id), ''))
+
+
+@register.filter
+def name_you(responses):
+    """ Gets and formats given_name_1_you, given_name_2_you, given_name_3_you, last_name_you from responses """
+    given_name_1 = responses.get('given_name_1_you')
+    given_name_2 = responses.get('given_name_2_you')
+    given_name_3 = responses.get('given_name_3_you')
+    last_name = responses.get('last_name_you')
+    names = [given_name_1, given_name_2, given_name_3, last_name]
+    return ' '.join(filter(None, names))    
+
+
+@register.filter
+def name_spouse(responses):
+    """ Gets and formats given_name_1_spouse, given_name_2_spouse, given_name_3_spouse, last_name_spouse from responses """    
+    given_name_1 = responses.get('given_name_1_spouse')
+    given_name_2 = responses.get('given_name_2_spouse')
+    given_name_3 = responses.get('given_name_3_spouse')
+    last_name = responses.get('last_name_spouse')
+    names = [given_name_1, given_name_2, given_name_3, last_name]
+    return ' '.join(filter(None, names))
+
+
+@register.simple_tag(takes_context=True)    
+def you_name(context, if_blank='you'):
+    if name_you(context):
+        return name_you(context)
+    else:
+        return if_blank
+    
+
+@register.simple_tag(takes_context=True)
+def spouse_name(context, if_blank='your spouse'):
+    if name_spouse(context):
+        return name_spouse(context)
+    else:
+        return if_blank

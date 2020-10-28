@@ -117,15 +117,6 @@ var showHideTargetId = function(el, id, relatedId, revealControlGroup) {
         if (relatedId !== undefined) {
             $('#' + relatedId).hide();
         }
-        // Special case of pre-qualification step 4 children.  
-        if (id === "#has_children") {
-            reveal($("input[name=number_children_over_19]"));
-            var over_19_children = parseInt($("input[name=number_children_over_19]").val());
-
-            if (over_19_children >= 0) {
-                reveal($("input[name=number_children_over_19]:checked"));
-            }
-        }
         // Special case of hide child support description.
         if (id === "#child_support_in_order_detail") {
             $("#child_support_description").hide();
@@ -152,12 +143,6 @@ var showHideTargetId = function(el, id, relatedId, revealControlGroup) {
         if (el.data("reveal_force_hide_group")) {
             $(el.data("reveal_force_hide_group")).hide();
             $(el.data("reveal_force_hide_group")).find(':radio').prop('checked', false);
-        }
-        // Special case of pre-qualification step 4 children.
-        if (id === "#has_children") {
-            if (el.val() === 'NO') {
-                $('.not-disqualified-other').show();
-            }
         }
 
         // Special case of show child support description.
@@ -286,10 +271,12 @@ var getValue = function(el, question){
     // for adding other_name fields, create list of [aliasType, alias]
     else if (question === "other_name_you" || question === "other_name_spouse"){
         var aliasType = "also known as";
-        $('#other_names_fields').find("input[type=text]").each(function () {
-            // as per request, alias type will always be also known as for now
-            // aliasType = $(this).val() === '' ? '' : $(this).siblings(".alias-type").val();
-            value.push([aliasType, $(this).val()]);
+        $('#other_names_fields').find('.alias-field-group').each(function () {
+            var lastName = $(this).find(".alias-last-name").val();
+            var given1 = $(this).find(".alias-given-1").val();
+            var given2 = $(this).find(".alias-given-2").val();
+            var given3 = $(this).find(".alias-given-3").val();
+            value.push([aliasType, lastName, given1, given2, given3]);
         });
         return JSON.stringify(value);
     }
@@ -352,6 +339,12 @@ var getValue = function(el, question){
     }
 };
 
+var isEmailValid = function(el) {
+    var value = el.val();
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(value);
+}
+
 // check if email is in valid format
 var validateEmail = function(el){
 
@@ -360,9 +353,7 @@ var validateEmail = function(el){
         .find('span.help-block')
         .remove();
 
-    var value = el.val();
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if (regex.test(value)) {
+    if (!el.val() || isEmailValid(el)) {
         return true;
     } else {
         el.closest('.form-group')

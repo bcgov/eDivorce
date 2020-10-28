@@ -1,0 +1,62 @@
+version: "3.7"
+services:
+
+  # Antivirus
+  antivirus:
+    container_name: edivorce-antivirus
+    hostname: antivirus
+    build: https://github.com/bcgov/clamav.git
+    ports:
+      - "3310:3310"
+    restart: always
+
+  # Redis Server
+  redis:
+    container_name: edivorce-redis
+    image: redis
+    command: redis-server --requirepass admin
+    ports:
+      - "6379:6379"
+    volumes:
+      - data-redis:/data
+    restart: always
+
+  # Redis Commander
+  redis-commander:
+    container_name: edivorce-redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=admin
+    ports:
+      - "8082:8081"
+
+  # Weasyprint (PDF generator)
+  weasyprint:
+    container_name: edivorce-weasyprint
+    hostname: weasyprint
+    image: aquavitae/weasyprint
+    ports:
+      - "5005:5001"
+    restart: always
+
+  # Keycloak
+  keycloak:
+    container_name: edivorce-keycloak
+    image: jboss/keycloak:9.0.3
+    environment:
+      DB_VENDOR: H2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+    volumes:
+      - ./conf/keycloak/realm-export.json:/tmp/realm-export.json
+    ports:
+      - 8081:8080
+    command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
+
+volumes:
+  data-redis:

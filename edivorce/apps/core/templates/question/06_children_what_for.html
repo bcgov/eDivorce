@@ -11,7 +11,7 @@
 
 {% block content %}
 <h1><small>Step {% step_order step="children" %}:</small>Children - What are you asking for</h1>
-    <div class="question-well">
+    <div class="question-well {% if child_support_in_order_error or child_support_in_order_reason_error %}error{% endif %}">
         <h3>What is the monthly child support amount
                 <span class="tooltip-link"
                   data-toggle="tooltip" data-placement="right" data-html="true"
@@ -25,6 +25,7 @@
                     proposed in the order<i class="fa fa-question-circle" aria-hidden="true"></i>
                 </span>
              to be paid by {% payorize %}?
+            {% if child_support_in_order_error %}{% include 'partials/required.html' %}{% endif %}
         </h3>
         <div class="radio">
             <label class="radio-with-textbox">
@@ -85,22 +86,27 @@
         <div class="radio">
             
             {% if 'Child support' in want_which_orders|load_json %}
-                <label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="child_support_in_order" value="NO" data_target_id="child_support_in_order_detail" data_reveal_target="true" data_target_class="support-amount-match" data_reveal_class="false" %}We are not asking for child support to be included in the order</label>
+                <label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="child_support_in_order" value="NO" data_target_id="child_support_in_order_detail" data_reveal_target="true" data_target_class="support-amount-match" data_reveal_class="false" %}
+                    We are not asking for child support to be included in the order</label>
             {% else %}
-                <label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="child_support_in_order" value="NO" data_target_id="child_support_in_order_detail" data_reveal_target="true" data_target_class="support-amount-match" data_reveal_class="false" disabled="" checked="" %}We are not asking for child support to be included in the order</label>
+                <label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="child_support_in_order" value="NO" data_target_id="child_support_in_order_detail" data_reveal_target="true" data_target_class="support-amount-match" data_reveal_class="false" data_no_child_order="true" disabled="" %}
+                    We are not asking for child support to be included in the order</label>
                 <div class="information-message bg-danger">
                     <p>This option has been automatically selected for you because you indicated in Step 1 you didn't want an "Order pertaining to children"</p>
                 </div>
             {% endif %}
             <p id="child_support_in_order_detail">
                 Please describe what arrangements have been made for the support of the child (ren)?
+                {% if child_support_in_order_reason_error %}{% include 'partials/required.html' with inline=True %}{% endif %}
                 {% input_field type="textarea" name="child_support_in_order_reason" class="other-textbox response-textarea form-control" tabindex="-1" maxlength="500" rows="3" %}
             </p>
         </div>
     </div>
 
-    <div class="question-well support-amount-match hide-grouping" id="amount_does_not_match" hidden>
-        <h3>Do you and the other parent agree (have consented) on the child support amount?</h3>
+    <div class="question-well support-amount-match hide-grouping {% if claimants_agree_to_child_support_amount_error %}error{% endif %}" id="amount_does_not_match" hidden>
+        <h3>Do you and the other parent agree (have consented) on the child support amount?
+            {% if claimants_agree_to_child_support_amount_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <div class="btn-radio-group" data-toggle="buttons">
             <label class="btn btn-radio">
                 {% input_field type="radio" name="claimants_agree_to_child_support_amount" value="YES" data_target_id="what_special_provisions" data_reveal_target="false" %} Yes
@@ -111,13 +117,15 @@
         </div>
     </div>
 
-    <div class="question-well hide-grouping support-amount-match" id="what_special_provisions" hidden>
-        <h3>What special provisions have been made?</h3>
+    <div class="question-well hide-grouping support-amount-match {% if child_support_payment_special_provisions_error %}error{% endif %}" id="what_special_provisions" hidden>
+        <h3>What special provisions have been made?{% if child_support_payment_special_provisions_error %}{% include 'partials/required.html' %}{% endif %}</h3>
         {% input_field type="textarea" name="child_support_payment_special_provisions" class="response-textarea form-control" tabindex="-1" maxlength="1000" rows="3" %}
     </div>
 
-    <div class="question-well">
-        <h3>Do you have a separation agreement that sets out what you've agreed to around parenting and child support?</h3>
+    <div class="question-well {% if have_separation_agreement_error %}error{% endif %}">
+        <h3>Do you have a separation agreement that sets out what you've agreed to around parenting and child support?
+            {% if have_separation_agreement_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <div class="btn-radio-group" data-toggle="buttons">
             <label class="btn btn-radio">
                 {% input_field type="radio" name="have_separation_agreement" autocomplete="off" value="YES" data_target_id="separation_agreement" data_reveal_target="true" %} Yes
@@ -143,7 +151,7 @@
                 <p>
                     If you wish to file your separation agreement the parts of the agreement that deal with
                     parenting and support can be enforced as if they were in a court order. More information on
-                    <a href="http://www.familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
+                    <a href="https://familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
                         how to file your agreement
                     </a>
                     can be found on the Family Law website.
@@ -183,7 +191,7 @@
             </p>
             <p>
                 If you
-                <a href="http://www.familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
+                <a href="https://familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
                     wish to file your separation agreement
                 </a>, the parts of the agreement that deal
                 with parenting and support can be
@@ -208,7 +216,7 @@
 
     </div>
 
-    <div class="question-well">
+    <div class="question-well {% if have_court_order_error %}error{% endif %}">
         <h3>Do you already have a child support
             <span class="tooltip-link"
               data-toggle="tooltip" data-placement="right" data-html="true"
@@ -220,7 +228,9 @@
                  </p>
                 ">
                  order <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </span>in Provincial or Supreme Court?</h3>
+            </span>in Provincial or Supreme Court?
+            {% if have_court_order_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <div class="btn-radio-group" data-toggle="buttons">
             <label class="btn btn-radio">
                 {% input_field type="radio" name="have_court_order" autocomplete="off" value="YES" data_target_id="court_order_details" data_reveal_target="true" %} Yes
@@ -250,7 +260,7 @@
             <p>
                If you wish to file your separation agreement, the parts of the agreement that deal with parenting and
                 support can be enforced as if they were in a court order. More information on
-                <a href="http://www.familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
+                <a href="https://familylaw.lss.bc.ca/guides/mini/fileAgreementSC.php" target="_blank">
                     how to file your agreement
                 </a>
                 can be found on the Family Law website.
@@ -259,8 +269,10 @@
     </div>
 
 
-    <div class="question-well">
-        <h3>The court needs to know what the current parenting arrangements are for the children of the marriage. Please describe below.</h3>
+    <div class="question-well {% if what_parenting_arrangements_error %}error{% endif %}">
+        <h3>The court needs to know what the current parenting arrangements are for the children of the marriage. Please describe below.
+            {% if what_parenting_arrangements_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <div class="collapse-trigger collapsed" data-toggle="collapse" aria-expanded="false" data-target="#collapse_parenting_arrangement" aria-controls="collapse_parenting_arrangement">
             <div>
                 What should we consider when determining parenting arrangements?
@@ -300,8 +312,7 @@
         {% input_field type="textarea" name="what_parenting_arrangements" class="response-textarea form-control" maxlength="20000" rows="7"%}
     </div>
 
-    {% if 'Child support' in want_which_orders|load_json %}
-    <div class="question-well">
+    <div class="question-well {% if want_parenting_arrangements_error %}error{% endif %}">
         <h3>Are you asking the court for an
             <span class="tooltip-link"
               data-toggle="tooltip" data-placement="right" data-html="true"
@@ -317,6 +328,7 @@
                 ">
                 order about parenting arrangements or contact <i class="fa fa-question-circle" aria-hidden="true"></i>
             </span> with a child?
+            {% if want_parenting_arrangements_error %}{% include 'partials/required.html' %}{% endif %}
         </h3>
         <div class="btn-radio-group" data-toggle="buttons">
             <label class="btn btn-radio">
@@ -329,8 +341,10 @@
         </div>
     </div>
 
-    <div class="question-well" id="parenting_arrangement_detail" hidden>
-        <h3>Please indicate the parenting arrangements you are asking for below.</h3>
+    <div class="question-well {% if order_respecting_arrangement_error %}error{% endif %}" id="parenting_arrangement_detail" hidden>
+        <h3>Please indicate the parenting arrangements you are asking for below.
+            {% if order_respecting_arrangement_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <p>
             You need to include each of the orders you want pertaining to guardianship, parental responsibilities and
             parenting time, and contact with the child. You will need to write them as if a Judge is telling you to do it.
@@ -353,8 +367,8 @@
         </blockquote>
         {% input_field type="textarea" name="order_respecting_arrangement" class="response-textarea form-control" maxlength="20000" rows="7"%}
     </div>
-
-    <div class="question-well" id="child_support_description">
+    {% if derived.wants_child_support %}
+        <div class="question-well {% if order_for_child_support_error %}error{% endif %}" id="child_support_description">
         <h3>If you are asking for an
                         <span class="tooltip-link"
               data-toggle="tooltip" data-placement="right" data-html="true"
@@ -367,6 +381,7 @@
                 order for child support<i class="fa fa-question-circle" aria-hidden="true"></i>
             </span>
             please describe what you are asking for.
+            {% if order_for_child_support_error %}{% include 'partials/required.html' %}{% endif %}
         </h3>
         <p>
             Child support is determined according to the federal government’s
@@ -376,7 +391,7 @@
             <a href="http://www.courts.gov.bc.ca/supreme_court/practice_and_procedure/family_law_orders/picklist_family_orders.pdf" target="_blank">
                 The Supreme Court Family Order Pick List
             </a> which sets out standard terms for most of the usual orders made in family cases. Refer to the fact sheet
-            <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/child_support.php" target="_blank">
+            <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/child_support.php" target="_blank">
                 Child Support
             </a> by the Legal Services Society for more information.
         </p>
@@ -400,8 +415,10 @@
     {% endif %}
 
     {# DIV-963: Show/hide logic and text update will be handled by JavaScript function updateChildSupportActQuestion() #}
-    <div class="question-well" id="child_support_act" {% if 'Child support' in want_which_orders|load_json %}data-want_child_order="true"{% endif %}>
-        <h3 id="child_support_act_question">Please indicate which act(s) you are asking for child support under.</h3>
+    <div class="question-well {% if child_support_act_error %}error{% endif %}" id="child_support_act" {% if 'Child support' in want_which_orders|load_json %}data-want_child_order="true"{% endif %}>
+        <h3><span id="child_support_act_question">Please indicate which act(s) you are asking for child support under.</span>
+            {% if child_support_act_error %}{% include 'partials/required.html' %}{% endif %}
+        </h3>
         <div class="checkbox-group">
             <div class="checkbox">
                 <label>
@@ -440,7 +457,7 @@
                 <p>
                     There are big differences in how the Divorce Act and the Family Law Act deal with some issues,
                     especially parenting. For more information, see the fact sheet
-                    <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/parentingApart.php" target="_blank">
+                    <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/parentingApart.php" target="_blank">
                         Parenting apart
                     </a> and the other fact sheets it links to.
                 </p>
@@ -452,20 +469,16 @@
                 </p>
             </div>
         </div>
-
-
     </div>
-
 {% endblock content %}
-
 
 {% block formBack %}{% prev_step step='children' sub_step='what_for' %}{% endblock %}
 {% block formNext %}{% next_step step='children' sub_step='what_for' %}{% endblock %}
 
 {% block sidebarText %}
-    <p><strong>What does the law mean by “best interests of the child”?</strong></p>
+    <p><strong>What does the law mean by &ldquo;best interests of the child&rdquo;?</strong></p>
     <p>
-        The “best interests of the child” is a legal test used to decide what would best
+        The &ldquo;best interests of the child&rdquo; is a legal test used to decide what would best
         protect your child’s physical, psychological, and emotional safety, security and
         well-being. To determine what is in the child’s best interests when making parenting
         arrangements, you must consider factors including:
@@ -482,7 +495,7 @@
         you must only consider the child’s best interests. And if you go to court, the judge can
         only consider the child’s best interests in making parenting orders. For more information
         on the
-        <a href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/bestInterestsOfChild.php" target="_blank">
+        <a href="https://familylaw.lss.bc.ca/resources/fact_sheets/bestInterestsOfChild.php" target="_blank">
             best interests of the child
         </a>
         please refer to the Family Law  in B.C. website.
@@ -513,6 +526,4 @@
         <li>where the children are going to live, and </li>
         <li>how much time the children will spend with each parent who is a guardian.</li>
     </ul>
-
-
 {% endblock %}

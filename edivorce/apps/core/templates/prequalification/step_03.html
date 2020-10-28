@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% load input_field %}
+{% load format_utils %}
 
 {% block title %}{{ block.super }}: Prequalification{% endblock %}
 
 {% block progress %}
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
         {% include "partials/progress.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block backToDashboard %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
+        <div class="mid_banner-dash"><a href="{% url 'overview' %}">
+            <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>View Application Stages</a>
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -118,24 +127,20 @@
 
 <div class="question-well">
     <h3>
-      Did {% if name_you %}{{ name_you }}{% else %}you{% endif %}
-      and {% if name_spouse %}{{ name_spouse }}{% else %}your spouse{% endif %}
-      attempt to reconcile after you separated
+      Did you and {% spouse_name %} attempt to reconcile after you separated
       <span id="separation_date_span">{% if separation_date %} on {{ separation_date }}{% endif %}</span>?
     </h3>
     <div class="radio">
       <label>
         {% input_field type="radio" name="try_reconcile_after_separated" value="NO" data_target_id="reconciliation_period" data_reveal_target="false" %}
-        No, {% if name_spouse %}{{ name_spouse }}{% else %}my spouse{% endif %}
-        and I have not reconciled (gotten back together)
+        No, {% spouse_name if_blank="my spouse" %} and I have not reconciled (gotten back together)
       </label>
     </div>
     <div class="radio">
       <label>
         {% input_field type="radio" name="try_reconcile_after_separated" value="YES" data_target_id="reconciliation_period" data_reveal_target="true" %}
-        Yes, {% if name_spouse %}{{ name_spouse }}{% else %}my spouse{% endif %}
-        and I lived together again during the following period(s) in an
-        unsuccessful attempt to reconcile
+        Yes, {% spouse_name if_blank="my spouse" %} and I lived together again during the following 
+        period(s) in an unsuccessful attempt to reconcile
       </label>
     </div>
 
@@ -188,9 +193,9 @@
             of 90 days or less. If they live together for more than 90 days,
             the one-year period of separation starts all over again from the
             date of the last separation. For more information on separation,
-            refer to “<a
+            refer to &ldquo;<a
             href="http://www.cbabc.org/For-the-Public/Dial-A-Law/Scripts/Family-Law/115"
-            target="_blank">Separation and Separation Agreements</a>” from the
+            target="_blank">Separation and Separation Agreements</a>&rdquo; from the
             Canadian Bar Association.</p>
         </div>
     </div>
@@ -231,7 +236,7 @@ upon.</p>
 <p>Some couples choose to separate but still live in the same house. A lawyer can tell you what factors courts may consider when they are deciding if you are separated.</p>
 
 <p>A <a
-  href="http://www.familylaw.lss.bc.ca/resources/fact_sheets/howToProveYouAreSeparatedIfYouStillLiveTogether.php"
+  href="https://familylaw.lss.bc.ca/resources/fact_sheets/howToProveYouAreSeparatedIfYouStillLiveTogether.php"
   target="_blank">list of activities and behaviours</a> that the courts
 consider to be indicators of a couple being separated can be found on the
 Family Law in B.C. website.</p>

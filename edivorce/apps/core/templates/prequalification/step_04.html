@@ -4,12 +4,20 @@
 {% block title %}{{ block.super }}: Prequalification{% endblock %}
 
 {% block progress %}
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
         {% include "partials/progress.html" %}
     {% endif %}
 {% endblock %}
-{% block content %}
 
+{% block backToDashboard %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
+        <div class="mid_banner-dash"><a href="{% url 'overview' %}">
+            <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>View Application Stages</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
 <div>
     <h1>Before We Begin...</h1>
 
@@ -127,27 +135,48 @@
 
 <div id="has_children" hidden>
     <div class="reveal question-well">
-        <h3>How many children are under the age of 19?</h3>
+        <h3>Do you have any children under the age of 19?</h3>
 
-        {% input_field type="number" name="number_children_under_19" min="0" data_target_id="number_children_under_19" %}
+        <div class="btn-radio-group" data-toggle="buttons">
+            <label class="btn btn-radio">
+                {% input_field type="radio" name="has_children_under_19" autocomplete="off" value="YES" %}
+                Yes
+            </label>
+
+            <label class="btn btn-radio">
+                {% input_field type="radio" name="has_children_under_19" autocomplete="off" value="NO" %}
+                No
+            </label>
+        </div>
     </div>
 
     <div class="reveal question-well">
-        <h3>How many children are 19 years or older?</h3>
+        <h3>Do you have any children that are 19 years or older?</h3>
 
-        {% input_field type="number" name="number_children_over_19" min="0" data_target_id="number_children_over_19" data_related_id="financial_support" data_target_class="not-disqualified-age" data_reveal_class="true" data_reveal_condition=">0" %}
+        <div class="btn-radio-group" data-toggle="buttons">
+            <label class="btn btn-radio">
+                {% input_field type="radio" name="has_children_over_19" autocomplete="off" value="YES" data_target_id="financial_support" data_reveal_target="true" %}
+                Yes
+            </label>
+
+            <label class="btn btn-radio">
+                {% input_field type="radio" name="has_children_over_19" autocomplete="off" value="NO" data_target_id="financial_support" data_reveal_target="false" %}
+                No
+            </label>
+        </div>
     </div>
 
     <div class="reveal question-well" id="financial_support" hidden>
         <h3>Are you financially supporting any of the children that are 19
           years or older?</h3>
+        <p>Financially supporting means that you are paying for the basic expenses (food, clothing, housing, etc.) for the child(ren).</p>
         <p>Please check all that apply.</p>
         <div class="checkbox-group">
-            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="NO" data_checkbox_radio="true" data_checkbox_radio_state_set="false" data_target_id="children_live_with_others" data_reveal_target="false" data_target_class="not-disqualified-other" data_reveal_class="true" %}No</label></div>
-            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, attending post secondary institution" data_checkbox_radio="true" data_checkbox_radio_state_set="true" data_target_id="children_live_with_others" data_reveal_target="true" %}Yes, attending post secondary institution</label></div>
-            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, due to disability" data_checkbox_radio="true" data_checkbox_radio_state_set="true" data_target_id="children_live_with_others" data_reveal_target="true" %}Yes, due to disability</label></div>
-            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, due to illness"  data_checkbox_radio="true" data_checkbox_radio_state_set="true" data_target_id="children_live_with_others" data_reveal_target="true" %}Yes, due to illness</label></div>
-            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, other reason"  data_checkbox_radio="true" data_checkbox_radio_state_set="true" data_target_id="children_live_with_others" data_reveal_target="true" %}Yes, other reason(s)</label></div>
+            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="NO" id="no_children_financial_support" data_checkbox_radio="true" data_checkbox_radio_state_set="false" %}No</label></div>
+            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, attending post secondary institution" data_checkbox_radio="true" data_checkbox_radio_state_set="true" %}Yes, attending post secondary institution</label></div>
+            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, due to disability" data_checkbox_radio="true" data_checkbox_radio_state_set="true" %}Yes, due to disability</label></div>
+            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, due to illness"  data_checkbox_radio="true" data_checkbox_radio_state_set="true" %}Yes, due to illness</label></div>
+            <div class="checkbox"><label>{% input_field type="checkbox" name="children_financial_support" value="Yes, other reason"  data_checkbox_radio="true" data_checkbox_radio_state_set="true" %}Yes, other reason(s)</label></div>
         </div>
         <div class="collapse-trigger collapsed" data-toggle="collapse"
          aria-expanded="false" data-target="#collapse_circumstances_change_child_support"
@@ -201,7 +230,7 @@
             target="_blank">Supreme Court of B.C. website</a>.</p>
 
             <p>A
-              <a href="http://www.familylaw.lss.bc.ca/guides/divorce/divJoint_courtForms.php"
+              <a href="https://familylaw.lss.bc.ca/guides/divorce/divJoint_courtForms.php"
               target="_blank">listing of forms</a> that may be required for a
               Joint Divorce can also be found on the Family Law in B.C. website.
             </p>
@@ -209,7 +238,7 @@
     </div>
 
     <div class="reveal question-well" id="children_live_with_others">
-        <h3>Do any of the children live with someone who is not you or your spouse?</h3>
+        <h3>Are any of the children that you are financially supporting living with someone who is not you or your spouse?</h3>
 
         <div class="btn-radio-group" data-toggle="buttons">
             <label class="btn btn-radio">
@@ -258,7 +287,7 @@
     <p>
         Louis and Jocelyn are divorcing. They have established that the Federal Guidelines apply to
         their situation. They now need to determine which of their children are
-        “children of the marriage” —that is, which ones are dependent and need their financial support.
+        &ldquo;children of the marriage&rdquo; —that is, which ones are dependent and need their financial support.
     </p>
     <p>
         Tom and Sam are both under the age of majority and are still dependent. Louis and Jocelyn

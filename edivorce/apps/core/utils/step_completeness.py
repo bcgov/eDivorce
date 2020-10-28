@@ -1,8 +1,16 @@
-import ast
 from django.urls import reverse
 
 from edivorce.apps.core.models import Question
-from edivorce.apps.core.utils.question_step_mapping import question_step_mapping, pre_qual_step_question_mapping
+from edivorce.apps.core.utils.question_step_mapping import children_substep_question_mapping, page_step_mapping, pre_qual_step_question_mapping, question_step_mapping
+from edivorce.apps.core.utils.conditional_logic import get_cleaned_response_value
+
+
+class Status:
+    STARTED = "Started"
+    COMPLETED = "Completed"
+    SKIPPED = "Skipped"
+    NOT_STARTED = "Not started"
+    HIDDEN = "Hidden"
 
 
 def evaluate_numeric_condition(target, reveal_response):
@@ -32,67 +40,64 @@ def evaluate_numeric_condition(target, reveal_response):
     return None
 
 
-def get_step_status(responses_by_step):
+def get_step_completeness(questions_by_step):
+    """
+    Accepts a dictionary of {step: [{question__name, question_id, value, error}]} <-- from get_step_responses
+    Returns {step: status, substep: status}
+    """
     status_dict = {}
-    for step, lst in responses_by_step.items():
-        if not lst:
-            status_dict[step] = "Not started"
-        else:
-            if is_complete(step, lst)[0]:
-                status_dict[step] = "Complete"
-            else:
-                status_dict[step] = "Started"
+    has_responses = False
+    reversed_steps = list(question_step_mapping.keys())[::-1]
+    for step in reversed_steps:
+        question_dicts = questions_by_step[step]
+        status, has_responses = _get_step_status(question_dicts, has_responses)
+        status_dict[step] = status
+
+    has_responses = False
+    reversed_substeps = list(children_substep_question_mapping.keys())[::-1]
+    for substep in reversed_substeps:
+        substep_questions = children_substep_question_mapping[substep]
+        question_dicts = [question_data for question_data in questions_by_step['your_children'] if question_data['question_id'] in substep_questions]
+        status, has_responses = _get_step_status(question_dicts, has_responses)
+        status_dict[f'children__{substep}'] = status
+
     return status_dict
 
 
-def is_complete(step, lst):
-    """
-    Check required field of question for complete state
-    Required: question is always require user response to be complete
-    Conditional: Optional question needed depends on reveal_response value of conditional_target.
-    """
-    if not lst:
-        return False, []
-    question_list = Question.objects.filter(key__in=question_step_mapping[step])
-    required_list = list(question_list.filter(required='Required').values_list("key", flat=True))
-    conditional_list = list(question_list.filter(required='Conditional'))
+def has_required_questions(question_dicts):
+    return any([question for question in question_dicts if question['question__required'] != ''])
 
-    complete = True
-    missing_responses = []
 
-    for question_key in required_list:
-        # everything in the required_list is required
-        if not __has_value(question_key, lst):
-            complete = False
-            missing_responses += [question_key]
-
-    for question in conditional_list:
-        # check condition for payor_monthly_child_support_amount
-        # which needs sole_custody to be computed separately
-        # payor_monthly_child_support_ammount is required only if sole_custody is True
-        if question.key == "payor_monthly_child_support_amount":
-            for target in lst:
-                if target["question_id"] == "claimant_children":
-                    child_list = ast.literal_eval(target['value'])
-                    sole_custody = (all([child['child_live_with'] == 'Lives with you' for child in child_list]) or
-                                    all([child['child_live_with'] == 'Lives with spouse' for child in child_list]))
-                    if sole_custody:
-                        if not __has_value(question.key, lst):
-                            complete = False
-                            missing_responses += [question.key]
-                    break
+def _get_step_status(question_dicts, has_responses):
+    if not step_started(question_dicts):
+        if not has_required_questions(question_dicts):
+            status = Status.HIDDEN
+        elif not has_responses:
+            status = Status.NOT_STARTED
         else:
-            # find the response to the conditional target
-            for target in lst:
-                if target["question_id"] == question.conditional_target:
-                    if __condition_met(question.reveal_response, target, lst):
-                        # the condition was met then the question is required.
-                        # ... so check if it has a value
-                        if not __has_value(question.key, lst):
-                            complete = False
-                            missing_responses += [question.key]
+            status = Status.SKIPPED
+    else:
+        has_responses = True
+        complete = is_complete(question_dicts)
+        if complete:
+            status = Status.COMPLETED
+        else:
+            status = Status.STARTED
+    return status, has_responses
 
-    return complete, missing_responses
+
+def step_started(question_list):
+    for question_dict in question_list:
+        if get_cleaned_response_value(question_dict['value']):
+            return True
+    return False
+
+
+def is_complete(question_list):
+    for question_dict in question_list:
+        if question_dict['error']:
+            return False
+    return True
 
 
 def get_formatted_incomplete_list(missed_question_keys):
@@ -115,40 +120,44 @@ def get_formatted_incomplete_list(missed_question_keys):
     return missed_questions
 
 
-def __condition_met(reveal_response, target, lst):
-    # check whether using a numeric condition
-    numeric_condition_met = evaluate_numeric_condition(target["value"], reveal_response)
-    if numeric_condition_met is None:
-        # handle special negation options. ex) '!NO' matches anything but 'NO'
-        if reveal_response.startswith('!'):
-            if target["value"] == "" or target["value"] == reveal_response[1:]:
-                return False
-        elif target["value"] != reveal_response:
-            return False
-    elif numeric_condition_met is False:
-        return False
-
-    # return true if the target is not Conditional
-    if target['question__required'] != 'Conditional':
-        return True
+def get_error_dict(questions_by_step, step=None, substep=None):
+    """
+    Accepts questions dict of {step: [{question_dict}]} and a step (and substep)
+    Returns a dict of {question_key_error: True} for missing questions that are part of that step (and substep)
+    """
+    responses_dict = {}
+    if step:
+        question_step = page_step_mapping[step]
+        step_questions = questions_by_step.get(question_step)
     else:
-        # if the target is Conditional and the condition was met, check the target next
-        reveal_response = target["question__reveal_response"]
-        conditional_target = target["question__conditional_target"]
-        for new_target in lst:
-            if new_target["question_id"] == conditional_target:
-                # recursively search up the tree
-                return __condition_met(reveal_response, new_target, lst)
+        step_questions = []
+        for questions in questions_by_step.values():
+            step_questions.extend(questions)
+    # Since the Your children substep only has one question, show error if future children questions have been answered
+    children_substep_and_step_started = substep == 'your_children' and step_started(step_questions)
 
-        # if the for loop above didn't find the target, then the target question
-        # is unanswered and the condition was not met
-        return False
+    if substep:
+        substep_questions = children_substep_question_mapping[substep]
+        step_questions = list(filter(lambda question_dict: question_dict['question_id'] in substep_questions, step_questions))
+
+    show_section_errors = step_started(step_questions) and not is_complete(step_questions)
+    if show_section_errors or children_substep_and_step_started:
+        for question_dict in step_questions:
+            if question_dict['error']:
+                field_error_key = question_dict['question_id'] + '_error'
+                responses_dict[field_error_key] = True
+    return responses_dict
 
 
-def __has_value(key, lst):
-    for user_response in lst:
-        if user_response["question_id"] == key:
-            answer = user_response["value"]
-            if answer != "" and answer != "[]" and answer != '[["",""]]' and answer != "\n":
-                return True
-    return False
+def get_missed_question_keys(questions_by_step, step):
+    """
+    Accepts questions dict of {step: [{question_dict}]} and a step
+    Returns a list of [question_key] for missing questions that are part of that step
+    """
+    missed_questions = []
+    question_step = page_step_mapping[step]
+    step_questions = questions_by_step.get(question_step)
+    for question_dict in step_questions:
+        if question_dict['error']:
+            missed_questions.append(question_dict['question_id'])
+    return missed_questions

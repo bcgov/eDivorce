@@ -13,10 +13,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% compress css %}
-        <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-datepicker3.min.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% sass_src "css/main.scss" %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datepicker3.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% sass_src 'css/main.scss' %}" />
         {% endcompress %}
         {% block extra_css %}
         {% endblock %}
@@ -38,18 +38,14 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="top_banner-logo">
-                            <a href="{% url 'home' %}"><img src="{% static 'svg/bc-logo.svg' %}" /></a>
+                            <a href="{% url 'home' %}"><img src="{% static 'svg/bc-logo.svg' %}" alt="Go to the homepage of the BC government's Online Divorce Assistant"/></a>
                             <p>Online Divorce Assistant
                                 {% if deployment_environment == 'dev' %}
                                     <span class="beta environment-type">dev</span>
                                 {% elif deployment_environment == 'test' %}
                                     <span class="beta environment-type">test</span>
-                                {% elif deployment_environment == 'prod' %}
-                                    <span class="beta environment-type">beta</span>
                                 {% elif deployment_environment == 'localdev' %}
                                     <span class="beta environment-type">localdev</span>
-                                {% else %}
-                                    <span class="beta environment-type">beta</span>
                                 {% endif %}
                             </p>
                         </div>
@@ -58,8 +54,12 @@
                         <div class="top_banner-user">
                             {% if request.user.is_authenticated %}
                             <span>
-                                {{ request.user.display_name}}
-                                &nbsp;&nbsp;|&nbsp;&nbsp; <a href="{% url 'logout' %}">Log out</a>
+                                <form action="{% url 'oidc_logout' %}" method="post">
+                                    {{ request.user.display_name}}
+                                    &nbsp;&nbsp;|&nbsp;&nbsp; 
+                                    {% csrf_token %}
+                                    <input type="submit" value="Log out">
+                                </form>
                             </span>
                             {% endif %}
                         </div>
@@ -118,16 +118,18 @@
                 </div>
             </div>
 
-{#            {% block sidebar %}#}
-{#            <div class="col-flex more_information-column">#}
-{#                <a href="#" class="more_information-close"><i class="fa fa-times" aria-hidden="true"></i></a>#}
-{#                <h2>More information</h2>#}
-{#                {% block sidebarText %}#}
-{#                {% endblock %}#}
-{#            </div>#}
-{#            {% endblock %}#}
+            {% block sidebar %}
+            <div class="col-flex more_information-column">
+                <a href="#" class="more_information-close"><i class="fa fa-times" aria-hidden="true"></i></a>
+                <h2>More information</h2>
+                {% block sidebarText %}
+                {% endblock %}
+            </div>
+            {% endblock %}
 
         </div>
+        {% block intro-footer %}
+        {% endblock %}
 
         <footer class="footer">
             <div class="footer-container clearfix">
@@ -217,7 +219,7 @@
         <script type="text/javascript" src="{% static 'js/functions.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/prototype.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/signing-filing.js' %}"></script>
         {% endcompress %}
         {% block extra_js %}
         {% endblock %}

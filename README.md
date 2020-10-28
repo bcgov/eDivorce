@@ -10,7 +10,8 @@ The steps in this document assume that you have access to an OpenShift deploymen
 
 Prerequesites:
 * Docker
-* Python 3.6
+* Docker Compose
+* Python 3.8
 
 To run this project in your development machine, follow these steps:
 
@@ -22,35 +23,29 @@ To run this project in your development machine, follow these steps:
 
 3. Install dependencies:
 
-    `pip3.6 install -r requirements.txt`
+    `pip3.8 install -r requirements.txt`
 
 4. Create an environment settings file by copying `.env.example` to `.env` (`.env` will be ignored by Git)
 
 5. Create a development database:
 
-    `python3.6 ./manage.py migrate`
+    `python3.8 ./manage.py migrate`
 
 6. Load questions from fixtures:
   
-    `python3.6 ./manage.py loaddata edivorce/fixtures/Question.json`
+    `python3.8 ./manage.py loaddata edivorce/fixtures/Question.json`
 
 7. If everything is alright, you should be able to start the Django development server:
 
-    `python3.6 ./manage.py runserver 0.0.0.0:8000`
+    `python3.8 ./manage.py runserver 0.0.0.0:8000`
 
-8. Start the [Weasyprint server](https://hub.docker.com/r/aquavitae/weasyprint/) server on port 5005
+8. Start up docker containers:
 
-    1. Bind the IP address 10.200.10.1 to the lo0 interface on your Mac computer.  Weasyprint has been configured to use this IP address to request CSS files from Django.
-        ```
-        sudo ifconfig lo0 alias 10.200.10.1/24
-        ```
+    `docker-compose up -d`
 
-    1. Start docker
-        ```
-        docker run -d -p 5005:5001 aquavitae/weasyprint
-        ```
+9. Log in to the Keycloak administration console on http://127.0.0.1:8081 as user=admin/password=admin. Under Manage Users, create yourself a test account.  Username, Email, First Name and Last Name fields are needed. Don't forget to set a password on the 'Credentials' tab.
 
-9. Open your browser and go to http://127.0.0.1:8000, you will be greeted with the eDivorce homepage.  In dev mode, you can log in with any username and the password 'divorce'.
+10. Open your browser and go to http://127.0.0.1:8000, you will be greeted with the eDivorce homepage.  You can log in with the account you created in step 9. 
 
 ### SCSS Compilation
 

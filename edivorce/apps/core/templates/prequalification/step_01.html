@@ -4,8 +4,16 @@
 {% block title %}{{ block.super }}: Prequalification{% endblock %}
 
 {% block progress %}
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
         {% include "partials/progress.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block backToDashboard %}
+    {% if request.user.is_authenticated and step_status.prequalification == 'Completed' %}
+        <div class="mid_banner-dash"><a href="{% url 'overview' %}">
+            <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>View Application Stages</a>
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -70,7 +78,7 @@
                 <p>No, you aren't married, but after two years, you have a lot
                 of the same rights as a married couple would.  For more
                 information refer to the booklet called
-                <a href="http://www.familylaw.lss.bc.ca/resources/publications/pub.php?pub=347" target="_blank">
+                <a href="https://familylaw.lss.bc.ca/resources/publications/pub.php?pub=347" target="_blank">
                 Living Together or Living Apart: Common-Law Relationships,
                 Marriage, Separation and Divorce</a>, on the Family Law in B.C.
                 website.</p>
@@ -104,17 +112,6 @@
 
 {% block formbuttons %}
 <div class="form-buttons clearfix not-disqualified">
-
-    {% if request.user.is_authenticated %}
-        <a class="btn btn-primary" href="{% url 'overview' %}">
-          <i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;&nbsp;Back
-        </a>
-    {% else %}
-        <a class="btn btn-primary" href="{% url 'home' %}">
-          <i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;&nbsp;Back
-        </a>
-    {% endif %}
-
     <a class="btn btn-success pull-right"
        href="{% url 'prequalification' '02' %}">
       Next&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-circle-o-right"></i>
