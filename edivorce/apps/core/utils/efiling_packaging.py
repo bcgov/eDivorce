@@ -275,8 +275,9 @@ class EFilingPackaging:
         for form in uploaded:
             party_code = form['party_code']
             doc_type = form['doc_type']
-            pdf_response = images_to_pdf(request, doc_type, party_code)
-            if pdf_response.status_code == 200:
+            optional = form.get('optional')
+            pdf_response = images_to_pdf(request, doc_type, party_code, optional)
+            if pdf_response and pdf_response.status_code == 200:
                 document = self._get_document(doc_type, party_code)
                 document['md5'] = hashlib.md5(pdf_response.content).hexdigest()  # nosec
                 post_files.append(('files', (document['name'], pdf_response.content)))

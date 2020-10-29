@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from edivorce.apps.core.utils.derived import get_derived_data
 
 
@@ -20,16 +18,12 @@ def forms_to_file(responses_dict, initial=False):
     has_children = derived['has_children_of_marriage']
 
     provide_marriage_certificate = responses_dict.get('original_marriage_certificate') == 'YES'
-    married_in_canada = responses_dict.get('where_were_you_married_country') == 'Canada'
-    marriage_province = responses_dict.get('where_were_you_married_prov', '').strip().upper()
-    married_in_quebec = married_in_canada and marriage_province.lower().startswith('q')
 
     if initial:
         generated.append({'doc_type': 'NJF', 'form_number': 1})
         if provide_marriage_certificate:
             uploaded.append({'doc_type': 'MC', 'party_code': 0})
-            if married_in_quebec:
-                uploaded.append({'doc_type': 'AFTL', 'party_code': 0})
+            uploaded.append({'doc_type': 'AFTL', 'party_code': 0, 'optional': 1})
 
         if signing_location_both == 'In-person' or signing_location_you == 'In-person':
             # claimant 1 is signing with a commissioner

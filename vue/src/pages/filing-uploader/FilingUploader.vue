@@ -2,7 +2,7 @@
   <div id="app">
     <template v-for="item in formTypes">
         <div>
-          <Uploader v-bind:doc-type="item.doc_type" :party="item.party_code"/>
+          <Uploader v-bind:doc-type="item.doc_type" :party="item.party_code" :optional="item.optional"/>
         </div>
     </template>
   </div>

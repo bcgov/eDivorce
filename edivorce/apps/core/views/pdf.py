@@ -116,11 +116,13 @@ def __add_claimant_info(responses, claimant):
 
 
 @login_required
-def images_to_pdf(request, doc_type, party_code):
+def images_to_pdf(request, doc_type, party_code, optional=False):
     documents = Document.objects.filter(
         bceid_user=request.user, doc_type=doc_type, party_code=party_code)
 
     if not documents:
+        if optional:
+            return None
         return HttpResponse(status=204)
 
     if party_code == 1:

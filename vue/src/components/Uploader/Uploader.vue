@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="uploader-label">
+    <h5 class="uploader-label" v-bind:class="{ 'no-margin-bottom': optional }">
       {{ formDef.preText }}
       <a href="javascript:void(0)" :id="'Tooltip-' + uniqueId">
         {{ formDef.name }} <i class="fa fa-question-circle"></i>
@@ -20,6 +20,7 @@
       <span v-if="party === 1"> - For You</span>
       <span v-if="party === 2"> - For Your Spouse</span>
     </label>
+    <p v-if="optional" class="no-top-margin"><b><i>Optional</i></b> - {{ formDef.optionalText }}</p>
     <div
       @dragover="dragOn"
       @dragenter="dragOn"
@@ -44,7 +45,7 @@
         @input-file="inputFile"
         @input-filter="inputFilter"
       >
-        <div v-if="files.length === 0" class="placeholder">
+        <div v-if="files.length === 0" class="placeholder" v-bind:class="{ required: !optional }">
           <i class="fa fa-plus-circle"></i><br />
           <em>
             Drag and Drop the PDF document or JPG pages here,<br />or click here
@@ -126,6 +127,7 @@
     props: {
       docType: String,
       party: { type: Number, default: 0 },
+      optional: {type: Boolean, default: false},
     },
     data: function() {
       return {

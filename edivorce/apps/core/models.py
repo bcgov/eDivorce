@@ -105,6 +105,7 @@ class UserResponse(models.Model):
 
     class Meta:
         unique_together = ("bceid_user", "question")
+        ordering = ('question__summary_order',)
 
     def __str__(self):
         return '%s -> %s' % (self.bceid_user, self.question.key)

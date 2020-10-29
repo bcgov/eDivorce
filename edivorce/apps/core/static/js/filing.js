@@ -2,7 +2,7 @@ $(window).ready(function () {
     $('#submitDocuments').on('click', function (e) {
         var missingForms = []
         $('div#app').children().each(function (i, child) {
-            if ($(child).find("div.placeholder").length > 0) {
+            if ($(child).find("div.placeholder.required").length > 0) {
                 missingForms.push($(child).find("h5 a").text());
             }
         })

@@ -40,15 +40,9 @@ class FilingLogic(TestCase):
             self.create_response('original_marriage_certificate', 'YES')
             uploaded, generated = forms_to_file(self.questions_dict, initial=True)
 
-            self.assertEqual(len(uploaded), 2)
-            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
-
-            # Affidavit of translation required
-            self.create_response('where_were_you_married_prov', 'QC')
-            uploaded, generated = forms_to_file(self.questions_dict, initial=True)
-
             self.assertEqual(len(uploaded), 3)
-            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0, 'optional': True}, uploaded)
 
         self.create_response('how_to_sign', 'Together')
         self.create_response('signing_location', 'In-person')
@@ -117,15 +111,9 @@ class FilingLogic(TestCase):
             self.create_response('original_marriage_certificate', 'YES')
             uploaded, generated = forms_to_file(self.questions_dict, initial=True)
 
-            self.assertEqual(len(uploaded), doc_count + 4)
-            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
-
-            # Affidavit of translation + F96 required
-            self.create_response('where_were_you_married_prov', 'QC')
-            uploaded, generated = forms_to_file(self.questions_dict, initial=True)
-
             self.assertEqual(len(uploaded), doc_count + 5)
-            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0, 'optional': True}, uploaded)
 
         self.create_response('how_to_sign', 'Together')
         self.create_response('signing_location', 'Virtual')
@@ -174,15 +162,9 @@ class FilingLogic(TestCase):
             self.create_response('original_marriage_certificate', 'YES')
             uploaded, generated = forms_to_file(self.questions_dict, initial=True)
 
-            self.assertEqual(len(uploaded), 6)
-            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
-
-            # Affidavit of translation required
-            self.create_response('where_were_you_married_prov', 'QC')
-            uploaded, generated = forms_to_file(self.questions_dict, initial=True)
-
             self.assertEqual(len(uploaded), 7)
-            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("proof of marriage"), 'party_code': 0}, uploaded)
+            self.assertIn({'doc_type': doc_type("affidavit of translation"), 'party_code': 0, 'optional': True}, uploaded)
 
         self.create_response('how_to_sign', 'Separately')
         self.create_response('signing_location_you', 'Virtual')

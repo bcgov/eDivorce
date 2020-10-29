@@ -14,6 +14,7 @@ export default {
   AFTL: {
     name: "Affidavit of Translation Form",
     preText: "Scan and upload the sworn",
+    optionalText: "Required only if your marriage certificate is NOT in English",
     help:
       "The Affidavit of Translation is an affidavit which is sworn by a translator before a notary, lawyer or commissioner for taking Affidavits.  The original certificate of marriage should be exhibited to the Affidavit of Translation together with the translation of the translator.",
   },

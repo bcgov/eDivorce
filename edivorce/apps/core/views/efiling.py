@@ -71,10 +71,11 @@ def _validate_and_submit_documents(request, responses, initial=False):
 
     uploaded, generated = forms_to_file(responses, initial)
     for form in uploaded:
-        docs = Document.objects.filter(
-            bceid_user=user, doc_type=form['doc_type'], party_code=form.get('party_code', 0))
-        if docs.count() == 0:
-            errors.append(f"Missing documents for {Document.form_types[form['doc_type']]}")
+        if not form.get('optional'):
+            docs = Document.objects.filter(
+                bceid_user=user, doc_type=form['doc_type'], party_code=form.get('party_code', 0))
+            if docs.count() == 0:
+                errors.append(f"Missing documents for {Document.form_types[form['doc_type']]}")
 
     if errors:
         return errors, None
