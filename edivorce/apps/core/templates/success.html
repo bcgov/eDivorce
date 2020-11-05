@@ -6,37 +6,27 @@
 
 <h1 class="checkmark">You have met the conditions for using the Online Divorce Assistant</h1>
 <h2> Register or Login</h2>
-<p>You will need a <strong>Basic BCeID</strong> or <strong>BC Services Card</strong> account to access the Online Divorce Assistant. This will also enable you to securely access multiple other online government services.</p>
+<p>You will need a <strong>Basic BCeID</strong> account to access the Online Divorce Assistant. This will also enable you to securely access multiple other online government services.</p>
 
     <hr />
 
 <div class="success-buttons">
-    <div class="flex-row" id="bcId" style="width: 30%;">
+    <div class="flex-row" id="bcId" style="width: 45%">
         <h3>Register for a <br>Basic BCeID</br></h3>
         <p>Once you register, you’ll be taken back to this website.</p>
     </div>
-    <div class="flex-row" id="scard" style="width: 30%;">
-        <h3>Set up your <br>BC Services Card</br></h3>
-        <p>Once you're set up, you’ll be taken back to this website.</p>
-    </div>
-    <div class="flex-row" id="login" style="width: 30%;">
-        <h3>Login with a <br>BCeID or BC Services Card</br></h3>
+    <div class="flex-row" id="login" style="width: 45%">
+        <h3>Login with a <br>BCeID</br></h3>
         <p>Once you login, you’ll be taken back to this website.</p>
-
     </div>
 </div>
 <div class="success-buttons">
-    <div class="flex-row" id="bcId" style="width: 30%;">
+    <div class="flex-row" id="bcId" style="width: 45%">
         <a class="btn btn-success btn-lg btn-block" href="{% url 'register' %}">
             Register
         </a>
     </div>
-    <div class="flex-row"id="scard" style="width: 30%;">
-        <a class="btn btn-success btn-lg btn-block" href="{% url 'register_sc' %}">
-            Set Up
-        </a>
-    </div>
-    <div class="flex-row"id="login" style="width: 30%;">
+    <div class="flex-row"id="login" style="width: 45%">
         <a class="btn btn-success btn-lg btn-block" href="{% url 'login' %}">
             Login
         </a>
