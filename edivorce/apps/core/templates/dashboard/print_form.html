@@ -462,6 +462,18 @@
                     and the English translation.
                 </li>
             {% endif %}
+            {% if original_marriage_certificate == 'NO' and provide_certificate_later == 'YES' and marriage_certificate_in_english == "NO" %}
+                <li>
+                    <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f30.pdf?forcedownload=true">Affidavit of Translation (F30)</a>&#8202;
+                    {% include "partials/tooltips/forms/affidavit_of_translation.html" with text="<span></span>"%}
+                </li>
+            {% endif %}
+            {% if provide_certificate_later == 'NO' %}
+                <li>
+                    <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f30.pdf?forcedownload=true">Affidavit of No Marriage Certificate (F30)</a>&#8202;
+                    {% include "partials/tooltips/forms/affidavit_of_no_marriage_certificate.html" with text="<span></span>"%}
+                </li>
+            {% endif %}
             <li>
                 <a href="https://www.justice.gc.ca/eng/fl-df/divorce/pdf/form.pdf">Completed Registration of Divorce form (Federal)</a>&#8202;
                 {% include "partials/tooltips/forms/registration_of_divorce.html" with text="<span></span>" %}
