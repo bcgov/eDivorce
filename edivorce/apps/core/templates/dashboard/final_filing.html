@@ -140,6 +140,9 @@
                                 </ul>
                             </li>
                         {% endif %}
+                        {% if provide_certificate_later == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_no_marriage_certificate.html" %}</li>
+                        {% endif %}
                         <li>{% include "partials/tooltips/forms/joint_divorce_proceedings.html" %}</li>
                         <li>{% include "partials/tooltips/forms/requisition_form_35.html" %} signed by both you and your spouse</li>
                         <li>{% include "partials/tooltips/forms/draft_final_order_52.html" %} signed by both you and your spouse</li>
@@ -210,6 +213,9 @@
                                     </li>
                                 </ul>
                             </li>
+                        {% endif %}
+                        {% if provide_certificate_later == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_no_marriage_certificate.html" %}</li>
                         {% endif %}
                         <li>{% include "partials/tooltips/forms/joint_divorce_proceedings.html" %}</li>
                         <li>{% include "partials/tooltips/forms/requisition_form_35.html" %} signed by both you and your spouse</li>
