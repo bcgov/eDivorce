@@ -1932,5 +1932,17 @@
     },
     "model": "core.question",
     "pk": "final_filing_status"
+},
+{
+    "fields": {
+        "name": "Unable to Provide a Certificate of Marriage",
+        "description": "For pre-qualification step 5",
+        "summary_order": 178,
+        "required": "Conditional",
+        "conditional_target": "provide_certificate_later",
+        "reveal_response": "NO"
+    },
+    "model": "core.question",
+    "pk": "name_marriage_witness"
 }
 ]

@@ -120,6 +120,29 @@
     </div>
 </div>
 
+<div class="reveal question-well" id="reason_not_providing" hidden>
+    <h3>Unable to Provide a Certificate of Marriage</h3>
+
+    <p>If it is impossible to get a certificate of marriage or certified copy of the registration of marriage, 
+        you will need a person who was present at the marriage ceremony (usually the officiant or a witness to the 
+        marriage) to complete an affidavit. You will need to file the affidavit as evidence of the marriage.</p>
+
+    <p>The <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f30.pdf?forcedownload=true">Affidavit Form (F30)</a> must:</p>
+
+    <ul>
+        <li>include the person’s name</li>
+        <li>describe the relationship of the person to the marriage ceremony, for example, that they were the officiant 
+            set out the person’s personal knowledge of the facts of the marriage ceremony including who was married, the 
+            date of the marriage ceremony and the location of the marriage ceremony</li>
+        <li>any other facts the person chooses to include about the marriage ceremony they witnessed</li>
+    </ul>
+
+    <p>Please provide the name of the person present at the marriage ceremony who will be completing the affidavit:</p>
+    <span class="form-group">
+        <div>{% input_field type="text" name="name_marriage_witness" class="form-block input-wide response-textbox name" %}</div>
+    </span>
+</div>
+
 {% if married_marriage_like == "Legally married" %}
 <div class="question-well" id="is_certificate_in_english">
     <h3>Is your marriage certificate or registration of marriage in English <strong>OR</strong> been translated into English by a certified translator?</h3>
