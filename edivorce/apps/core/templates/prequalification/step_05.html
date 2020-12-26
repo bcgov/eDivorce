@@ -107,7 +107,7 @@
             the Notice of Joint Family claim Form (F1)  until the proof of marriage can be produced.</p>
     </div>
 
-    <div class="information-message" id="reason_not_providing" hidden data_target_id="unable_to_provide" data_reveal_target="true">
+    <div class="information-message" id="reason_not_providing" hidden>
         <div class="bg-danger">
             <p>Since you will not be providing a marriage certificate or a registration of marriage, you will need
             to state why it is impossible for you to obtain this documentation. The
@@ -181,8 +181,8 @@
 
 {% block formbuttons %}
 <div class="form-buttons clearfix not-disqualified">
-    <a class="btn btn-primary" href="{% url 'prequalification' '04' %}"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;&nbsp;Back</a>
-    <a class="btn btn-success pull-right" href="{% url 'prequalification' '06' %}">Next&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-circle-o-right"></i></a>
+    <a class="btn btn-primary" href="{% url 'prequalification' '04' %}"><em class="fa fa-arrow-circle-o-left"></em>&nbsp;&nbsp;&nbsp;Back</a>
+    <a class="btn btn-success pull-right" href="{% url 'prequalification' '06' %}">Next&nbsp;&nbsp;&nbsp;<em class="fa fa-arrow-circle-o-right"></em></a>
 </div>
 {% endblock %}
 
@@ -195,12 +195,12 @@
     at the October 2006 LSS Provincial Training Conference for Legal Advocates.</p>
 
 <h3>Certified B.C. Marriage Certificate</h3>
-<p><img src="{% static 'img/large-marriage-cert-big.jpg' %}" /></p>
+<p><img src="{% static 'img/large-marriage-cert-big.jpg' %}" alt="Example B.C. Marriage Certificate"/></p>
 
 <h3>Certified Registration of Marriage</h3>
-<p><img src="{% static 'img/marriage-reg-cert.jpg' %}" /></p>
+<p><img src="{% static 'img/marriage-reg-cert.jpg' %}" alt="Example Certified Registration of Marriage"/></p>
 
 <h3>Certified Electronic Extract of a Registration of Marriage</h3>
-<p><img src="{% static 'img/marr_ex.jpg' %}" /></p>
+<p><img src="{% static 'img/marr_ex.jpg' %}" alt="Example Certified Electronic Extract of a Registration of Marriage"/></p>
 
 {% endblock %}
