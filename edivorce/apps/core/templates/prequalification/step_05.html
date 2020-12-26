@@ -72,12 +72,12 @@
 
     <div class="radio">
         <label>
-            {% input_field type="radio" name="provide_certificate_later" autocomplete="off" value="YES" data_target_id="reason_not_providing" data_reveal_target="false" data_related_id="provide_later_date" %} Yes
+            {% input_field type="radio" name="provide_certificate_later" autocomplete="off" value="YES" data_target_id="reason_not_providing" data_reveal_target="false" data_related_id="provide_later_date" data_target_class="unable_to_provide" data_reveal_class="false" %} Yes
         </label>
     </div>
     <div class="radio">
         <label>
-            {% input_field type="radio" name="provide_certificate_later" autocomplete="off" value="NO" data_target_id="reason_not_providing" data_reveal_target="true" data_related_id="provide_later_date" %} No, it is impossible to obtain a marriage certificate (or registration of marriage)
+            {% input_field type="radio" name="provide_certificate_later" autocomplete="off" value="NO" data_target_id="reason_not_providing" data_reveal_target="true" data_related_id="provide_later_date" data_target_class="unable_to_provide" data_reveal_class="true" %} No, it is impossible to obtain a marriage certificate (or registration of marriage)
         </label>
     </div>
 
@@ -107,9 +107,9 @@
             the Notice of Joint Family claim Form (F1)  until the proof of marriage can be produced.</p>
     </div>
 
-    <div class="information-message" id="reason_not_providing" hidden>
+    <div class="information-message" id="reason_not_providing" hidden data_target_id="unable_to_provide" data_reveal_target="true">
         <div class="bg-danger">
-            <p>Since you will not be providing a marriage certificate or a registration of marriage,  you will need
+            <p>Since you will not be providing a marriage certificate or a registration of marriage, you will need
             to state why it is impossible for you to obtain this documentation. The
                 {% include "partials/tooltips/court_registrar.html" %}
                 will review and then decide whether or not they will accept your reason(s). You will be asked for this detail later in this online tool.</p>
@@ -120,27 +120,29 @@
     </div>
 </div>
 
-<div class="reveal question-well" id="reason_not_providing" hidden>
-    <h3>Unable to Provide a Certificate of Marriage</h3>
+<div class="unable_to_provide" hidden>
+    <div class="reveal question-well">
+        <h3>Unable to Provide a Certificate of Marriage</h3>
 
-    <p>If it is impossible to get a certificate of marriage or certified copy of the registration of marriage, 
-        you will need a person who was present at the marriage ceremony (usually the officiant or a witness to the 
-        marriage) to complete an affidavit. You will need to file the affidavit as evidence of the marriage.</p>
+        <p>If it is impossible to get a certificate of marriage or certified copy of the registration of marriage,
+            you will need a person who was present at the marriage ceremony (usually the officiant or a witness to the
+            marriage) to complete an affidavit. You will need to file the affidavit as evidence of the marriage.</p>
 
-    <p>The <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f30.pdf?forcedownload=true">Affidavit Form (F30)</a> must:</p>
+        <p>The <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f30.pdf?forcedownload=true">Affidavit Form (F30)</a> must:</p>
 
-    <ul>
-        <li>include the person’s name</li>
-        <li>describe the relationship of the person to the marriage ceremony, for example, that they were the officiant 
-            set out the person’s personal knowledge of the facts of the marriage ceremony including who was married, the 
-            date of the marriage ceremony and the location of the marriage ceremony</li>
-        <li>any other facts the person chooses to include about the marriage ceremony they witnessed</li>
-    </ul>
+        <ul>
+            <li>include the person’s name</li>
+            <li>describe the relationship of the person to the marriage ceremony, for example, that they were the officiant
+                set out the person’s personal knowledge of the facts of the marriage ceremony including who was married, the
+                date of the marriage ceremony and the location of the marriage ceremony</li>
+            <li>any other facts the person chooses to include about the marriage ceremony they witnessed</li>
+        </ul>
 
-    <p>Please provide the name of the person present at the marriage ceremony who will be completing the affidavit:</p>
-    <span class="form-group">
-        <div>{% input_field type="text" name="name_marriage_witness" class="form-block input-wide response-textbox name" %}</div>
-    </span>
+        <p>Please provide the name of the person present at the marriage ceremony who will be completing the affidavit:</p>
+        <span class="form-group">
+            <div>{% input_field type="text" name="name_marriage_witness" class="form-block input-wide response-textbox name" %}</div>
+        </span>
+    </div>
 </div>
 
 {% if married_marriage_like == "Legally married" %}
