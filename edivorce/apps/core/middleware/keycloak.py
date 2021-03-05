@@ -1,7 +1,7 @@
 import base64
 import hashlib
 from django.conf import settings
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, smart_text
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from mozilla_django_oidc.utils import absolutify
 
@@ -17,9 +17,9 @@ class EDivorceKeycloakBackend(OIDCAuthenticationBackend):
     def create_user(self, claims):
         email = claims.get('email')
         universal_id = claims.get('universal-id')
-        username = base64.urlsafe_b64encode(
+        username = smart_text(base64.urlsafe_b64encode(
         hashlib.sha1(force_bytes(universal_id)).digest()
-            ).rstrip(b'=')
+            ).rstrip(b'='))
 
         user = self.UserModel.objects.create_user(username, email=email)
         user.first_name = claims.get('given_name', '')
