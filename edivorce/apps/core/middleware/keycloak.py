@@ -1,7 +1,7 @@
 import base64
 import hashlib
 from django.conf import settings
-from django.utils.encoding import force_bytes, smart_text, smart_bytes
+from django.utils.encoding import force_bytes
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from mozilla_django_oidc.utils import absolutify
 
