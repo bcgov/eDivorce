@@ -112,14 +112,14 @@
                 {% input_field type="radio" class="radio-with-other  children-input-block" name="child_live_with" value="Lives with you" data_target_id="other_child_details" data_reveal_target="false" data_mirror="true" data_mirror_target="#child_live_with_0" data_skip_ajax="true" %}
                 {% you_name if_blank="You" %}
             </label>
-            <p>Child lives primarily (more than 60%) with this parent. This is referred to as sole custody (Divorce Act) or guardianship (Family Law Act).</p>
+            <p>Child lives primarily (more than 60%) with this parent. This is referred to as sole parenting time (Divorce Act) or guardianship (Family Law Act).</p>
         </div>
         <div class="radio">
             <label class="tight-spacing">
                 {% input_field type="radio" class="radio-with-other  children-input-block" name="child_live_with" value="Lives with spouse" data_target_id="other_child_details" data_reveal_target="false" data_mirror="true" data_mirror_target="#child_live_with_0" data_skip_ajax="true" %}
                 {% spouse_name if_blank="Your spouse" %}
             </label>
-            <p>Child lives primarily (more than 60%) with this parent.  This is  referred to as sole custody.</p>
+            <p>Child lives primarily (more than 60%) with this parent.  This is  referred to as sole parenting time.</p>
         </div>
         <div class="radio">
             <label class="tight-spacing">
@@ -128,7 +128,7 @@
             </label>
             <p>
                 The child lives with both parents more or less equally (between 40-60% of the time with each parent).
-                This is referred to as shared custody.
+                This is referred to as shared parenting time.
             </p>
         </div>
 
@@ -301,7 +301,7 @@
 {% endblock %}
 
 {% block sidebarText %}
-    <p><strong>Sole Custody Example</strong></p>
+    <p><strong>Sole Parenting Order Example</strong></p>
     <p>
         Maria and Pedro have decided to divorce. Their children, Christine and Manuel, are having a hard time coping
         with the idea. They are afraid of the changes it will mean in their lives.
@@ -311,8 +311,8 @@
         for Christine and Manuel to continue living in the family home with Maria. It is closer to their school and
         friends than the new place Pedro plans to move to. The children will spend a fair bit of time with Pedro, too,
         especially on weekends and holidays. But Maria and Pedro calculate that, over the entire year, the children will
-        spend 65% of the time with Maria and 35% of the time with Pedro. This means that Maria will have sole custody
-        for child support purposes, although they have decided that they will have joint custody for decision-making
+        spend 65% of the time with Maria and 35% of the time with Pedro. This means that Maria will have a sole parenting order
+        for child support purposes, although they have decided that they will have joint parenting time for decision-making
         purposes. Pedro will pay support.
     </p>
     <p>
@@ -320,7 +320,7 @@
     {% include "partials/tooltips/children/federal_guidelines.html" with link="http://www.justice.gc.ca/eng/rp-pr/fl-lf/child-enfant/guide/step3-etap3.html" text="Federal Child Support Guidelines: Step-by-Step" %}
     </p>
 
-    <p><strong>Split Custody Example</strong></p>
+    <p><strong>Split Parenting Order Example</strong></p>
     <p>
         Bill and Janet have decided to go their separate ways and get a divorce. They are having a hard time agreeing on
         the parenting arrangements for their three children. But there is one thing they do agree on—that it is important
@@ -334,15 +334,15 @@
     </p>
     <p>
         In other words, Marc will spend more than 60% of the time with Bill while Caroline and Albert will spend more
-        than 60% of the time with Janet over the course of a year. This means that Bill and Janet will each have sole
-        custody of at least one of the children. They have a split-custody arrangement.
+        than 60% of the time with Janet over the course of a year. This means that Bill and Janet will each have a sole
+        parenting order of at least one of the children. They have a split-parenting time arrangement.
     </p>
     <p>
     Source: The
     {% include "partials/tooltips/children/federal_guidelines.html" with link="http://www.justice.gc.ca/eng/rp-pr/fl-lf/child-enfant/guide/step3-etap3.html" text="Federal Child Support Guidelines: Step-by-Step" %}
     </p>
 
-    <p><strong>Shared Custody Example</strong></p>
+    <p><strong>Shared Parenting Order Example</strong></p>
     <p>
         Eight-year-old twins Malia and Emma are very worried. They have just found out that their dad, Raoul, and mom,
         Lily, have decided to divorce and live in separate homes. Malia and Emma wonder where they will live. They are
@@ -362,7 +362,7 @@
         Malia’s and Emma’s best interests.
     </p>
     <p>
-        Since Malia and Emma spend at least 40% of the time with each parent, Raoul and Lily have a shared-custody
+        Since Malia and Emma spend at least 40% of the time with each parent, Raoul and Lily have a shared-parenting order
         arrangement for child support purposes.
     </p>
     <p>

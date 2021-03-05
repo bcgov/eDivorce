@@ -27,13 +27,13 @@
              aria-expanded="false" data-target="#collapseF1"
              aria-controls="collapseF1">
             <div>
-                <span>Notice of Joint Family Claim Form (F1)</span>
+                <span>Notice of Joint Family Claim Form (F1) and Party's Certificate</span>
             </div>
         </div>
         <p class="review-buttons">
             <a href="{% url 'pdf_form' '1' %}" class="btn btn-primary spinner"
-               target="_blank"><i class="fa fa-print" aria-hidden="true"></i>
-                Review and Print
+               target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
+                Review, Print &amp; Sign
             </a>
         </p>
         <div class="clearfix"></div>
@@ -124,7 +124,7 @@
         <p class="review-buttons">
             <a href="{% url 'pdf_form' '52' %}" class="btn btn-primary spinner"
                target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
-                Review, Print & Sign
+                Review, Print &amp; Sign
             </a>
         </p>
         <div class="clearfix"></div>
@@ -168,7 +168,7 @@
                 aria-controls="collapseF96t">
                 <div>
                     <span>
-                        Electronic Filing Statement (F96) for your Affadivit of Translation - 
+                        Electronic Filing Statement (F96) for your Affadivit of Translation -
                         to be signed by you
                     </span>
                 </div>
@@ -176,7 +176,7 @@
             <p class="review-buttons">
                 <a href="{% url 'pdf_form' '96_translation' %}" class="btn btn-primary spinner"
                 target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
-                    Review, Print & Sign
+                    Review, Print &amp; Sign
                 </a>
             </p>
             <div class="review-explanation">(<strong>Optional</strong> - Only required if your marriage certificate is NOT in English)</div>
@@ -184,13 +184,13 @@
             <div class="collapse" id="collapseF96t">
                 <div>
                     <p>
-                        This form is used to confirm that the document you are filing electronically 
-                        shows your original signature and is a true copy of the original paper 
+                        This form is used to confirm that the document you are filing electronically
+                        shows your original signature and is a true copy of the original paper
                         version of the document.
                     </p>
                     <p>
                         - Requires signature by you only (but not a signature in front of a commissioner)
-                    </p>                    
+                    </p>
                 </div>
             </div>
         </div>
@@ -209,7 +209,7 @@
                 <p class="review-buttons">
                     <a href="{% url 'pdf_form' '37' %}" class="btn btn-primary spinner"
                        target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                        Review, Print & Swear
+                        Review, Print &amp; Swear
                     </a>
                 </p>
                 <div class="clearfix"></div>
@@ -243,7 +243,7 @@
             <p class="review-buttons">
                 <a href="{% url 'pdf_form' '38' %}" class="btn btn-primary spinner"
                    target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                    Review, Print & Swear
+                    Review, Print &amp; Swear
                 </a>
             </p>
             <div class="clearfix"></div>
@@ -273,7 +273,7 @@
                 <p class="review-buttons">
                     <a href="{% url 'pdf_form' '37_claimant1' %}" class="btn btn-primary spinner"
                        target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                        Review, Print & Swear
+                        Review, Print &amp; Swear
                     </a>
                 </p>
                 <div class="clearfix"></div>
@@ -306,7 +306,7 @@
                 <p class="review-buttons">
                     <a href="{% url 'pdf_form' '37_claimant2' %}" class="btn btn-primary spinner"
                        target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                        Review, Print & Swear
+                        Review, Print &amp; Swear
                     </a>
                 </p>
                 <div class="clearfix"></div>
@@ -340,7 +340,7 @@
             <p class="review-buttons">
                 <a href="{% url 'pdf_form' '38_claimant1' %}" class="btn btn-primary spinner"
                    target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                    Review, Print & Swear
+                    Review, Print &amp; Swear
                 </a>
             </p>
             <div class="clearfix"></div>
@@ -368,7 +368,7 @@
             <p class="review-buttons">
                 <a href="{% url 'pdf_form' '38_claimant2' %}" class="btn btn-primary spinner"
                    target="_blank"><i class="fa fa-hand-stop-o" aria-hidden="true"></i>
-                    Review, Print & Swear
+                    Review, Print &amp; Swear
                 </a>
             </p>
             <div class="clearfix"></div>
@@ -402,7 +402,7 @@
             <p class="review-buttons">
                 <a href="{% url 'pdf_form' '96_claimant1' %}" class="btn btn-primary spinner"
                    target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
-                    Review, Print & Sign
+                    Review, Print &amp; Sign
                 </a>
             </p>
             <div class="clearfix"></div>
@@ -430,7 +430,7 @@
                 <p class="review-buttons">
                     <a href="{% url 'pdf_form' '96_claimant2' %}" class="btn btn-primary spinner"
                        target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
-                        Review, Print & Sign
+                        Review, Print &amp; Sign
                     </a>
                 </p>
                 <div class="clearfix"></div>
@@ -447,7 +447,7 @@
                 </div>
             </div>
         {% endif %}
-    {% endif %}    
+    {% endif %}
 
     <div class="question-well">
         <h3>Additional Documents to Print and Complete</h3>
@@ -463,7 +463,7 @@
                 </li>
             {% endif %}
             <li>
-                <a href="https://www.justice.gc.ca/eng/fl-df/divorce/pdf/form.pdf">Completed Registration of Divorce form (Federal)</a>&#8202;
+                <a href="https://www.justice.gc.ca/eng/fl-df/divorce/form-formulaire.html">Complete online Registration of Divorce form (Federal)</a>&#8202;
                 {% include "partials/tooltips/forms/registration_of_divorce.html" with text="<span></span>" %}
             </li>
             {% if derived.wants_other_orders %}
@@ -488,6 +488,14 @@
                 </a>&#8202;
                 {% include "partials/tooltips/forms/agreement_to_annual_income_9.html" with text="<span></span>" %}
                 </li>
+            {% endif %}
+            {% if derived.wants_spousal_support or derived.wants_child_support %}
+            <li>
+            <a href="https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/supreme-family/f102.pdf?forcedownload=true">
+                Completed Statement of Information for Corollary Relief Proceedings (F102)
+            </a>&#8202;
+            {% include "partials/tooltips/forms/statement_of_information_for_corollary_relief_proceeedings.html" with text="<span></span>" %}
+            </li>
             {% endif %}
         </ul>
     </div>

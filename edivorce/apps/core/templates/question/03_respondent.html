@@ -24,15 +24,15 @@
         <div>
             <p>Middle Name 1</p>
             {% input_field type="text" name="given_name_2_spouse" class="form-block response-textbox" %}
-        </div>        
+        </div>
         <div>
-            <p>Middle Name 2</p>        
+            <p>Middle Name 2</p>
             {% input_field type="text" name="given_name_3_spouse" class="form-block response-textbox" %}
         </div>
         <div>
             <p>Last Name</p>
             {% input_field type="text" name="last_name_spouse" class="form-block response-textbox" %}
-        </div>        
+        </div>
     </div>
 
     <div class="collapse-trigger collapsed" data-toggle="collapse" aria-expanded="false"
@@ -44,7 +44,7 @@
     <div class="collapse" id="collapse_legal_name">
         <div>
             <p>
-                The name written here must match your spouses's name that is on your marriage certificate. If they have changed 
+                The name written here must match your spouses's name that is on your marriage certificate. If they have changed
                 their legal name since you were married, add it to the section below titled &ldquo;Does your spouse go by any other names&rdquo;.
             </p>
         </div>
@@ -107,7 +107,7 @@
             {% if other_name_spouse %}
                 {% multiple_values_to_list source=other_name_spouse as values %}
                 {% for value in values %}
-                    {% include "partials/alias_field.html" with name="other_name_spouse" alias_type=value.0 last_name=value.1 given_1=value.2 given_2=value.3 given_3=value.4 delete_button="true" %} 
+                    {% include "partials/alias_field.html" with name="other_name_spouse" alias_type=value.0 last_name=value.1 given_1=value.2 given_2=value.3 given_3=value.4 delete_button="true" %}
                 {% endfor %}
             {% else %}
                  {% include "partials/alias_field.html" with name="other_name_spouse" value='' %}
@@ -168,7 +168,7 @@
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other" name="lived_in_bc_spouse" value="Does not live in B.C." %}Does not live in B.C.</label></div>
 
     <p>In order to apply for a divorce in B.C., you or your spouse must have been a regular resident in B.C (the legal term is
-        {% include "partials/tooltips/ordinary_residence.html" %}) for at least one year immediately before starting the proceeding.
+        {% include "partials/tooltips/habitual_residence.html" %}) for at least one year immediately before starting the proceeding.
     </p>
     <div class="collapse-trigger collapsed" data-toggle="collapse" aria-expanded="false" data-target="#collapseExample" aria-controls="collapseExample">
         <div>

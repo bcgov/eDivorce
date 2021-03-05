@@ -70,6 +70,7 @@ if DEPLOYMENT_TYPE == 'test':
     EDIVORCE_KEYCLOAK_BASE_URL = 'https://test.oidc.gov.bc.ca'
     EFILING_HUB_API_BASE_URL = 'https://efiling-api-nginx-proxy-qzaydf-test.pathfinder.gov.bc.ca/api'
     EFILING_HUB_KEYCLOAK_BASE_URL = 'https://test.oidc.gov.bc.ca'
+    EFILING_ENABLED_GLOBALLY = True
 
 if DEPLOYMENT_TYPE == 'prod':
     REGISTER_BCEID_URL = 'https://www.bceid.ca/directories/bluepages/details.aspx?serviceID=5203'

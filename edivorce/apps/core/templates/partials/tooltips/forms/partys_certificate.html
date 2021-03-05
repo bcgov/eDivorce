@@ -1,0 +1,14 @@
+{% extends "partials/tooltips/base.html" %}
+
+{% block title %}
+    Party's Certificate
+{% endblock %}
+
+{% block inner %}
+    The Party’s Certificate certifies that you and your spouse are aware of your duties
+    under the Divorce Act (Canada) throughout the process of applying for divorce.
+{% endblock %}
+
+{% block label %}
+    {% if text %}{{ text }}{% else %}Party's Certificate{% endif %}
+{% endblock %}

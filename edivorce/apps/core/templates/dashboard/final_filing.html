@@ -131,6 +131,9 @@
                     <ul>
                         <li>{% include "partials/tooltips/forms/joint_family_claim_1.html" with text="Notice of Joint Family Claim Form (F1)" %}
                             signed by both you and your spouse
+                            <ul style="margin-bottom:0px">
+                                <li>Remember to sign both the form and the {% include "partials/tooltips/forms/partys_certificate.html" %}</li>
+                            </ul>
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
@@ -160,6 +163,9 @@
                         {% endif %}
                         {% if derived.wants_other_orders and name_change_spouse == 'YES' %}
                             <li>{% include "partials/tooltips/forms/identification_of_applicant.html" %} for your spouse</li>
+                        {% endif %}
+                        {% if derived.wants_spousal_support or derived.wants_child_support %}
+                            <li>{% include "partials/tooltips/forms/statement_of_information_for_corollary_relief_proceeedings.html"%}</li> signed by both you and your spouse
                         {% endif %}
                     </ul>
                     <p>
@@ -202,6 +208,9 @@
                     <ul>
                         <li>{% include "partials/tooltips/forms/joint_family_claim_1.html" with text="Notice of Joint Family Claim Form (F1)" %}
                             signed by both you and your spouse
+                            <ul style="margin-bottom:0px">
+                                <li>Remember to sign both the form and the {% include "partials/tooltips/forms/partys_certificate.html" %}</li>
+                            </ul>
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
@@ -228,6 +237,9 @@
                         {% endif %}
                         {% if derived.wants_other_orders and name_change_you == 'YES' %}
                             <li>{% include "partials/tooltips/forms/identification_of_applicant.html" %} for you</li>
+                        {% endif %}
+                        {% if derived.wants_spousal_support or derived.wants_child_support %}
+                            <li>{% include "partials/tooltips/forms/statement_of_information_for_corollary_relief_proceeedings.html"%}</li> signed by both you and your spouse
                         {% endif %}
                     </ul>
                     <p>
