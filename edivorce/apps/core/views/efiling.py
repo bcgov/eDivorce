@@ -178,15 +178,18 @@ def _get_package_number(request):
         parts = message.split('=')
         if len(parts) == 2:
             return parts[1]
-
-    # Generate a random string in format 000-000-000
-    package_number_parts = []
-    for _ in range(3):
-        num = ''
+        else:
+            return ""
+            
+    else:
+        # Generate a random string in format 000-000-000
+        package_number_parts = []
         for _ in range(3):
-            num += str(random.randint(0, 9))
-        package_number_parts.append(num)
-    return '-'.join(package_number_parts)
+            num = ''
+            for _ in range(3):
+                num += str(random.randint(0, 9))
+            package_number_parts.append(num)
+        return '-'.join(package_number_parts)
 
 
 def _save_response(user, question, value):
