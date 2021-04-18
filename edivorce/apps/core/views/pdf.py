@@ -75,6 +75,11 @@ def pdf_form(request, form_number):
         responses = __add_claimant_info(responses, '_you')
         responses['which_claimant'] = 'Claimant 1'
         responses['which_affidavits'] = 'Affidavit of Translation'
+    elif form_number == '96_no_marriage':
+        form_number = '96'
+        responses = __add_claimant_info(responses, '_you')
+        responses['which_claimant'] = 'Claimant 1'
+        responses['which_affidavits'] = 'Affidavit of No Marriage Certificate'
 
     return __render_form(request, 'form%s' % form_number, {
         'css_root': settings.WEASYPRINT_CSS_LOOPBACK,
