@@ -90,6 +90,9 @@ class StepCompletenessTestCase(TestCase):
         UserResponse.objects.filter(question_id='provide_certificate_later').update(value="NO")
         self.assertEqual(self.check_completeness(step), False)
         self.create_response('not_provide_certificate_reason', 'Because')
+        self.assertEqual(self.check_completeness(step), False)
+
+        self.create_response('name_marriage_witness', 'Bill')
         self.assertEqual(self.check_completeness(step), True)
 
     def test_which_order(self):
@@ -470,13 +473,13 @@ class ChildrenStepCompletenessTestCase(TestCase):
     def setUp(self):
         self.user = BceidUser.objects.create(user_guid='1234')
         self.child_live_with_you = {"child_name": "Child with you", "child_birth_date": "Dec 30, 2018", "child_live_with": "Lives with you",
-                                    "child_relationship_to_you": "Natural child", "child_relationship_to_spouse": "Natural child", 
+                                    "child_relationship_to_you": "Natural child", "child_relationship_to_spouse": "Natural child",
                                     "child_live_with_other_details": ""}
         self.child_live_with_spouse = {"child_name": "Child with spouse", "child_birth_date": "Jan 4, 2009", "child_live_with": "Lives with spouse",
-                                       "child_relationship_to_you": "Adopted child", "child_relationship_to_spouse": "Adopted child", 
+                                       "child_relationship_to_you": "Adopted child", "child_relationship_to_spouse": "Adopted child",
                                        "child_live_with_other_details": ""}
         self.child_live_with_both = {"child_name": "Child with both", "child_birth_date": "Jan 4, 2009", "child_live_with": "Lives with both",
-                                     "child_relationship_to_you": "Adopted child", "child_relationship_to_spouse": "Adopted child", 
+                                     "child_relationship_to_you": "Adopted child", "child_relationship_to_spouse": "Adopted child",
                                      "child_live_with_other_details": ""}
         self.create_response('children_of_marriage', 'YES')
         self.create_response('has_children_under_19', 'YES')

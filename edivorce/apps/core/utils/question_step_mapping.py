@@ -29,6 +29,7 @@ pre_qual_step_question_mapping = {
         'provide_certificate_later',
         'provide_certificate_later_reason',
         'not_provide_certificate_reason',
+        'name_marriage_witness',
         'marriage_certificate_in_english'
     },
     '06': {
@@ -145,6 +146,7 @@ question_step_mapping = {
                          'provide_certificate_later',
                          'provide_certificate_later_reason',
                          'not_provide_certificate_reason',
+                         'name_marriage_witness',
                          'marriage_certificate_in_english',
                          'divorce_reason'],
     'which_orders': ['want_which_orders'],
