@@ -8,7 +8,7 @@ services:
     image: mkodockx/docker-clamav:alpine
     ports:
       - "3310:3310"
-    restart: always
+    restart: unless-stopped
 
   # Redis Server
   redis:
@@ -19,7 +19,7 @@ services:
       - "6379:6379"
     volumes:
       - data-redis:/data
-    restart: always
+    restart: unless-stopped
 
   # Weasyprint (PDF generator)
   weasyprint:
@@ -28,7 +28,7 @@ services:
     image: aquavitae/weasyprint
     ports:
       - "5005:5001"
-    restart: always
+    restart: unless-stopped
 
   # Keycloak
   keycloak:
@@ -44,7 +44,7 @@ services:
     ports:
       - 8081:8080
     command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
-    restart: always    
+    restart: unless-stopped    
 
 volumes:
   data-redis:
