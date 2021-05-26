@@ -87,6 +87,9 @@ def step_order(context, step):
     if base_order > 7 and not derived_data.get('wants_property_division'):
         order -= 1
 
+    if base_order > 8 and not derived_data.get('f102_required'):
+        order -= 1        
+
     if base_order > 9 and not derived_data.get('wants_other_orders'):
         order -= 1
 

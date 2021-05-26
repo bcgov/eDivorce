@@ -194,6 +194,12 @@ def determine_other_orders_wanted(questions_dict):
     return 'Other orders' in orders_wanted(questions_dict)
 
 
+def determine_f102_required(questions_dict):
+    return ('Spousal support' in orders_wanted(questions_dict) or
+        (determine_has_children_of_marriage(questions_dict) and
+        'Child support' in orders_wanted(questions_dict)))    
+
+
 def determine_has_protection_order(questions_dict):
     return (questions_dict.get('protection_order_against_you_or_spouse', '') == 'YES' or
         questions_dict.get('protection_order_involving_you_or_spouse', '') == 'YES')
