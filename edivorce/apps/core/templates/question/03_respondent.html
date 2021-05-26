@@ -120,7 +120,7 @@
 </div>
 
 <div class="question-well">
-    <h3>What was their last name when they were born?{% include "partials/optional.html" %}</h3>
+    <h3>What was their last name when they were born?{% if last_name_born_spouse_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <span class="form-group">
         {% input_field type="text" name="last_name_born_spouse" class="form-block input-wide response-textbox name" %}
     </span>
