@@ -288,7 +288,7 @@
             "name": "What was your last name when you were born?",
             "description": "For step 2, Form 1 2. Divorce section A",
             "summary_order": 27,
-            "required": ""
+            "required": "Required"
         },
         "model": "core.question",
         "pk": "last_name_born_you"
@@ -409,10 +409,10 @@
     },
     {
         "fields": {
-            "name": "What was their last name at birth?",
+            "name": "What was their last name when they were born?",
             "description": "For step 3, Form 1 2. Divorce section A",
             "summary_order": 39,
-            "required": ""
+            "required": "Required"
         },
         "model": "core.question",
         "pk": "last_name_born_spouse"
@@ -1600,7 +1600,7 @@
             "summary_order": 144,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "protection_order_against_you_or_spouse"
@@ -1612,7 +1612,7 @@
             "summary_order": 145,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "protection_order_involving_you_or_spouse"
@@ -1636,7 +1636,7 @@
             "summary_order": 147,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "involved_with_child_protective_services"
@@ -1660,7 +1660,7 @@
             "summary_order": 149,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "criminal_charge_facing"
@@ -1672,7 +1672,7 @@
             "summary_order": 150,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "criminal_charge_court_order"
@@ -1684,7 +1684,7 @@
             "summary_order": 151,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "criminal_charge_demands"
@@ -1696,7 +1696,7 @@
             "summary_order": 152,
             "required": "Conditional",
             "conditional_target": "determine_spousal_support_orders_wanted",
-            "reveal_response": "True"  
+            "reveal_response": "True"
         },
         "model": "core.question",
         "pk": "criminal_charge_prison"

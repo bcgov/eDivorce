@@ -115,7 +115,7 @@
 </div>
 
 <div class="question-well">
-    <h3>What was your last name when you were born?{% include 'partials/optional.html' %}</h3>
+    <h3>What was your last name when you were born?{% if last_name_born_you_error %}{% include 'partials/required.html' %}{% endif %}</h3>
     <span class="form-group">
         <div>{% input_field type="text" name="last_name_born_you" class="form-block input-wide response-textbox name" %}</div>
     </span>
