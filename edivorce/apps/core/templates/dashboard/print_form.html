@@ -67,7 +67,7 @@
         <div class="collapse" id="collapseFPCy">
             <div>
                 <p>
-                    As part of starting the court file for your divorce through the Notice of Joint Family Claim Form (F1), 
+                    As part of starting the court file for your divorce through the Notice of Joint Family Claim Form (F1),
                     you need to certify that you are aware of your duties under the Divorce Act (Canada) by completing the Party’s Certificate.
                 </p>
                 <p>
@@ -94,7 +94,7 @@
         <div class="collapse" id="collapseFPCs">
             <div>
                 <p>
-                    As part of starting the court file for your divorce through the Notice of Joint Family Claim Form (F1), 
+                    As part of starting the court file for your divorce through the Notice of Joint Family Claim Form (F1),
                     your spouse needs to certify that they are aware of their duties under the Divorce Act (Canada) by completing the Party’s Certificate.
                 </p>
                 <p>
@@ -103,7 +103,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="review-well clearfix">
         <div class="collapse-trigger collapsed" data-toggle="collapse"
              aria-expanded="false" data-target="#collapseF35"
@@ -236,8 +236,8 @@
             <div class="collapse" id="collapseF102y">
                 <div>
                     <p>
-                        This form provides information about legal orders and proceedings from the criminal justice 
-                        system, the child protection system and the family justice system that should be considered 
+                        This form provides information about legal orders and proceedings from the criminal justice
+                        system, the child protection system and the family justice system that should be considered
                         by the court.
                     </p>
                 </div>
@@ -262,8 +262,8 @@
             <div class="collapse" id="collapseF102s">
                 <div>
                     <p>
-                        This form provides information about legal orders and proceedings from the criminal justice 
-                        system, the child protection system and the family justice system that should be considered 
+                        This form provides information about legal orders and proceedings from the criminal justice
+                        system, the child protection system and the family justice system that should be considered
                         by the court.
                     </p>
                 </div>
@@ -518,7 +518,7 @@
             <div class="collapse" id="collapseF96y">
                 <div>
                     <p>
-                        This form is used to confirm that the documents you are filing electronically show your original 
+                        This form is used to confirm that the documents you are filing electronically show your original
                         signature and are true copies of the original paper version of the documents.
                     </p>
                     <p>
@@ -546,7 +546,7 @@
                 <div class="collapse" id="collapseF96s">
                     <div>
                         <p>
-                            This form is used to confirm that the documents you are filing electronically show 
+                            This form is used to confirm that the documents you are filing electronically show
                             your spouse’s original signature and are true copies of the original paper version of the documents.
                         </p>
                         <p>
@@ -558,7 +558,7 @@
         {% endif %}
     {% endif %}
 
-    
+
     <h3>Additional Required Documentation</h3>
     <p>The following documents are required as part of your filing but are not created automatically by this site:</p>
 
@@ -568,19 +568,21 @@
         aria-expanded="false" data-target="#collapsePoM"
         aria-controls="collapseF30">
         <div>
-            <span>Proof of Marriage - Original or certified Marriage Certificate or Registration of Divorce.</span>
+            <span>Proof of Marriage - Original or certified Marriage Certificate.</span>
         </div>
         </div>
+        {% if how_to_file == 'Online' %}
         <p class="review-buttons">
             <span>
                 Have Ready to Scan
             </span>
         </p>
+        {% endif %}
         <div class="clearfix"></div>
         <div class="collapse" id="collapsePoM">
             <div>
                 <p>
-                    To get a divorce, you need an original marriage certificate or certified true copy of your registration of marriage to prove you are married. 
+                    To get a divorce, you need an original marriage certificate or certified true copy of your registration of marriage to prove you are married.
                     There are other options described in this tool if you can't get a copy of your marriage certificate or registration of marriage.
                 </p>
             </div>
@@ -597,11 +599,13 @@
             <span>Affidavit of Translation (F30)</span>
         </div>
         </div>
+        {% if how_to_file == 'Online' %}
         <p class="review-buttons">
             <span>
                 Have Ready to Scan
             </span>
         </p>
+        {% endif %}
         <div class="clearfix"></div>
         <div class="collapse" id="collapseF30">
             <div>
@@ -763,7 +767,7 @@
         </div>
     </div>
     {% endif %}
-    
+
 
     <div id="info_modal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
