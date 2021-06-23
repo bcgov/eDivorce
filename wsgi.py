@@ -7,11 +7,22 @@ For more information on this file, see
 https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 """
 
+import logging
 import os
 import platform
 from django.core.wsgi import get_wsgi_application
 from django.core.management import execute_from_command_line
 
+
+class NoHealthFilter(logging.Filter):
+    def filter(self, record):
+        return record.getMessage().find('GET /health') == -1
+
+
+# disable logging of the Openshift health checks 
+if __name__ != "__main__":
+    gunicorn_logger = logging.getLogger("gunicorn.access")
+    gunicorn_logger.addFilter(NoHealthFilter())
 
 is_local = False
 # check if the app is running on OpenShift

@@ -179,7 +179,7 @@ def _get_package_number(request):
     return '-'.join(package_number_parts)
 
 
-def _get_package_link(request, package_number = None):
+def _get_package_link(request, package_number=None):
     if settings.EFILING_HUB_ENABLED:
         base64_message = request.GET.get('packageRef', '')
         base64_bytes = base64_message.encode('ascii')
