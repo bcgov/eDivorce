@@ -115,9 +115,10 @@ CACHES = {
     }
 }
 
-# filter out OpenShift health checks from console logging
-def filter_health_checks(record):
-    if record.args[0].startswith('GET /health'):
+
+def filter_logging_requests(record):
+    message = record.getMessage()
+    if message.find('GET /health'):
         return False
     return True
 
@@ -125,22 +126,14 @@ def filter_health_checks(record):
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        "filter_health_checks":
-        {
-            "()": "django.utils.log.CallbackFilter",
-            "callback": filter_health_checks
-        }
-    }, 
     'handlers': {
-        'django.server': {
+        'console': {
             'class': 'logging.StreamHandler',
-            'filters': ['filter_health_checks']
         },
     },
     'loggers': {
-        'django.server': {
-            'handlers': ['django.server'],
+        '': {
+            'handlers': ['console'],
             'level': env('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
