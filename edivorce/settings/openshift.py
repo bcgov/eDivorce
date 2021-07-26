@@ -78,6 +78,7 @@ if DEPLOYMENT_TYPE == 'prod':
     EDIVORCE_KEYCLOAK_BASE_URL = 'https://oidc.gov.bc.ca'
     EFILING_HUB_API_BASE_URL = 'https://nginx-fc726a-prod.apps.silver.devops.gov.bc.ca/api'
     EFILING_HUB_KEYCLOAK_BASE_URL = 'https://oidc.gov.bc.ca'
+    EFILING_ENABLED_GLOBALLY = True
     # Google Tag Manager (Production)
     GTM_ID = 'GTM-W4Z2SPS'
 
