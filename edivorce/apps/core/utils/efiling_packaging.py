@@ -1,3 +1,4 @@
+import copy
 import datetime
 import hashlib
 import json
@@ -106,7 +107,7 @@ class EFilingPackaging:
         self.initial_filing = initial_filing
 
     def format_package(self, request, responses, documents):
-        package = PACKAGE_FORMAT.copy()
+        package = copy.deepcopy(PACKAGE_FORMAT)
         package['filingPackage']['documents'] = documents
         package['filingPackage']['court']['location'] = self._get_location(request, responses)
         package['filingPackage']['parties'] = self._get_parties(responses)
@@ -132,7 +133,7 @@ class EFilingPackaging:
         return package
 
     def _get_document(self, doc_type, party_code):
-        document = PACKAGE_DOCUMENT_FORMAT.copy()
+        document = copy.deepcopy(PACKAGE_DOCUMENT_FORMAT)
         filename = self._get_filename(doc_type, party_code)
         document['name'] = filename
         if doc_type in ['EFSS1', 'EFSS2']:
@@ -161,7 +162,7 @@ class EFilingPackaging:
         names = json.loads(s)
         for name in names:
             if len(name) == 5 and name[1] != '' and name[2] != '':
-                alias = NJF_ALIAS_FORMAT.copy()
+                alias = copy.deepcopy(NJF_ALIAS_FORMAT)
                 alias["surname"] = name[1]
                 alias["given1"] = name[2]
                 alias["given2"] = name[3]
@@ -172,7 +173,7 @@ class EFilingPackaging:
     def _get_json_data(self, responses):
 
         r = responses
-        d = NJF_JSON_FORMAT.copy()
+        d = copy.deepcopy(NJF_JSON_FORMAT)
 
         signing_location_you = ''
         signing_location_spouse = ''
@@ -290,7 +291,7 @@ class EFilingPackaging:
         # generate the list of parties to send to eFiling Hub
         parties = []
 
-        party1 = PACKAGE_PARTY_FORMAT.copy()
+        party1 = copy.deepcopy(PACKAGE_PARTY_FORMAT)
         party1['roleType'] = "CLA1"
         party1['firstName'] = responses.get('given_name_1_you', '')
         party1['middleName'] = (responses.get('given_name_2_you', '') +
@@ -299,7 +300,7 @@ class EFilingPackaging:
         party1['lastName'] = responses.get('last_name_you', '')
         parties.append(party1)
 
-        party2 = PACKAGE_PARTY_FORMAT.copy()
+        party2 = copy.deepcopy(PACKAGE_PARTY_FORMAT)
         party2['roleType'] = "CLA2"
         party2['firstName'] = responses.get('given_name_1_spouse', '')
         party2['middleName'] = (responses.get('given_name_2_spouse', '') +
