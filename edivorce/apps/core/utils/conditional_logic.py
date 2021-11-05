@@ -201,15 +201,15 @@ def determine_f102_required(questions_dict):
 
 
 def determine_has_protection_order(questions_dict):
-    return ('Child support' in orders_wanted(questions_dict) and
-                (questions_dict.get('protection_order_against_you_or_spouse', '') == 'YES' or
-                 questions_dict.get('protection_order_involving_you_or_spouse', '') == 'YES')
+    return (determine_f102_required(questions_dict) and
+            (questions_dict.get('protection_order_against_you_or_spouse', '') == 'YES' or
+            questions_dict.get('protection_order_involving_you_or_spouse', '') == 'YES')
             )
 
 
 def determine_needs_criminal_details(questions_dict):
-    return ('Child support' in orders_wanted(questions_dict) and
-                (questions_dict.get('criminal_charge_facing', '') == 'YES' or
+    return (determine_f102_required(questions_dict) and
+            (questions_dict.get('criminal_charge_facing', '') == 'YES' or
                 questions_dict.get('criminal_charge_court_order', '') == 'YES' or
                 questions_dict.get('criminal_charge_demands', '') == 'YES' or
                 questions_dict.get('criminal_charge_prison', '') == 'YES')
