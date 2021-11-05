@@ -197,19 +197,23 @@ def determine_other_orders_wanted(questions_dict):
 def determine_f102_required(questions_dict):
     return ('Spousal support' in orders_wanted(questions_dict) or
         (determine_has_children_of_marriage(questions_dict) and
-        'Child support' in orders_wanted(questions_dict)))    
+        'Child support' in orders_wanted(questions_dict)))
 
 
 def determine_has_protection_order(questions_dict):
-    return (questions_dict.get('protection_order_against_you_or_spouse', '') == 'YES' or
-        questions_dict.get('protection_order_involving_you_or_spouse', '') == 'YES')
+    return (determine_f102_required(questions_dict) and
+            (questions_dict.get('protection_order_against_you_or_spouse', '') == 'YES' or
+            questions_dict.get('protection_order_involving_you_or_spouse', '') == 'YES')
+            )
 
 
 def determine_needs_criminal_details(questions_dict):
-    return (questions_dict.get('criminal_charge_facing', '') == 'YES' or
-        questions_dict.get('criminal_charge_court_order', '') == 'YES' or
-        questions_dict.get('criminal_charge_demands', '') == 'YES' or
-        questions_dict.get('criminal_charge_prison', '') == 'YES')
+    return (determine_f102_required(questions_dict) and
+            (questions_dict.get('criminal_charge_facing', '') == 'YES' or
+                questions_dict.get('criminal_charge_court_order', '') == 'YES' or
+                questions_dict.get('criminal_charge_demands', '') == 'YES' or
+                questions_dict.get('criminal_charge_prison', '') == 'YES')
+            )
 
 
 def get_cleaned_response_value(response):
@@ -226,7 +230,7 @@ def get_cleaned_response_value(response):
 
 
 def __get_cleaned_aka(response):
-    """Checks is other_name_you and other_name_spouse (a.k.a. fields) are valid, and 
+    """Checks is other_name_you and other_name_spouse (a.k.a. fields) are valid, and
        containt both a first name and a last name"""
     try:
         aka = json.loads(response)
