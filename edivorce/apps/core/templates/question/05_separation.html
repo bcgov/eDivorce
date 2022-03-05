@@ -33,8 +33,8 @@
 <div class="question-well {% if no_collusion_error %}error{% endif %}">
     <p>
         We are legally required to ask whether or not you and {% spouse_name %}
-        have agreed to deceive the court. This is called &ldquo;{% include "partials/tooltips/collusion.html" %}&rdquo;.
-        An example of collusion is when a couple agrees to lie about the date of separation to speed up the divorce process.
+        have agreed to deceive the court. This is an arrangement to make up or to hide evidence or to deceive the court to obtain a divorce.
+        An example is when a couple agrees to lie about the date of separation to speed up the divorce process.
         {% if no_collusion_error %}{% include 'partials/required.html' with inline=True %}{% endif %}
     </p>
     {% if no_collusion_error %}
@@ -43,7 +43,8 @@
     <div class="checkbox-group">
         <div class="checkbox">
             <label>
-                {% input_field type="checkbox" name="no_collusion" value="I agree" %} My spouse and I have not engaged in collusion to deceive the court in any way.
+                {% input_field type="checkbox" name="no_collusion" value="I agree" %} My spouse and I have not engaged in any
+                arrangement to deceive the court.
             </label>
         </div>
     </div>
