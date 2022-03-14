@@ -1290,32 +1290,17 @@ var updateChildSupportActQuestion = function (wantChildSupport) {
 // Set default country to Canada for your marriage for first time load
 $('#btnYourMarriage').click(function(){
     var hasValue = false;
-    var selectedCountry = '';
 
     $('input[name=where_were_you_married_country]').each(function(){
         if($(this).attr('checked'))
         {
             hasValue = true;
-            selectedCountry = $(this).val();
-            return;
         }
     });
 
     if(!hasValue){
         $('input[name=where_were_you_married_country][value="Canada"]').prop("checked", true).change();
-        $('select[name=where_were_you_married_prov]').val('BC').change();
     }
-    else{
-        setCountryProvinceState(selectedCountry, false);
-    }
-})
-
-// Hide or show the province field depending on the country selected
-$('input[name=where_were_you_married_country]').change(function(){
-    country = $(this).val();
-    country == 'Other' ? $('.country-province').hide() : $('.country-province').show();
-
-    setCountryProvinceState(country, true);
 })
 
 // Hide or show the person present at the marriage if no certificate is available
@@ -1346,33 +1331,3 @@ $('input[name=original_marriage_certificate]').change(function(){
         $('#person_present_at_marriage').show();
     }
 })
-var setCountryProvinceState = function(country, update){
-    switch(country.toLowerCase()){
-        case 'other': 
-            $('.country-province').hide();
-            break;
-        case 'canada':
-            $('#canadian_province_where_you_were_married').show();
-            $('#state_abbreviation_usa').hide();
-            
-            if(update){ 
-                $('select[name=where_were_you_married_prov]').val('BC').change();
-            }
-            break;
-        case 'usa':
-            $('#canadian_province_where_you_were_married').hide();
-            $('#state_abbreviation_usa').show();
-
-            if(update){
-                $('input[name=where_were_you_married_prov]').val('').change();
-            }
-            break;
-        }
-}
-
-// Hide province options when selecting the other textbox for other countries
-$('input[name=where_were_you_married_other_country]').focusin(function() {
-    $('.country-province').hide();
-    $('input[name=where_were_you_married_prov]').val('').change();
-    $('#state_abbreviation_usa').hide();
-})    

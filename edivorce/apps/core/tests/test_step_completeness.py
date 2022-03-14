@@ -244,7 +244,7 @@ class StepCompletenessTestCase(TestCase):
         self.create_response('where_were_you_married_city', 'Vancouver')
         self.assertEqual(self.check_completeness(step), False)
 
-        self.create_response('where_were_you_married_prov', 'BC')
+        self.create_response('where_were_you_married_prov', 'British Columbia')
         self.assertEqual(self.check_completeness(step), False)
 
         # All required questions

@@ -76,35 +76,15 @@
     <p>Enter the location as it appears on the marriage certificate (e.g. city, province or state and country)</p>
     <p>City{% if where_were_you_married_city_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
     {% input_field type="text" name="where_were_you_married_city" class="form-block input-wide response-textbox" autocomplete="off" %}
+
+    <div>
+        <p>Province / State{% if where_were_you_married_prov_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
+        {% input_field type="text" name="where_were_you_married_prov" class="form-block input-wide response-textbox" maxlength="30" autocomplete="off" %}
+    </div>
+
     <p>Country{% if where_were_you_married_country_error or where_were_you_married_other_country_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other" name="where_were_you_married_country" value="Canada" %}Canada</label></div>
-    <div class="radio"><label>{% input_field type="radio" class="radio-with-other" name="where_were_you_married_country" value="USA" %}USA</label></div>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="where_were_you_married_country" value="Other" %}Other {% input_field type="text" name="where_were_you_married_other_country" class="response-textbox other-textbox input-inline" tabindex="-1" autocomplete="off" %}</label></div>
-
-    <div class="country-province" id="canadian_province_where_you_were_married">
-        <p>Province{% if where_were_you_married_prov_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
-        <select class="response-dropdown form-control" name="where_were_you_married_prov">
-            <option value="AB" {% if where_were_you_married_prov == 'AB' %} selected {% endif %}>Alberta (AB)</option>
-            <option value="BC" {% if where_were_you_married_prov == 'BC' %} selected {% endif %}>British Columbia (BC)</option>
-            <option value="MB" {% if where_were_you_married_prov == 'MB' %} selected {% endif %}>Manitoba (MB)</option>
-            <option value="NB" {% if where_were_you_married_prov == 'NB' %} selected {% endif %}>New Brunswick (NB)</option>
-            <option value="NL" {% if where_were_you_married_prov == 'NL' %} selected {% endif %}>Newfoundland and Labrador (NL)</option>
-            <option value="NT" {% if where_were_you_married_prov == 'NT' %} selected {% endif %}>North West Territories (NT)</option>
-            <option value="NS" {% if where_were_you_married_prov == 'NS' %} selected {% endif %}>Nova Scotia (NS)</option>
-            <option value="NU" {% if where_were_you_married_prov == 'NU' %} selected {% endif %}>Nunavut (NU)</option>
-            <option value="ON" {% if where_were_you_married_prov == 'ON' %} selected {% endif %}>Ontario (ON)</option>
-            <option value="PE" {% if where_were_you_married_prov == 'PE' %} selected {% endif %}>Prince Edward Island (PE)</option>
-            <option value="QC" {% if where_were_you_married_prov == 'QC' %} selected {% endif %}>Quebec (QC)</option>
-            <option value="SK" {% if where_were_you_married_prov == 'SK' %} selected {% endif %}>Saskatchewan (SK)</option>
-            <option value="YT" {% if where_were_you_married_prov == 'YT' %} selected {% endif %}>Yukon (YT)</option>
-        </select>
-    </div>
-
-    <div id="state_abbreviation_usa" hidden>
-        <p>State (abbreviation){% if where_were_you_married_prov_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
-        {% input_field type="text" name="where_were_you_married_prov" class="form-block input-narrow response-textbox" maxlength="2" autocomplete="off" %}
-    </div>
-    
 
 </div>
 
