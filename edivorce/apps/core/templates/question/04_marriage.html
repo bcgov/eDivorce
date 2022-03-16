@@ -73,16 +73,16 @@
 
 <div class="question-well {% if where_were_you_married_city_error or where_were_you_married_country_error or where_were_you_married_other_country_error or where_were_you_married_prov_error %}error{% endif %}">
     <h3>Where were you married?</h3>
-    <p>Enter the location as it appears on the marriage certificate (e.g. city, province or state and country)</p>
-    <p>City{% if where_were_you_married_city_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
+    <p>Enter the location <strong>exactly as it appears</strong> on the marriage certificate.</p>
+    <p class="no-margin-bottom">City{% if where_were_you_married_city_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
     {% input_field type="text" name="where_were_you_married_city" class="form-block input-wide response-textbox" autocomplete="off" %}
 
     <div>
-        <p>Province / State{% if where_were_you_married_prov_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
+        <p class="no-margin-bottom">Province / State{% if where_were_you_married_prov_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
         {% input_field type="text" name="where_were_you_married_prov" class="form-block input-wide response-textbox" maxlength="30" autocomplete="off" %}
     </div>
 
-    <p>Country{% if where_were_you_married_country_error or where_were_you_married_other_country_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
+    <p class="no-margin-bottom">Country{% if where_were_you_married_country_error or where_were_you_married_other_country_error %}{% include 'partials/required.html' with inline=True %}{% endif %}</p>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other" name="where_were_you_married_country" value="Canada" %}Canada</label></div>
     <div class="radio"><label>{% input_field type="radio" class="radio-with-other radio_with_textbox" name="where_were_you_married_country" value="Other" %}Other {% input_field type="text" name="where_were_you_married_other_country" class="response-textbox other-textbox input-inline" tabindex="-1" autocomplete="off" %}</label></div>
 

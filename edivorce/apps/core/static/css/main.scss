@@ -1667,10 +1667,6 @@ textarea {
         margin-bottom: 30px;
     }
 
-    .no-margin-bottom {
-        margin-bottom: 0 !important;
-    }
-
     .add-bottom-margin {
         margin-bottom: 30px;
     }
@@ -1695,6 +1691,10 @@ textarea {
         border: 1px solid $color-grey-light;
         border-radius: 8px;
     }
+}
+
+.no-margin-bottom {
+	margin-bottom: 0 !important;
 }
 
 /* Column Grid in flexbox */
