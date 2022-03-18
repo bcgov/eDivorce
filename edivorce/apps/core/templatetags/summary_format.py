@@ -372,9 +372,9 @@ def marriage_tag(source):
                 marriage_location.append(item['value'])
 
             # Insert in the right spot in table. Either country is the last item (if US or Canada) or other country is last
-            us_or_canada = not marriage_country_is_other and q_id == 'where_were_you_married_country'
+            is_canada = not marriage_country_is_other and q_id == 'where_were_you_married_country'
             other_country = marriage_country_is_other and q_id == 'where_were_you_married_other_country'
-            if us_or_canada or other_country:
+            if is_canada or other_country:
                 tags = format_table_data(tags, "Where were you married?", process_json_list('married_address', marriage_location))
         else:
             tags = format_question_for_table(tags, item)

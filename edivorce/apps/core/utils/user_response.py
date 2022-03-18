@@ -132,9 +132,10 @@ def _is_question_required(question, questions_dict, responses_by_key):
     raises KeyError if the question is conditional and improperly configured (for development testing purposes)
     """
     question_dict = questions_dict[question]
-    if question_dict['question__required'] == 'Required':
+    validation_type = question_dict['question__required']
+    if validation_type == 'Required':
         return REQUIRED
-    if question_dict['question__required'] == 'Conditional':
+    if validation_type in ('Conditional', 'AlwaysShownConditionallyRequired'):
         target = question_dict.get('question__conditional_target')
         reveal_response = question_dict.get('question__reveal_response')
         if not target or not reveal_response:
@@ -148,6 +149,8 @@ def _is_question_required(question, questions_dict, responses_by_key):
             result = derived_condition(responses_by_key)
             if result and _condition_met(result, reveal_response):
                 return REQUIRED
+            if validation_type == 'AlwaysShownConditionallyRequired':
+                return OPTIONAL
             return HIDDEN
         if target in questions_dict:
             target_question_requirement = _is_question_required(target, questions_dict, responses_by_key)
