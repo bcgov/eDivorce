@@ -70,10 +70,29 @@
                 <tr>
                     <td>
                       <span class="td-list-item">{% checkbox responses.when_were_you_married %}</span>
-                      were married on <em class="no-wrap">[dd/mmm/yyyy]</em>
+                        were married on <em class="no-wrap">[dd/mmm/yyyy]</em>
+                      <br/>
+                      <div class="td-list-text">
+                        at: [<em>city or town; province or state; country</em>]
+                      </div>
                     </td>
                     <td colname="c2">
                       {% response responses.when_were_you_married as_date=True %}
+                      <br/>
+                        {% if responses.where_were_you_married_city and responses.where_were_you_married_country %}
+                        {% response responses.where_were_you_married_city %};
+                        {% if responses.where_were_you_married_prov %}
+                          {% response responses.where_were_you_married_prov %};
+                        {% endif %}
+                        {% if responses.where_were_you_married_country == 'Other' %}
+                          {% response responses.where_were_you_married_other_country %}
+                        {% else %}
+                          {% response responses.where_were_you_married_country %}
+                        {% endif %}
+                      {% else %}
+                        <span class="form-entry not-complete">&nbsp;</span>
+                      {% endif %}
+
                     </td>
                 </tr>
                 <tr>
