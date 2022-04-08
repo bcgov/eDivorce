@@ -1173,6 +1173,10 @@ textarea {
                 font-size: 26px;
                 line-height: 36px;
             }
+			p {
+				max-width: 95%;
+				margin: 0 auto 20px auto;
+			}
         }
     }
     .col-flex.content-column {
@@ -1920,6 +1924,7 @@ textarea {
         font-weight: bold;
         line-height: 24px;
         border-radius: 8px;
+		margin: 0 13px;
     }
 }
 
