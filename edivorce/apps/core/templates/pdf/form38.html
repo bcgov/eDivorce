@@ -81,7 +81,7 @@
             {% else %}
                 {% required responses.address_to_send_official_document_country_you size=100 trail=',' %}
             {% endif %}
-            {% required responses.address_to_send_official_document_postal_code_you size=100 trail=',' %}
+            {% required responses.address_to_send_official_document_postal_code_you size=0 trail=',' %}
 
             {% required responses.occupation_you %},<br />
     {% endif %}
@@ -102,7 +102,7 @@
             {% else %}
                 {% required responses.address_to_send_official_document_country_spouse size=100 trail=',' %}
             {% endif %}
-            {% required responses.address_to_send_official_document_postal_code_spouse size=100 trail=',' %}
+            {% required responses.address_to_send_official_document_postal_code_spouse size=0 trail=',' %}
 
             {% required responses.occupation_spouse %},<br />
     {% endif %}
