@@ -56,10 +56,8 @@
                             {% if request.user.is_authenticated %}
                             <span>
                                 <form action="{% url 'oidc_logout' %}" method="post">
-                                    {% if request.user.display_name and request.user.display_name.strip %}
-                                        {{ request.user.display_name }}
-                                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                                    {% endif %}
+                                    {{ request.user.display_name}}
+                                    &nbsp;&nbsp;|&nbsp;&nbsp; 
                                     {% csrf_token %}
                                     <input type="submit" value="Log out">
                                 </form>

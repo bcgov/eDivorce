@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from edivorce.apps.core.utils.derived import get_derived_data
@@ -27,9 +27,7 @@ def home(request):
     # if the user is returning from BCeID registration, then log them in to the site
     if request.user.is_authenticated and request.session.get('went_to_register', False):
         request.session['went_to_register'] = False
-        idp = request.session.get('went_to_register_idp', 'bceid')        
-        login_url = reverse_lazy('oidc_authentication_init')
-        return redirect(f'{login_url}?kc_idp_hint={idp}')
+        return redirect('oidc_authentication_init')
 
     return render(request, 'intro.html', context={'hide_nav': True, 'efiling_enabled_globally': settings.EFILING_ENABLED_GLOBALLY})
 
@@ -99,7 +97,6 @@ def register(request):
         return render(request, 'localdev/register.html')
 
     request.session['went_to_register'] = True
-    request.session['went_to_register_idp'] = 'bceid'
     return redirect(settings.REGISTER_BCEID_URL)
 
 
@@ -111,7 +108,6 @@ def register_sc(request):
         return render(request, 'localdev/register.html')
 
     request.session['went_to_register'] = True
-    request.session['went_to_register_idp'] = 'bcsc'
     return redirect(settings.REGISTER_BCSC_URL)
 
 

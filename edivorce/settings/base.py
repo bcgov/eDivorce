@@ -197,7 +197,6 @@ OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_RP_SCOPES = 'openid email profile'
 OIDC_RP_CLIENT_SECRET = env('EDIVORCE_KEYCLOAK_SECRET', '')
 OIDC_OP_LOGOUT_URL_METHOD = 'edivorce.apps.core.middleware.keycloak.keycloak_logout'
-OIDC_AUTHENTICATE_CLASS = 'edivorce.apps.core.middleware.keycloak.EDivorceKeycloakRequestView'
 
 # eFiling settings
 EFILING_HUB_KEYCLOAK_SECRET = env('EFILING_HUB_KEYCLOAK_SECRET', '')
