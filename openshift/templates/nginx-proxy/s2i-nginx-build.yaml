@@ -64,7 +64,7 @@ parameters:
     displayName: Source Image Registry
     description: The name of the Source Image Registry.
     required: false
-    value: docker-remote.artifacts.developer.gov.bc.ca/
+    value: artifacts.developer.gov.bc.ca/docker-remote/
   - name: SOURCE_IMAGE_NAME
     displayName: Source Image Name
     description: The name of the source image.
