@@ -6,6 +6,6 @@
 NAME=weasyprint
 OUTPUT_IMAGE_TAG=latest
 SOURCE_IMAGE_KIND=DockerImage
-SOURCE_IMAGE_REGISTRY=docker-remote.artifacts.developer.gov.bc.ca/
+SOURCE_IMAGE_REGISTRY=artifacts.developer.gov.bc.ca/docker-remote/
 SOURCE_IMAGE_NAME=aquavitae/weasyprint
 SOURCE_IMAGE_TAG=latest
