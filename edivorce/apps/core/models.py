@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.db import models
 from django.db.models import F
 from django.urls import reverse
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import AbstractUser
+from six import python_2_unicode_compatible
 
 from edivorce.apps.core import redis
 
@@ -252,21 +252,21 @@ class DontLog:
         return
 
 
+@admin.register(Document, Question)
 class BaseAdmin(DontLog, admin.ModelAdmin):
     pass
 
 
+@admin.register(UserResponse)
 class UserResponseAdmin(BaseAdmin):
     list_display = ['get_user_name', 'question', 'value']
 
+    @admin.display(
+        description='User',
+        ordering='bceid_user',
+    )
     def get_user_name(self, obj):
         return obj.bceid_user.display_name
 
-    get_user_name.admin_order_field = 'bceid_user'
-    get_user_name.short_description = 'User'
-
 
 admin.site.register(BceidUser)
-admin.site.register(Question, BaseAdmin)
-admin.site.register(UserResponse, UserResponseAdmin)
-admin.site.register(Document, BaseAdmin)
