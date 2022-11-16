@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="item-tile" v-if="file.progress !== '0.00'">
+    <div v-if="file.progress !== '0.00'" class="item-tile">
       <div class="status-wrap">
         <div>Uploading...<br />{{ file.progress }}%</div>
         <div class="progress">
@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div class="item-tile" v-else>
+    <div v-else class="item-tile">
       <div class="status-wrap">
         <div>Waiting...<br /><br /></div>
         <div class="progress"></div>
@@ -20,7 +20,10 @@
 <script>
   export default {
     props: {
-      file: Object,
+      file: {
+        type: Object,
+        required: true
+      },
     },
   };
 </script>

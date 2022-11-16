@@ -1,29 +1,41 @@
 ﻿<template>
   <div id="app">
-    <template v-for="(item, index) in formTypes">
-      <div :key="index">
-        <Uploader
-          :doc-type="item.doc_type"
-          :party="item.party_code"
-          :filing-type="filingType"
-        />
-      </div>
-    </template>
+    <div v-for="(item, index) in formTypes" :key="index">
+      <file-uploader
+        :doc-type="item.doc_type"
+        :party="item.party_code"
+        :filing-type="filingType"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-  import Uploader from "../../components/Uploader/Uploader.vue";
+  import FileUploader from "../../components/Uploader/Uploader.vue";
 
   export default {
-    name: "App",
+    name: "FilingUploader",
     components: {
-      Uploader,
+      FileUploader,
+    },
+    provide() {
+      return {
+        proxyRootPath: this.proxyRootPath
+      }
     },
     props: {
-      formTypes: Array,
-      filingType: String,
-      proxyRootPath: String,
+      formTypes: {
+        type: Array,
+        required: true
+      },
+      filingType: {
+        type: String,
+        default: ""
+      },
+      proxyRootPath: {
+        type: String,
+        required: true
+      },
     },
   };
 </script>

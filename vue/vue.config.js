@@ -10,11 +10,28 @@ module.exports = {
       chunks: ['chunk-vendors', 'chunk-common', 'filingUploader']
     }
   },
-  configureWebpack: {
-    optimization: {
-      splitChunks: {
-        minSize: 1
-      }
+  chainWebpack: config => {
+    if (process.env.NODE_ENV !== "production") {
+        config.devtool('source-map')
     }
-  }
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => ({
+          ...options,
+          compilerOptions: {
+            whitespace: "preserve"
+          },
+          optimization: {
+            splitChunks: {
+              minSize: 1
+            }
+          }
+        }))
+  },
+  css: {
+    extract: true
+  },
+  lintOnSave: false
 }

@@ -2,7 +2,7 @@
   <div>
     <h5 class="uploader-label" :class="{ 'has-optional': formDef.optional }">
       {{ formDef.preText }}
-      <span class="tooltip-link" :id="'Tooltip-' + uniqueId">
+      <span :id="'Tooltip-' + uniqueId" class="tooltip-link">
         <span class="content">
         {{ formDef.name }}
         </span>
@@ -64,19 +64,19 @@
           </em>
         </div>
         <template v-else>
-          <div class="text-danger error-top" v-if="fileErrors === 1">
+          <div v-if="fileErrors === 1" class="text-danger error-top">
             <strong>
               One file has failed to upload to the server. Please remove the
               file marked 'File Upload Error' and try uploading it again.
             </strong>
           </div>
-          <div class="text-danger error-top" v-if="fileErrors > 1">
+          <div v-if="fileErrors > 1" class="text-danger error-top">
             <strong>
               Some files have failed to upload to the server. Please remove the
               files marked 'File Upload Error' and try uploading them again.
             </strong>
           </div>
-          <div class="text-danger error-top" v-if="tooBig">
+          <div v-if="tooBig" class="text-danger error-top">
             <strong>
               The total of all uploaded files for this form cannot exceed
               {{ maxMegabytes }} MB. Please reduce the size of your files so the
@@ -84,7 +84,7 @@
             </strong>
           </div>
           <div class="cards">
-            <div v-for="(file, index) in files" v-bind:key="index" class="card">
+            <div v-for="(file, index) in files" :key="index" class="card">
               <item-tile
                 :file="file"
                 :index="index"
@@ -96,13 +96,13 @@
                 @rotateright="rotateRight(index)"
               />
             </div>
-            <div class="upload-button" v-if="!tooBig">
+            <div v-if="!tooBig" class="upload-button">
               <div class="upload-button-wrapper">
                 <i class="fa fa-plus-circle"></i>
               </div>
             </div>
           </div>
-          <div class="text-danger pull-right error-bottom" v-if="tooBig">
+          <div v-if="tooBig" class="text-danger pull-right error-bottom">
             <em>
               <strong>
                 (Total
@@ -114,11 +114,11 @@
         </template>
       </file-upload>
     </div>
-    <div class="text-right" v-if="!tooBig">
+    <div v-if="!tooBig" class="text-right">
       <em>(Maximum {{ maxMegabytes }} MB)</em>
     </div>
 
-    <modal ref="warningModal" class="warning-modal" v-model="showWarning">
+    <modal ref="warningModal" v-model="showWarning" class="warning-modal">
       {{ warningText }}
     </modal>
   </div>
@@ -126,20 +126,38 @@
 
 <script>
   import VueUploadComponent from "vue-upload-component";
-  import { Tooltip, Modal } from "uiv";
-  import ItemTile from "./ItemTile";
-  import FormDefinitions from "../../utils/forms";
-  import rotateFix from "../../utils/rotation";
+  import { Tooltip, Modal, Btn } from "uiv";
   import axios from "axios";
   import Compressor from "compressorjs";
+  import ItemTile from "./ItemTile.vue";
+  import FormDefinitions from "../../utils/forms";
+  import rotateFix from "../../utils/rotation";
 
   export default {
-    props: {
-      docType: String,
-      party: { type: Number, default: 0 },
-      filingType: String,
+    name: "FileUploader",
+    components: {
+      FileUpload: VueUploadComponent,
+      ItemTile,
+      Tooltip,
+      Modal,
+      Btn
     },
-    data: function() {
+    inject: ['proxyRootPath'],
+    props: {
+      docType: {
+        type: String,
+        required: true
+      },
+      party: {
+        type: Number,
+        default: 0
+      },
+      filingType: {
+        type: String,
+        required: true
+      }
+    },
+    data() {
       return {
         maxFiles: 30,
         maxMegabytes: 10,
@@ -151,15 +169,9 @@
         retries: 0,
       };
     },
-    components: {
-      FileUpload: VueUploadComponent,
-      ItemTile,
-      Tooltip,
-      Modal,
-    },
     computed: {
       inputId() {
-        return "Uploader-" + this.uniqueId;
+        return `Uploader-${ this.uniqueId }`;
       },
       inputKeys() {
         return {
@@ -171,8 +183,11 @@
       formDef() {
         return FormDefinitions[this.docType];
       },
+      hasPdfFiles(){
+        return this.files.filter(f => f.type === "application/pdf").length > 1
+      },
       postAction() {
-        return this.$parent.proxyRootPath + "api/documents/";
+        return `${this.proxyRootPath }api/documents/`;
       },
       uniqueId() {
         if (this.party === 0) {
@@ -193,7 +208,7 @@
         let count = 0;
         this.files.forEach((file) => {
           if (file.error) {
-            count++;
+            count += 1;
           }
         });
         return count;
@@ -201,6 +216,70 @@
       tooBig() {
         return this.totalSize > this.maxMegabytes * 1024 * 1024;
       },
+    },
+    created() {
+      // get saved state from the server
+      const url = `${this.proxyRootPath}api/graphql/`;
+      axios
+        .post(url, {
+          query: `
+        query getMetadata {
+          documents(docType:"${this.docType}",partyCode:${this.party}) {
+            filename size width height rotation contentType
+          }
+        }
+      `,
+          variables: null,
+        })
+        .then((response) => {
+          response.data.data.documents.forEach((doc) => {
+            this.files.push({
+              name: doc.filename,
+              size: doc.size,
+              width: doc.width,
+              height: doc.height,
+              rotation: doc.rotation,
+              type: doc.contentType,
+              error: false,
+              success: true,
+              progress: "100.00",
+              // we add an extra 'x' to the file extension so the siteminder proxy doesn't treat it as an image
+              objectURL: `${this.proxyRootPath}api/documents/${this.docType}/${this.party}/${doc.filename}x/${doc.size}/`,
+            });
+          });
+        })
+        .catch((error) => {
+          this.showError("Error getting metadata");
+          console.error("error", error);
+        });
+
+      // call the API to update the metadata every second, but only if
+      // the data has changed (throttling requests because rotating and
+      // re-ordering images can cause a lot of traffic and possibly
+      // result in out-of-order requests)
+      setInterval(() => {
+        if (this.isDirty && this.retries < 15) {
+          this.saveMetaData();
+          this.isDirty = false;
+        }
+      }, 1000);
+
+      // Prevent browser from loading a drag-and-dropped file if it's
+      // not dropped in the correct area
+      window.addEventListener(
+      "dragover",
+      e => {
+        if (e.currentTarget) e.preventDefault();
+      },
+      false
+      );
+      window.addEventListener(
+        "drop",
+        e => {
+          e.preventDefault();
+        },
+        false
+      );
     },
     methods: {
       inputFile(newFile, oldFile) {
@@ -214,7 +293,7 @@
               let message = newFile.xhr.responseText;
               const response = JSON.parse(message);
               if (response.file) {
-                message = response.file[0];
+                [ message ] = response.file;
               }
               this.showError(message);
               this.$refs.upload.remove(newFile);
@@ -275,7 +354,7 @@
                 });
               },
               error(err) {
-                console.log(err);
+                console.error(err);
                 self.$refs.upload.update(newFile, {
                   error: "compression failed",
                 });
@@ -312,8 +391,8 @@
           if (newFile.type === "application/pdf") {
             if (this.files.length > 0) {
               if (
-                this.files[0].name != newFile.name ||
-                this.files[0].length != newFile.length
+                this.files[0].name !== newFile.name ||
+                this.files[0].length !== newFile.length
               ) {
                 this.showError(
                   "Only one PDF is allowed per form, and PDF documents cannot be combined with images."
@@ -334,18 +413,17 @@
               }
             });
           }
-
-          // Add extra data to to the file object
+          // Add extra data to the file object
           newFile.objectURL = "";
           newFile.width = 0;
           newFile.height = 0;
           newFile.rotation = 0;
-          let URL = window.URL || window.webkitURL;
+          const URL = window.URL || window.webkitURL;
           if (URL && URL.createObjectURL) {
             newFile.objectURL = URL.createObjectURL(newFile.file);
             const img = new Image();
             const self = this;
-            img.onload = function() {
+            img.onload = () => {
               newFile.width = this.width || 0;
               newFile.height = this.height || 0;
               self.isDirty = true;
@@ -355,7 +433,7 @@
         }
       },
       remove(file) {
-        const urlbase = `${this.$parent.proxyRootPath}api/documents`;
+        const urlbase = `${this.proxyRootPath}api/documents`;
         const encFilename = encodeURIComponent(file.name);
         const token = this.getCSRFToken();
         if (!file.error) {
@@ -363,7 +441,7 @@
           const url = `${urlbase}/${this.docType}/${this.party}/${encFilename}x/${file.size}/`;
           axios
             .delete(url, { headers: { "X-CSRFToken": token } })
-            .then((response) => {
+            .then(() => {
               const pos = this.files.findIndex(
                 (f) => f.docType === file.docType && f.size === file.size
               );
@@ -371,9 +449,9 @@
                 this.files.splice(pos, 1);
               }
             })
-            .catch((error) => {
+            .catch(() => {
               this.showError(
-                "Error deleting document from the server: " + file.name
+                `Error deleting document from the server: ${ file.name}`
               );
               this.$refs.upload.remove(file);
             });
@@ -381,22 +459,22 @@
           this.$refs.upload.remove(file);
         }
       },
-      moveUp(old_index) {
-        if (old_index >= 1 && this.files.length > 1) {
+      moveUp(oldIndex) {
+        if (oldIndex >= 1 && this.files.length > 1) {
           this.files.splice(
-            old_index - 1,
+            oldIndex - 1,
             0,
-            this.files.splice(old_index, 1)[0]
+            this.files.splice(oldIndex, 1)[0]
           );
         }
         this.isDirty = true;
       },
-      moveDown(old_index) {
-        if (old_index <= this.files.length && this.files.length > 1) {
+      moveDown(oldIndex) {
+        if (oldIndex <= this.files.length && this.files.length > 1) {
           this.files.splice(
-            old_index + 1,
+            oldIndex + 1,
             0,
-            this.files.splice(old_index, 1)[0]
+            this.files.splice(oldIndex, 1)[0]
           );
         }
         this.isDirty = true;
@@ -420,7 +498,7 @@
         this.showWarning = true;
       },
       saveMetaData() {
-        let allFiles = [];
+        const allFiles = [];
         this.files.forEach((file) => {
           if (!file.error) {
             allFiles.push({
@@ -439,7 +517,7 @@
         };
         const json = JSON.stringify(data);
         const graphQLData = json.replace(/"([^"]+)":/g, '$1:');
-        const url = `${this.$parent.proxyRootPath}api/graphql/`;
+        const url = `${this.proxyRootPath}api/graphql/`;
         axios
           .post(url, {
             query: `
@@ -455,26 +533,26 @@
             this.retries = 0;
             if (response.data.errors && response.data.errors.length) {
               response.data.errors.forEach((error) => {
-                console.log("error", error.message || error);
+                console.error("error", error.message || error);
                 // if there was an error it's probably because the upload isn't finished yet
-                // mark the metadata as dirty so it will save metadata again
-                this.retries++;
+                // mark the metadata as dirty, so it will save metadata again
+                this.retries += 1;
                 this.isDirty = true;
               });
             }
           })
           .catch((error) => {
             this.showError("Error saving metadata");
-            console.log("error", error);
+            console.error("error", error);
           });
       },
       getCSRFToken() {
         const name = "csrftoken";
         if (document.cookie && document.cookie !== "") {
           const cookies = document.cookie.split(";");
-          for (let i = 0; i < cookies.length; i++) {
+          for (let i = 0; i < cookies.length; i += 1) {
             const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
+            if (cookie.substring(0, name.length + 1) === `${ name }=`) {
               return decodeURIComponent(cookie.substring(name.length + 1));
             }
           }
@@ -482,79 +560,8 @@
         return null;
       },
       formatHelpText(title, body, signature) {
-        let text = "<b>" + title + "</b><br><br>" + body;
-        if (signature) {
-          text += "<br><br>" + signature;
-        }
-        return text;
+        return `${title}.\n${body}${signature ? `\n${signature}`:''}`;
       },
-    },
-    created() {
-      // get saved state from the server
-      const url = `${this.$parent.proxyRootPath}api/graphql/`;
-      axios
-        .post(url, {
-          query: `
-        query getMetadata {
-          documents(docType:"${this.docType}",partyCode:${this.party}) {
-            filename size width height rotation contentType
-          }
-        }
-      `,
-          variables: null,
-        })
-        .then((response) => {
-          response.data.data.documents.forEach((doc) => {
-            this.files.push({
-              name: doc.filename,
-              size: doc.size,
-              width: doc.width,
-              height: doc.height,
-              rotation: doc.rotation,
-              type: doc.contentType,
-              error: false,
-              success: true,
-              progress: "100.00",
-              // we add an extra 'x' to the file extension so the siteminder proxy doesn't treat it as an image
-              objectURL: `${this.$parent.proxyRootPath}api/documents/${this.docType}/${this.party}/${doc.filename}x/${doc.size}/`,
-            });
-          });
-        })
-        .catch((error) => {
-          this.showError("Error getting metadata");
-          console.log("error", error);
-        });
-
-      // call the API to update the metadata every second, but only if
-      // the data has changed (throttling requests because rotating and
-      // re-ordering images can cause a lot of traffic and possibly
-      // result in out-of-order requests)
-      setInterval(() => {
-        if (this.isDirty && this.retries < 15) {
-          this.saveMetaData();
-          this.isDirty = false;
-        }
-      }, 1000);
-
-      // Prevent browser from loading a drag-and-dropped file if it's
-      // not dropped in the correct area
-      window.addEventListener(
-        "dragover",
-        function(e) {
-          e = e || event;
-          e.preventDefault();
-        },
-        false
-      );
-
-      window.addEventListener(
-        "drop",
-        function(e) {
-          e = e || event;
-          e.preventDefault();
-        },
-        false
-      );
     },
   };
 </script>

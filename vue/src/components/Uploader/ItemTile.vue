@@ -1,11 +1,10 @@
 <template>
   <div
-    :class="['item-tile', file.error ? 'error' : '']"
     v-if="file.progress === '100.00' || file.error"
+    :class="['item-tile', file.error ? 'error' : '']"
   >
     <uploaded-image
       :file="file"
-      :image-style="imageStyle"
       @imageclick="showPreview"
       @removeclick="$emit('remove')"
     />
@@ -19,23 +18,23 @@
         </div>
       </div>
       <div
-        class="button-wrapper"
         v-if="file.error || file.type !== 'application/pdf'"
+        class="button-wrapper"
       >
         <div v-if="file.success && !isPdf">
           <button
             type="button"
-            @click.prevent="$emit('moveup')"
             :disabled="index === 0"
             aria-label="Move down one position"
+            @click.prevent="$emit('moveup')"
           >
             <i class="fa fa-chevron-circle-left"></i>
           </button>
           <button
             type="button"
-            @click.prevent="$emit('movedown')"
             :disabled="index >= fileCount - 1"
             aria-label="Move up one position"
+            @click.prevent="$emit('movedown')"
           >
             <i class="fa fa-chevron-circle-right"></i>
           </button>
@@ -54,7 +53,7 @@
             <i class="fa fa-undo fa-flip-horizontal"></i>
           </button>
         </div>
-        <div class="alert alert-danger" v-if="file.error">
+        <div v-if="file.error" class="alert alert-danger">
           File Upload Error
         </div>
       </div>
@@ -66,23 +65,37 @@
 </template>
 
 <script>
-  import UploadedImage from "./Image";
-  import ProgressBar from "./ProgressBar";
+  import UploadedImage from "./Image.vue";
+  import ProgressBar from "./ProgressBar.vue";
 
   export default {
-    props: {
-      file: Object,
-      index: Number,
-      fileCount: Number,
+    components: {
+      ProgressBar,
+      UploadedImage,
     },
-    data: function() {
+    props: {
+      file: {
+        type: Object,
+        required: true
+      },
+      index: {
+        type: Number,
+        required: true
+      },
+      fileCount: {
+        type: Number,
+        required: true
+      },
+    },
+    data() {
       return {
         showModal: false,
       };
     },
-    components: {
-      ProgressBar,
-      UploadedImage,
+    computed: {
+      isPdf() {
+        return this.file.type === "application/pdf";
+      },
     },
     methods: {
       showPreview() {
@@ -90,11 +103,6 @@
       },
       closePreview() {
         this.showModal = false;
-      },
-    },
-    computed: {
-      isPdf() {
-        return this.file.type === "application/pdf";
       },
     },
   };
