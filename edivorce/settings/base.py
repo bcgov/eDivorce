@@ -201,3 +201,5 @@ OIDC_OP_LOGOUT_URL_METHOD = 'edivorce.apps.core.middleware.keycloak.keycloak_log
 # eFiling settings
 EFILING_HUB_KEYCLOAK_SECRET = env('EFILING_HUB_KEYCLOAK_SECRET', '')
 VIRTUAL_SWEARING_ENABLED = False
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

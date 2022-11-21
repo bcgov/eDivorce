@@ -2,10 +2,10 @@ $(window).ready(function () {
     function validateCourtFileNumber(e) {
         var rawText = $("#court-file-number").val();
         // remove all letters from the file number (e.g. 'VLC-S-E-20201124')
-        noLetters = rawText.replace ( /[A-Za-z]/g, '' );
+        let noLetters = rawText.replace(/[A-Za-z]/g, '');
 
         // make sure the format after removing all the letters is like this (e.g. '---20201124')
-        parts = noLetters.split('-');
+        let parts = noLetters.split('-');
         for (var i = 0; i < parts.length - 2; i++) {
             // if anything other than letters was found in the first parts of the number 
             // then display an error
@@ -16,7 +16,7 @@ $(window).ready(function () {
         }
         
         // initial validation has passed.  Now remove everything except the numbers.
-        fileNumber = rawText.replace ( /[^0-9]/g, '' );
+        let fileNumber = rawText.replace(/[^0-9]/g, '');
         const regex = RegExp('^[0-9]{4,10}$');
         // ensure that we are left with a 4-10 digit number
         var valid = !rawText || regex.test(fileNumber);
