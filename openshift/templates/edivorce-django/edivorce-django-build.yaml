@@ -80,7 +80,7 @@ parameters:
     displayName: Source Image Name
     description: The name of the source image.
     required: true
-    value: "registry.fedoraproject.org/f32/python3"
+    value: "registry.fedoraproject.org/f35/python3"
   - name: SOURCE_IMAGE_TAG
     displayName: Source Image Tag
     description: The tag of the source image.
