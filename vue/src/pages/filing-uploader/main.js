@@ -1,10 +1,6 @@
-import Vue from "vue";
-import App from "./FilingUploader.vue";
-import "core-js/es/array"; // Needed for IE11
+import { createApp } from 'vue'
+import FilingUploader from "./FilingUploader.vue"
 
-Vue.config.productionTip = false;
-Vue.component("filing-uploader", App);
-
-new Vue({
-  el: "#vue-app",
-});
+const app = createApp({});
+app.component("FilingUploader", FilingUploader);
+app.mount("#vue-app");

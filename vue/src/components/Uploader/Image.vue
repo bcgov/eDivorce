@@ -4,27 +4,28 @@
       :class="['image-wrap', isValidImage ? 'valid' : '']"
       @click.prevent="showPreview($event)"
     >
-      <img v-if="isValidImage" class="image" :src="file.objectURL" :style="imageStyle" />
-      <img 
+      <img v-if="isValidImage" :alt="null" class="image" :src="file.objectURL" :style="imageStyle" />
+      <img
+        v-if="!file.error && file.type === 'application/pdf'"
         class="pdf"
+        :alt="null"
         :src="pdfIconUrl"
-        v-if="!this.file.error && file.type === 'application/pdf'"
-        width="65" 
+        width="65"
         height="65"
-      >
-      <i class="fa fa-frown-o" v-if="this.file.error"></i>
+      />
+      <i v-if="file.error" class="fa fa-frown-o"></i>
       <button
         type="button"
         class="btn-remove"
-        @click.prevent="$emit('removeclick')"
         aria-label="Delete"
+        @click.prevent="$emit('removeclick')"
       >
         <i class="fa fa-times-circle"></i>
       </button>
     </div>
     <modal-preview
       :file="file"
-      :imageStyle="imageStyle"
+      :image-style="imageStyle"
       :scale="scale"
       :rotate-val="rotateVal"
       :show-modal="showModal"
@@ -34,35 +35,25 @@
 </template>
 
 <script>
-  import ModalPreview from "./ModalPreview";
+  import ModalPreview from "./ModalPreview.vue";
   import rotateFix from "../../utils/rotation";
 
   export default {
-    props: {
-      file: Object,
-    },
+    name: "UploadedImage",
     components: {
       ModalPreview,
     },
-    data: function() {
+    inject: ['proxyRootPath'],
+    props: {
+      file: {
+        type: Object,
+        required: true
+      },
+    },
+    data() {
       return {
         showModal: false,
       };
-    },
-    methods: {
-      showPreview($event) {
-        if (this.isValidImage) {
-          if (
-            $event.target.tagName !== "I" &&
-            $event.target.tagName !== "BUTTON"
-          ) {
-            this.showModal = true;
-          }
-        }
-      },
-      closePreview() {
-        this.showModal = false;
-      },
     },
     computed: {
       isValidImage() {
@@ -95,8 +86,23 @@
         return "";
       },
       pdfIconUrl() {
-        return `${this.$parent.$parent.$parent.$parent.proxyRootPath}static/svg/pdf-icon.svg`;
+        return `${this.proxyRootPath}static/svg/pdf-icon.svg`;
       }
+    },
+    methods: {
+      showPreview($event) {
+        if (this.isValidImage) {
+          if (
+            $event.target.tagName !== "I" &&
+            $event.target.tagName !== "BUTTON"
+          ) {
+            this.showModal = true;
+          }
+        }
+      },
+      closePreview() {
+        this.showModal = false;
+      },
     },
   };
 </script>
