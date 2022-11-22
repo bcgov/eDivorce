@@ -2,7 +2,7 @@
   <div>
     <h5 class="uploader-label" :class="{ 'has-optional': formDef.optional }">
       {{ formDef.preText }}
-      <span :id="'Tooltip-' + uniqueId" class="tooltip-link">
+      <span :id="'Tooltip-' + uniqueId" class="popover-link">
         <span class="content">
         {{ formDef.name }}
         </span>
@@ -16,13 +16,19 @@
     <p v-if="formDef.optional">
       (<strong>Optional</strong>: {{ formDef.optional }})
     </p>
-    <tooltip
-      :text="formatHelpText(formDef.name, formDef.help, formDef.signature)"
+    <popover
+      :title="formDef.name"
       trigger="outside-click"
       :target="'#Tooltip-' + uniqueId"
       placement="right"
       :auto-placement="true"
-    ></tooltip>
+    >
+      <template #popover>
+        <p>{{ formDef.help }}</p>
+        <br>
+        <p>{{ formDef.signature }}</p>
+      </template>
+    </popover>
     <label :for="inputId" class="sr-only">
       {{ formDef.preText }} {{ formDef.name }}
       <span v-if="party === 1"> - For You</span>
@@ -126,7 +132,7 @@
 
 <script>
   import VueUploadComponent from "vue-upload-component";
-  import { Tooltip, Modal, Btn } from "uiv";
+  import { Modal, Popover } from "uiv";
   import axios from "axios";
   import Compressor from "compressorjs";
   import ItemTile from "./ItemTile.vue";
@@ -138,9 +144,8 @@
     components: {
       FileUpload: VueUploadComponent,
       ItemTile,
-      Tooltip,
       Modal,
-      Btn
+      Popover
     },
     inject: ['proxyRootPath'],
     props: {
@@ -182,9 +187,6 @@
       },
       formDef() {
         return FormDefinitions[this.docType];
-      },
-      hasPdfFiles(){
-        return this.files.filter(f => f.type === "application/pdf").length > 1
       },
       postAction() {
         return `${this.proxyRootPath }api/documents/`;
@@ -558,10 +560,7 @@
           }
         }
         return null;
-      },
-      formatHelpText(title, body, signature) {
-        return `${title}.\n${body}${signature ? `\n${signature}`:''}`;
-      },
+      }
     },
   };
 </script>
@@ -631,7 +630,7 @@
       margin-bottom: 0;
     }
 
-    span.tooltip-link {
+    span.popover-link {
       color: #365ebe;
       font-weight: bold;
     }
