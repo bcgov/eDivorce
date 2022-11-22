@@ -1,13 +1,14 @@
 <template>
   <modal
+    ref="modal"
     v-model="showModal"
     class="image-preview-modal"
-    ref="modal"
     :footer="false"
     @hide="$emit('close')"
   >
     <img
       v-if="file.objectURL && !file.error && file.type !== 'application/pdf'"
+      :alt="null"
       :src="file.objectURL"
       :style="modalImageStyle"
     />
@@ -18,15 +19,31 @@
   import { Modal } from "uiv";
 
   export default {
-    props: {
-      file: Object,
-      imageStyle: String,
-      rotateVal: Number,
-      showModal: Boolean,
-      scale: Number,
-    },
+    name: "ModalPreview",
     components: {
       Modal,
+    },
+    props: {
+      file: {
+        type: Object,
+        required: true
+      },
+      imageStyle: {
+        type: String,
+        default: ""
+      },
+      rotateVal: {
+        type: Number,
+        default: 0
+      },
+      scale: {
+        type: Number,
+        default: 1
+      },
+      showModal: {
+        type: Boolean,
+        required: true
+      }
     },
     computed: {
       modalImageStyle() {
