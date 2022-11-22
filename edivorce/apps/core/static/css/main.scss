@@ -526,7 +526,7 @@ div.percent-suffix {
 	}
 }
 
-.tooltip-link {
+.tooltip-link, .popover-link {
 	color: $brand-links;
 	cursor: pointer;
 
@@ -539,6 +539,96 @@ div.percent-suffix {
 	}
 }
 
+// Popover styles
+.popover {
+	min-width: 300px;
+	border: none;
+	border-radius: 10px;
+	background-color: $brand-links;
+	box-shadow: none;
+
+	&.in {
+	    opacity: 1;
+	}
+	.arrow {
+		pointer-events: none;
+		border-color: rgba(255,255,255,0);
+		border-width: 12px !important;
+    }
+
+	&.top {
+		.arrow {
+			margin-bottom: -6px;
+		}
+		.arrow, .arrow:after{
+			border-top-color: $brand-links;
+		}
+	}
+
+	&.right {
+		margin-left: 10px;
+		.arrow {
+			margin-left: -5px;
+			margin-top: -14px;
+		}
+		.arrow, .arrow:after{
+			border-right-color: $brand-links;
+		}
+	}
+
+	&.bottom {
+	    .arrow {
+			margin-top: -5px;
+		}
+		.arrow, .arrow:after{
+			border-bottom-color: $brand-links;
+		}
+	}
+
+	&.left {
+		margin-left: -10px;
+		.arrow {
+			margin-right: -5px;
+			margin-top: -14px;
+		}
+		.arrow, .arrow:after{
+			border-left-color: $brand-links;
+		}
+	}
+
+	.popover-content, .popover-title {
+		color: #ffffff;
+		text-align: left;
+		background-color: $brand-links;
+		padding: 20px;
+		line-height: 24px;
+		font-family: $font-custom;
+		border-radius: 10px;
+
+		a {
+			color: #ffffff;
+			text-decoration: underline;
+
+			&:focus,
+			&:hover {
+				color: $color-grey-light;
+			}
+		}
+	}
+	.popover-content {
+		font-size: 16px;
+		p {
+			margin-bottom: 0;
+		}
+	}
+	.popover-title {
+		font-weight: bold;
+		font-size: 18px;
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+}
+
 .collapse-trigger {
 	& > div {
 		color: $color-blue;
@@ -546,7 +636,7 @@ div.percent-suffix {
 		display: inline-block;
 		cursor: pointer;
 
-		.tooltip-link {
+		.tooltip-link, .popover-link {
 			border: 0;
 
 			&:hover {
