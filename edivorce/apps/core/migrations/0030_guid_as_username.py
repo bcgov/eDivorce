@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
          migrations.RunSQL(
-            "UPDATE core_bceiduser SET username = user_guid"
+            "UPDATE core_bceiduser SET username = user_guid",
+             reverse_sql="UPDATE core_bceiduser SET user_guid = username"
         )
     ]

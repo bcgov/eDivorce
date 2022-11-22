@@ -318,7 +318,7 @@ class GraphQLAPITest(GraphQLTestCase):
         self.default_party_code = 0
 
     def _login(self):
-        self._client.force_login(self.user)
+        self.client.force_login(self.user)
 
     def test_not_logged_in(self):
         response = self.query('{documents{filename}}')
@@ -345,8 +345,8 @@ class GraphQLAPITest(GraphQLTestCase):
         self._login()
         response = self.query('{documents{filename}}')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertContainsError('argument "docType" of type "String!" is required but not provided', response)
-        self.assertContainsError('argument "partyCode" of type "Int!" is required but not provided', response)
+        self.assertContainsError('Field "documents" argument "docType" of type "String!" is required but not provided', response)
+        self.assertContainsError('Field "documents" argument "partyCode" of type "Int!" is required but not provided', response)
 
     def test_get_only_returns_user_form_docs(self):
         self._login()

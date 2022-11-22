@@ -35,7 +35,7 @@ class BasicAuthMiddleware(MiddlewareMixin):
         if not settings.BASICAUTH_ENABLED:
             return None
 
-        if 'HTTP_AUTHORIZATION' not in request.META:
+        if 'authorization' not in request.headers:
             return self.__not_authorized()
         
         authentication = request.META['HTTP_AUTHORIZATION']
