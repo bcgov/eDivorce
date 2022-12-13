@@ -46,7 +46,7 @@ if platform_name == "Windows":
     question_fixture_path = os.path.realpath("./edivorce/fixtures/Question.json")
 
 # load the Question fixture
-if not is_local:
-    execute_from_command_line(['manage.py', 'loaddata', question_fixture_path])
+# if not is_local:
+#     execute_from_command_line(['manage.py', 'loaddata', question_fixture_path])
 
 application = get_wsgi_application()
