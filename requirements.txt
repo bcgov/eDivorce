@@ -1,4 +1,4 @@
-aniso8601==9.0.1
+aniso8601==7.0.0
 asgiref==3.5.2
 async-timeout==4.0.2
 backports.zoneinfo==0.2.1
