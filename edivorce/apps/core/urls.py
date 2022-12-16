@@ -1,5 +1,4 @@
-from django.conf import settings
-from django.urls import path, re_path, static
+from django.urls import path, re_path
 
 from .views import main, system, pdf, api, efiling
 
@@ -39,4 +38,4 @@ urlpatterns = [
     re_path(r'^question/(?P<step>.*)$', main.question, name="question_steps"),
     path('current', system.current, name="current"),
     path('', main.home, name="home"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
