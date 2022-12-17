@@ -106,9 +106,8 @@ EFILING_HUB_KEYCLOAK_REALM = EDIVORCE_KEYCLOAK_REALM
 EFILING_HUB_KEYCLOAK_CLIENT_ID = 'e-divorce'
 
 # Internal Relative Urls
-FORCE_SCRIPT_NAME = PROXY_URL_PREFIX + '/'
+# FORCE_SCRIPT_NAME = PROXY_URL_PREFIX + '/'
 STATIC_URL = PROXY_URL_PREFIX + '/static/'
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # Internal Urls (within the OpenShift project)
 WEASYPRINT_URL = 'http://weasyprint:5001'
