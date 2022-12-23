@@ -167,7 +167,7 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# FORCE_SCRIPT_NAME = '/'
+SCRIPT_NAME = '/'
 
 FIXTURE_DIRS = (
     os.path.join(PROJECT_ROOT, 'edivorce', 'fixtures'),

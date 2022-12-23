@@ -117,11 +117,11 @@ def after_login(request):
 
     copy_session_to_db(request, request.user)
 
-    return redirect(settings.PROXY_BASE_URL + settings.FORCE_SCRIPT_NAME[:-1] + '/overview')
+    return redirect(settings.PROXY_BASE_URL + settings.SCRIPT_NAME[:-1] + '/overview')
 
 
 def after_logout(_request):
-    response = HttpResponseRedirect(settings.PROXY_BASE_URL + settings.FORCE_SCRIPT_NAME)
+    response = HttpResponseRedirect(settings.PROXY_BASE_URL + settings.SCRIPT_NAME)
     response.delete_cookie(key="SMSESSION", domain=".gov.bc.ca", path="/")
     return response
 

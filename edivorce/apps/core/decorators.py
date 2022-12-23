@@ -6,7 +6,7 @@ from edivorce.apps.core.utils.question_step_mapping import pre_qual_step_questio
 from edivorce.apps.core.utils.step_completeness import is_complete
 from edivorce.apps.core.utils.user_response import get_data_for_user, questions_dict_for_step
 
-base_url = settings.PROXY_BASE_URL + settings.FORCE_SCRIPT_NAME[:-1]
+base_url = settings.PROXY_BASE_URL + settings.SCRIPT_NAME[:-1]
 
 
 def intercept(function=None):

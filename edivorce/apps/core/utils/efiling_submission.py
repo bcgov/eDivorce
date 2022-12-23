@@ -89,7 +89,7 @@ class EFilingSubmission(EFilingHubCallerBase):
             else:
                 error_route = 'final_filing'
 
-            return settings.FORCE_SCRIPT_NAME + f"dashboard/{error_route}?no_connection=1", None
+            return settings.SCRIPT_NAME + f"dashboard/{error_route}?no_connection=1", None
 
         if response.status_code == 200:
             response = json.loads(response.text)

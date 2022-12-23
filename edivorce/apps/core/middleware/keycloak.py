@@ -51,5 +51,5 @@ class EDivorceKeycloakBackend(OIDCAuthenticationBackend):
 
 def keycloak_logout(request):
     request.session.flush()
-    redirect_uri = absolutify(request, settings.FORCE_SCRIPT_NAME[:-1] + '/logout')
+    redirect_uri = absolutify(request, settings.SCRIPT_NAME[:-1] + '/logout')
     return f'{settings.KEYCLOAK_LOGOUT}?redirect_uri={redirect_uri}'
