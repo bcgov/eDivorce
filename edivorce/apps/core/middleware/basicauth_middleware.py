@@ -17,18 +17,18 @@ class BasicAuthMiddleware(MiddlewareMixin):
     def process_request(self, request):
 
         # allow all OpenShift health checks
-        if request.path == settings.SCRIPT_NAME + 'health':
+        if request.path == settings.FORCE_SCRIPT_NAME + 'health':
             return None
 
         # allow ajax requests -
         # basic auth through ajax is tricky, and besides, this isn't really
         # intended as security.  It's just to prevent users from
         # logging into the wrong environment.
-        if request.path.startswith(settings.SCRIPT_NAME + 'api/'):
+        if request.path.startswith(settings.FORCE_SCRIPT_NAME + 'api/'):
             return None
 
         # allow all static files
-        if request.path.startswith(settings.SCRIPT_NAME[:-1] + settings.SCRIPT_NAME + 'static/'):
+        if request.path.startswith(settings.FORCE_SCRIPT_NAME[:-1] + settings.FORCE_SCRIPT_NAME + 'static/'):
             return None
 
         # check if the middleware is enabled in settings
