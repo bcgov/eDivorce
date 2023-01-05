@@ -305,6 +305,39 @@
         </div>
     {% endif %}
 
+    {% if how_to_file == 'Online' and original_marriage_certificate == 'NO' and provide_certificate_later == 'NO' %}
+        <div class="review-well clearfix">
+            <div class="collapse-trigger collapsed" data-toggle="collapse"
+                aria-expanded="false" data-target="#collapseF96m"
+                aria-controls="collapseF96m">
+                <div>
+                    <span>
+                        Electronic Filing Statement (F96) for your Affadivit of No Marriage Certificate Form
+                    </span>
+                </div>
+            </div>
+            <p class="review-buttons">
+                <a href="{% url 'pdf_form' '96_no_marriage' %}" class="btn btn-primary spinner"
+                target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i>
+                    Review, Print &amp; Sign
+                </a>
+            </p>
+            <div class="clearfix"></div>
+            <div class="collapse" id="collapseF96m">
+                <div>
+                    <p>
+                        This form is used to confirm that the document you are filing electronically
+                        shows your original signature and is a true copy of the original paper
+                        version of the document.
+                    </p>
+                    <p>
+                        - Requires signature by you only (but not a signature in front of a commissioner)
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     {% if how_to_sign == 'Together' %}
         {% if derived.has_children_of_marriage %}
             <div class="review-well clearfix">
