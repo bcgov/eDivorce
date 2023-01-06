@@ -30,9 +30,9 @@
         <h3>Who is the {% include "partials/tooltips/children/payor.html" %}?
             {% if child_support_payor_error %}{% include 'partials/required.html' %}{% endif %}
         </h3>
-        {% if derived.show_fact_sheet_b or derived.show_fact_sheet_c %}
+        {% if child_support_payor %}
         <div>
-            Based on your indicated shared / split custody the payor is 
+            Based on your indicated parenting time the payor is
             <strong>
                 {% if child_support_payor == "Myself (Claimant 1)" %}
                     {% you_name if_blank="Myself" %} (Claimant 1).

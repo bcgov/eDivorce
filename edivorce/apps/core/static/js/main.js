@@ -25,7 +25,7 @@ $(window).load(function(){
     // Load child support act question text if child_support_in_order exist on the page and answered before.
     var childSupport = $('input[name="child_support_in_order"]:checked');
     if (childSupport !== undefined) {
-        var wantChildSupport = childSupport.val() === 'NO' ? false : true;
+        var wantChildSupport = childSupport.val() !== 'NO';
         updateChildSupportActQuestion(wantChildSupport);
     }
 });
@@ -382,8 +382,8 @@ $(function () {
         var amount_c_spouse = $('#fact_c_your_spouse_child_support_paid').val();
 
         // Show factsheet logic is same as evaluateFactSheetShowCriteria()
-        var show_factsheet_b = childWithBoth ? true : false;
-        var show_factsheet_c = ((childWithYou && (childWithSpouse || childWithBoth)) || (childWithSpouse && (childWithYou || childWithBoth))) ? true : false;
+        var show_factsheet_b = !!childWithBoth;
+        var show_factsheet_c = !!(childWithYou && childWithSpouse) || (childWithYou && childWithBoth) || (childWithSpouse && childWithBoth)
         var payor_b = findPayor(amount_b_you, amount_b_spouse);
         var payor_c = findPayor(amount_c_you, amount_c_spouse);        
         var diff_amounts_b = Math.abs(amount_b_you - amount_b_spouse);
@@ -416,10 +416,15 @@ $(function () {
             // If only Factsheet C, use values from Factsheet C
             payor_total = payor_c;
             diff_amounts_total = diff_amounts_c;
+        } else {
+            // If children are in care of only one parent, the other parent is the payor.
+            payor_total = childWithYou > childWithSpouse ? 'My Spouse (Claimant 2)' : 'Myself (Claimant 1)'
         }
 
-        // Update value for Payor and Factsheet D total support amount field.
-        $('#total_spouse_paid_child_support').val(diff_amounts_total);
+        if (show_factsheet_b || show_factsheet_c) {
+            // Update value for Payor and Factsheet D total support amount field.
+            $('#total_spouse_paid_child_support').val(diff_amounts_total);
+        }
         ajaxCall('child_support_payor', payor_total);
     };
 
@@ -1258,12 +1263,12 @@ $('.no-collapse').on('click', function (e) {
 
 // Handle complicated logic show/hide child support act question with different wordings on Step 6. What are you asking for.
 $('input[name="child_support_in_order"]').change(function() {
-    var wantChildSupport = $(this).val() === 'NO' ? false : true;
+    var wantChildSupport = $(this).val() !== 'NO';
     updateChildSupportActQuestion(wantChildSupport);
 });
 
 var updateChildSupportActQuestion = function (wantChildSupport) {
-    var wantChildOrder = $('#child_support_act').data('want_child_order') === true ? true : false;
+    var wantChildOrder = $('#child_support_act').data('want_child_order') === true;
 
     if (!wantChildOrder) {
         if (!wantChildSupport) {
