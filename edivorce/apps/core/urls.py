@@ -23,7 +23,7 @@ urlpatterns = [
     path('submit/initial', efiling.submit_initial_files, name="submit_initial_files"),
     path('submit/final', efiling.submit_final_files, name="submit_final_files"),
     path('after-submit/initial', efiling.after_submit_initial_files, name="after_submit_initial_files"),
-    path('after-submit/final', efiling.after_submit_final_files, name="after_submit_final_files"),    
+    path('after-submit/final', efiling.after_submit_final_files, name="after_submit_final_files"),
     path('health', system.health),
     path('legal', main.legal, name="legal"),
     path('acknowledgements', main.acknowledgements, name="acknowledgements"),
@@ -31,7 +31,7 @@ urlpatterns = [
 
     # url(r'^headers$', system.headers),
 
-    re_path(r'^pdf-form(?P<form_number>[/bPC/b0-9]{1,3}(_we|_claimant1|_claimant2|_translation)?)$', pdf.pdf_form, name="pdf_form"),
+    re_path(r'^pdf-form(?P<form_number>[/bPC/b0-9]{1,3}(_we|_claimant1|_claimant2|_translation|_no_marriage)?)$', pdf.pdf_form, name="pdf_form"),
     path('pdf-images/<doc_type>/<int:party_code>/', pdf.images_to_pdf, name='pdf_images'),
     re_path(r'^prequalification/step_(?P<step>[0-9]{2})$', main.prequalification, name="prequalification"),
     re_path(r'^question/(?P<step>.*)/(?P<sub_step>.*)/$', main.question, name="question_steps"),

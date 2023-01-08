@@ -16,6 +16,7 @@ def forms_to_file(responses_dict, initial=False):
     f102_required = derived['f102_required']
 
     provide_marriage_certificate = responses_dict.get('original_marriage_certificate') == 'YES'
+    provide_certificate_later = responses_dict.get('provide_certificate_later') == 'YES'
 
     if initial:
         generated.append({'doc_type': 'NJF', 'form_number': 1})
@@ -28,6 +29,10 @@ def forms_to_file(responses_dict, initial=False):
             if responses_dict.get('marriage_certificate_in_english') == 'NO':
                 uploaded.append({'doc_type': 'AFTL', 'party_code': 0})
                 uploaded.append({'doc_type': 'EFSS1', 'party_code': 1})
+
+        elif not provide_certificate_later:
+            uploaded.append({'doc_type': 'AFF', 'party_code': 0})
+            uploaded.append({'doc_type': 'EFSS0', 'party_code': 0})
 
         uploaded.append({'doc_type': 'RDP', 'party_code': 0})
 
@@ -57,7 +62,7 @@ def forms_to_file(responses_dict, initial=False):
 
         if how_to_sign == 'Separately':
             uploaded.append({'doc_type': 'EFSS2', 'party_code': 2})
-            
+
         if has_children:
             uploaded.append({'doc_type': 'AAI', 'party_code': 0})
         if name_change_you:
