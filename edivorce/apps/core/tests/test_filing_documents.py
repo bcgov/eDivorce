@@ -29,10 +29,11 @@ class FilingLogic(TestCase):
         # Base forms required
         uploaded, generated = forms_to_file(self.questions_dict, initial=True)
 
-        self.assertEqual(len(uploaded), 3)
+        self.assertEqual(len(uploaded), 4)
         self.assertIn({'doc_type': doc_type("joint divorce proceedings"), 'party_code': 0}, uploaded)
         self.assertIn({'doc_type': doc_type("party's certificate"), 'party_code': 1}, uploaded)
         self.assertIn({'doc_type': doc_type("party's certificate"), 'party_code': 2}, uploaded)        
+        self.assertIn({'doc_type': doc_type("electronic filing statement"), 'party_code': 0}, uploaded)
 
         self.assertEqual(len(generated), 1)
         self.assertIn({'doc_type': doc_type("notice of joint family claim"), 'form_number': 1}, generated)
