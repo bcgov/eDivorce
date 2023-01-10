@@ -34,6 +34,7 @@ class FilingLogic(TestCase):
         self.assertIn({'doc_type': doc_type("party's certificate"), 'party_code': 1}, uploaded)
         self.assertIn({'doc_type': doc_type("party's certificate"), 'party_code': 2}, uploaded)        
         self.assertIn({'doc_type': doc_type("electronic filing statement for affidavit of no marriage certificate"), 'party_code': 0}, uploaded)
+        self.assertIn({'doc_type': doc_type("affidavit of no marriage certificate"), 'party_code': 0}, uploaded)
 
         self.assertEqual(len(generated), 1)
         self.assertIn({'doc_type': doc_type("notice of joint family claim"), 'form_number': 1}, generated)

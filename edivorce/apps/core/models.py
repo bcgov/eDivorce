@@ -153,6 +153,7 @@ class Document(models.Model):
     form_types = {
         'AAI': "Agreement as to Annual Income (F9)",
         'AFDO': "Affidavit - Desk Order Divorce Form (F38)",
+        'AFF': "Affidavit of No Marriage Certificate",
         'AFTL': "Affidavit of Translation Form",
         'CSA': "Child Support Affidavit (F37)",
         'PCER': "Party's Certificate",
