@@ -51,7 +51,7 @@ def valid_file_extension(file):
 
 
 def valid_doc_type(value):
-    valid_codes = ['AAI', 'AFDO', 'AFTL', 'PCER', 'CSA', 'EFSS1', 'EFSS2', 'MC', 'NCV', 'OFI', 'RDP', 'SICR']
+    valid_codes = ['AAI', 'AFDO', 'AFF', 'AFTL', 'PCER', 'CSA', 'EFSS0','EFSS1', 'EFSS2', 'MC', 'NCV', 'OFI', 'RDP', 'SICR']
     if value.upper() not in valid_codes:
         raise ValidationError(f'Doc type not supported: {value}. Valid codes: {", ".join(valid_codes)}')
 
