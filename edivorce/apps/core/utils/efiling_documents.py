@@ -26,13 +26,13 @@ def forms_to_file(responses_dict, initial=False):
         if provide_marriage_certificate:
             uploaded.append({'doc_type': 'MC', 'party_code': 0})
 
-            if responses_dict.get('marriage_certificate_in_english') == 'NO':
-                uploaded.append({'doc_type': 'AFTL', 'party_code': 0})
-                uploaded.append({'doc_type': 'EFSS1', 'party_code': 1})
-
         elif not provide_certificate_later:
             uploaded.append({'doc_type': 'AFF', 'party_code': 0})
             uploaded.append({'doc_type': 'EFSS0', 'party_code': 0})
+
+        if responses_dict.get('marriage_certificate_in_english') == 'NO':
+            uploaded.append({'doc_type': 'AFTL', 'party_code': 0})
+            uploaded.append({'doc_type': 'EFSS1', 'party_code': 1})
 
         uploaded.append({'doc_type': 'RDP', 'party_code': 0})
 
