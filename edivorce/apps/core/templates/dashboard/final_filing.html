@@ -135,9 +135,9 @@
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
-                            {% if marriage_certificate_in_english == 'NO' %}
-                                <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
-                            {% endif %}
+                        {% endif %}
+                        {% if marriage_certificate_in_english == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
                         {% endif %}
                         <li>{% include "partials/tooltips/forms/joint_divorce_proceedings.html" %}</li>
                         <li>{% include "partials/tooltips/forms/requisition_form_35.html" %} signed by both you and your spouse</li>
@@ -211,9 +211,9 @@
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
-                            {% if marriage_certificate_in_english == 'NO' %}
-                                <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
-                            {% endif %}
+                        {% endif %}
+                        {% if marriage_certificate_in_english == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
                         {% endif %}
                         <li>{% include "partials/tooltips/forms/joint_divorce_proceedings.html" %}</li>
                         <li>{% include "partials/tooltips/forms/requisition_form_35.html" %} signed by both you and your spouse</li>
