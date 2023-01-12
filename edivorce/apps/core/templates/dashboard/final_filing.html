@@ -135,9 +135,9 @@
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
-                            {% if marriage_certificate_in_english == 'NO' %}
-                                <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
-                            {% endif %}
+                        {% endif %}
+                        {% if marriage_certificate_in_english == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
                         {% endif %}
                         {% if provide_certificate_later == 'NO' %}
                             <li>{% include "partials/tooltips/forms/affidavit_of_no_marriage_certificate.html" %}</li>
@@ -214,9 +214,9 @@
                         </li>
                         {% if original_marriage_certificate == 'YES' %}
                             <li>{% include "partials/tooltips/forms/proof_of_marriage.html" %}</li>
-                            {% if marriage_certificate_in_english == 'NO' %}
-                                <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
-                            {% endif %}
+                        {% endif %}
+                        {% if marriage_certificate_in_english == 'NO' %}
+                            <li>{% include "partials/tooltips/forms/affidavit_of_translation.html" %} sworn / affirmed by a translator</li>
                         {% endif %}
                         {% if provide_certificate_later == 'NO' %}
                             <li>{% include "partials/tooltips/forms/affidavit_of_no_marriage_certificate.html" %}</li>
