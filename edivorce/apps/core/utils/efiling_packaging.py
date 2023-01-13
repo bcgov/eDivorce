@@ -136,7 +136,7 @@ class EFilingPackaging:
         document = copy.deepcopy(PACKAGE_DOCUMENT_FORMAT)
         filename = self._get_filename(doc_type, party_code)
         document['name'] = filename
-        if doc_type in ['EFSS1', 'EFSS2']:
+        if doc_type in ['EFSS0', 'EFSS1', 'EFSS2']:
             document['type'] = 'EFSS'
         else:
             document['type'] = doc_type
