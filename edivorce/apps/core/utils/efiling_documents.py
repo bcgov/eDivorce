@@ -30,7 +30,7 @@ def forms_to_file(responses_dict, initial=False):
             uploaded.append({'doc_type': 'AFF', 'party_code': 0})
             uploaded.append({'doc_type': 'EFSS0', 'party_code': 0})
 
-        if provide_certificate_later and responses_dict.get('marriage_certificate_in_english') == 'NO':
+        if responses_dict.get('marriage_certificate_in_english') == 'NO':
             uploaded.append({'doc_type': 'AFTL', 'party_code': 0})
             uploaded.append({'doc_type': 'EFSS1', 'party_code': 1})
 
