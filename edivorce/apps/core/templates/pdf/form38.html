@@ -217,24 +217,37 @@
     {% endif %}
             </li>
 
-    {% if responses.which_claimant == 'both' or responses.which_claimant == 'Claimant 1' %}
-        {% if responses.name_change_you == 'YES' %}
+    {% if responses.which_claimant == 'both' %}
+        {% if responses.name_change_you == 'YES' or responses.name_change_spouse == 'YES' %}
             <li>
-              Pursuant to Section 5 of the Name Act, Claimant 1 shall
-              bear the name of {{ responses.name_change_you_fullname }}
-              to take effect on {% effective_date %}.
+                {% if responses.name_change_you == 'YES' %}
+                  <p>
+                      Pursuant to section 5 of the Name Act, I am seeking to change my name
+                      from {{ responses|name_you }} to {{ responses.name_change_you_fullname }}.
+                      This application for a name change relates only to myself.
+                  </p>
+                {% endif %}
+                {% if responses.name_change_spouse == 'YES' %}
+                  <p>
+                      Pursuant to section 5 of the Name Act, I am seeking to change my name
+                      from {{ responses|name_spouse }} to {{ responses.name_change_spouse_fullname }}.
+                      This application for a name change relates only to myself.
+                  </p>
+                {% endif %}
             </li>
         {% endif %}
-    {% endif %}
-
-    {% if responses.which_claimant == 'both' or responses.which_claimant == 'Claimant 2' %}
-        {% if responses.name_change_spouse == 'YES' %}
-            <li>
-              Pursuant to Section 5 of the Name Act, Claimant 2 shall
-              bear the name of {{ responses.name_change_spouse_fullname }}
-              to take effect on {% effective_date %}.
-            </li>
-        {% endif %}
+    {% elif responses.which_claimant == 'Claimant 1' and responses.name_change_you == 'YES' %}
+          <li>
+              Pursuant to section 5 of the Name Act, I am seeking to change my name
+              from {{ responses|name_you }} to {{ responses.name_change_you_fullname }}.
+              This application for a name change relates only to myself.
+          </li>
+    {% elif responses.which_claimant == 'Claimant 2' and responses.name_change_spouse == 'YES' %}
+          <li>
+              Pursuant to section 5 of the Name Act, I am seeking to change my name
+              from {{ responses|name_spouse }} to {{ responses.name_change_spouse_fullname }}.
+              This application for a name change relates only to myself.
+          </li>
     {% endif %}
 
         </ol>
