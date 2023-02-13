@@ -79,10 +79,10 @@
             {% checkbox True %} certificate of the registrar in Form F36;
           </p>
           <p>
-            {% checkbox True %} filing fee.
+            {% checkbox True %} filing fee;
           </p>
           <p>
-            {% checkbox False %} proof of service of the notice of family claim or counterclaim, as the case may be.
+            {% checkbox False %} proof of service of the notice of family claim or counterclaim, as the case may be;
           </p>
           <p>
             {% if responses.num_actual_children > 0 and 'Child support' in responses.want_which_orders %}
@@ -90,10 +90,19 @@
             {% else %}
               {% checkbox False %}
             {% endif %}
-            Child Support Affidavit in Form F37.
+            Child Support Affidavit in Form F37;
           </p>
           <p>
-            {% checkbox True %} affidavit in Form F38.
+            {% checkbox True %} affidavit in Form F38;
+          </p>
+          <p>
+            {% checkbox False %} signed consent order;
+          </p>
+          <p>
+            {% checkbox False %} notice of withdrawal;
+          </p>
+          <p>
+            {% checkbox False %} other.
           </p>
         </div>
 

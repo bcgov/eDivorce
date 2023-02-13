@@ -75,7 +75,7 @@ class Question(models.Model):
     """ Convenience for listing these in the admin """
 
     required = models.TextField(blank=True)
-    """ 'Required', 'Conditional', or '' [blank = not required] """
+    """ 'Required', 'Conditional', 'AlwaysShownConditionallyRequired' or '' [blank = not required] """
 
     conditional_target = models.TextField(blank=True)
     """ For conditional questions, this is the question it is conditional upon """

@@ -491,7 +491,7 @@
     },
     {
         "fields": {
-            "name": "Where were you married?",
+            "name": "Where were you married? City",
             "description": "For step 4, Form 1 2. Divorce section A, Form 52 Court orders that section",
             "summary_order": 47,
             "required": "Required"
@@ -501,11 +501,11 @@
     },
     {
         "fields": {
-            "name": "Where were you married? Prov",
+            "name": "Where were you married? Province / State",
             "description": "For step 4, Form 1 2. Divorce section A, Form 52 Court orders that section",
             "summary_order": 48,
-            "required": "Conditional",
-            "conditional_target": "determine_married_in_usa_or_canada",
+            "required": "AlwaysShownConditionallyRequired",
+            "conditional_target": "determine_married_in_canada",
             "reveal_response": "True"
         },
         "model": "core.question",
@@ -565,7 +565,7 @@
     },
     {
         "fields": {
-            "name": "My spouse and I have not engaged in collusion to deceive the court in any way.",
+            "name": "My spouse and I have not engaged in any arrangement to deceive the court.",
             "description": "For step 5, Form 1 2. Divorce section C",
             "summary_order": 54,
             "required": "Required"
