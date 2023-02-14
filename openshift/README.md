@@ -393,3 +393,16 @@ To fix the issue:
   - Exit the debug session.
   - Scale the deployment to 1 pod.  Postgres should start normally now.
 
+## Replacing containers in OpenShift imagestreams 
+
+redis:5 is used as an example below.  This has the same final result as running the build config template in /openshift/templates/redis/redis-build.yaml
+
+```
+oc login --token=sha256~xxxxxxXXXXXXXXXXXXXXXXXxxxxx --server=https://api.silver.devops.gov.bc.ca:6443
+docker login -u $(oc whoami) -p $(oc whoami -t) image-registry.apps.silver.devops.gov.bc.ca
+docker pull image-registry.apps.silver.devops.gov.bc.ca/openshift/redis:5
+docker tag image-registry.apps.silver.devops.gov.bc.ca/openshift/redis:5 image-registry.apps.silver.devops.gov.bc.ca/ed44ad-tools/redis:5
+docker push image-registry.apps.silver.devops.gov.bc.ca/ed44ad-tools/redis:5
+oc project ed44ad-tools
+oc tag redis:5 redis:latest
+```
