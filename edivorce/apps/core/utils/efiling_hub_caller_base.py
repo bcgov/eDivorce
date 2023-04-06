@@ -66,12 +66,6 @@ class EFilingHubCallerBase:
     def _get_bceid(self, request):
 
         def _get_raw_bceid(request):
-            if settings.DEPLOYMENT_TYPE == 'localdev':
-                # to integrate with the Test eFiling Hub, we need a valid BCEID which is
-                # unavailable for a local eDivorce environment. Use an env specified mapping
-                # to figure out what we should pass through to eFiling Hub. This BCEID username
-                # needs to match with what you will be logging in with to the Test BCEID environment.
-                return settings.EFILING_BCEID
             if hasattr(request, 'user'):
                 return request.user.user_guid
             return request.session.get('bcgov_userguid', None)
