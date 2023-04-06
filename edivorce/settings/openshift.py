@@ -89,7 +89,7 @@ if DEPLOYMENT_TYPE == 'unittest':
     PROXY_URL_PREFIX = ''
 
 # Keycloak OpenID Connect settings
-EDIVORCE_KEYCLOAK_CLIENT_ID = 'edivorce-app'
+EDIVORCE_KEYCLOAK_CLIENT_ID = 'e-divorce-app'
 EDIVORCE_KEYCLOAK_REALM = 'court-services-jag'
 KEYCLOAK_LOGOUT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/logout'
 OIDC_OP_JWKS_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/certs'
