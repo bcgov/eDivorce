@@ -49,7 +49,7 @@ OIDC_OP_JWKS_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEY
 OIDC_OP_AUTHORIZATION_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/auth'
 OIDC_OP_TOKEN_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/token'
 OIDC_OP_USER_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/userinfo'
-OIDC_RP_CLIENT_ID = 'edivorce-app'
+OIDC_RP_CLIENT_ID = 'e-divorce-app'
 LOGIN_REDIRECT_URL = '/signin'
 
 # eFiling Hub settings

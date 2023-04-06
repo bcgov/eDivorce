@@ -59,9 +59,9 @@ if DEPLOYMENT_TYPE == 'dev':
     SESSION_COOKIE_AGE = 3600
     REGISTER_BCEID_URL = 'https://www.test.bceid.ca/directories/bluepages/details.aspx?serviceID=5522'
     REGISTER_BCSC_URL = 'https://logontest7.gov.bc.ca/clp-cgi/fed/fedLaunch.cgi?partner=fed38&partnerList=fed38&flags=0001:0,7&TARGET=http://dev.justice.gov.bc.ca/divorce/oidc/authenticate'
-    EDIVORCE_KEYCLOAK_BASE_URL = 'https://dev.oidc.gov.bc.ca'
+    EDIVORCE_KEYCLOAK_BASE_URL = 'https://dev.loginproxy.gov.bc.ca'
     EFILING_HUB_API_BASE_URL = 'https://nginx-fc726a-dev.apps.silver.devops.gov.bc.ca/api'
-    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://dev.oidc.gov.bc.ca'
+    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://dev.loginproxy.gov.bc.ca'
     EFILING_ENABLED_GLOBALLY = True
 
 if DEPLOYMENT_TYPE == 'test':
@@ -89,8 +89,8 @@ if DEPLOYMENT_TYPE == 'unittest':
     PROXY_URL_PREFIX = ''
 
 # Keycloak OpenID Connect settings
-EDIVORCE_KEYCLOAK_CLIENT_ID = 'e-divorce-app'
-EDIVORCE_KEYCLOAK_REALM = 'tz0e228w'
+EDIVORCE_KEYCLOAK_CLIENT_ID = 'edivorce-app'
+EDIVORCE_KEYCLOAK_REALM = 'court-services-jag'
 KEYCLOAK_LOGOUT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/logout'
 OIDC_OP_JWKS_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/certs'
 OIDC_OP_AUTHORIZATION_ENDPOINT = f'{EDIVORCE_KEYCLOAK_BASE_URL}/auth/realms/{EDIVORCE_KEYCLOAK_REALM}/protocol/openid-connect/auth'
