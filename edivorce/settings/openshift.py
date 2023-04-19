@@ -67,17 +67,17 @@ if DEPLOYMENT_TYPE == 'dev':
 if DEPLOYMENT_TYPE == 'test':
     REGISTER_BCEID_URL = 'https://www.test.bceid.ca/directories/bluepages/details.aspx?serviceID=5521'
     REGISTER_BCSC_URL = 'https://logontest7.gov.bc.ca/clp-cgi/fed/fedLaunch.cgi?partner=fed38&partnerList=fed38&flags=0001:0,7&TARGET=http://test.justice.gov.bc.ca/divorce/oidc/authenticate'
-    EDIVORCE_KEYCLOAK_BASE_URL = 'https://test.oidc.gov.bc.ca'
+    EDIVORCE_KEYCLOAK_BASE_URL = 'https://test.loginproxy.gov.bc.ca'
     EFILING_HUB_API_BASE_URL = 'https://nginx-fc726a-test.apps.silver.devops.gov.bc.ca/api'
-    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://test.oidc.gov.bc.ca'
+    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://test.loginproxy.gov.bc.ca'
     EFILING_ENABLED_GLOBALLY = True
 
 if DEPLOYMENT_TYPE == 'prod':
     REGISTER_BCEID_URL = 'https://www.bceid.ca/directories/bluepages/details.aspx?serviceID=5203'
     REGISTER_BCSC_URL = 'https://logon7.gov.bc.ca/clp-cgi/fed/fedLaunch.cgi?partner=fed49&partnerList=fed49&flags=0001:0,8&TARGET=http://justice.gov.bc.ca/divorce/oidc/authenticate'
-    EDIVORCE_KEYCLOAK_BASE_URL = 'https://oidc.gov.bc.ca'
+    EDIVORCE_KEYCLOAK_BASE_URL = 'https://loginproxy.gov.bc.ca'
     EFILING_HUB_API_BASE_URL = 'https://nginx-fc726a-prod.apps.silver.devops.gov.bc.ca/api'
-    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://oidc.gov.bc.ca'
+    EFILING_HUB_KEYCLOAK_BASE_URL = 'https://loginproxy.gov.bc.ca'
     EFILING_ENABLED_GLOBALLY = True
     # Google Tag Manager (Production)
     GTM_ID = 'GTM-W4Z2SPS'
