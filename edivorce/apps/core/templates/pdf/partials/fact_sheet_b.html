@@ -73,8 +73,12 @@
 
   <p>
     It is proposed that child support in the amount of
-    {{ derived.total_monthly_b|money }}
-    per month be paid by {{ derived.child_support_payor }}.
+    {% if derived.wants_child_support and responses.child_support_in_order != 'NO' %}
+      {{ derived.total_monthly_b|money }} per month be paid by {{ derived.child_support_payor }}.
+    {% else %}
+      _________ per month be paid by ______________________.
+    {% endif %}
+
   </p>
 
 </div>
