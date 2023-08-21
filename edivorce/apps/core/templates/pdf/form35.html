@@ -51,7 +51,7 @@
 {% endif %}
         </p>
         <h2 class="text-center">
-           REQUISITION
+          REQUISITION - UNDEFENDED FAMILY LAW CASE
         </h2>
 
         </p>
@@ -68,43 +68,72 @@
             <strong>FILED WITH THIS REQUISITION ARE:</strong>
         </p>
 
-        <div class="checkbox-list">
-          <p>
-            {% checkbox True %} draft of the order sought;
-          </p>
-          <p>
-            {% checkbox True %} proof that the case is an undefended family law case;
-          </p>
-          <p>
-            {% checkbox True %} certificate of the registrar in Form F36;
-          </p>
-          <p>
-            {% checkbox True %} filing fee;
-          </p>
-          <p>
-            {% checkbox False %} proof of service of the notice of family claim or counterclaim, as the case may be;
-          </p>
-          <p>
-            {% if responses.num_actual_children > 0 and 'Child support' in responses.want_which_orders %}
+          <div>
+            <span class="td-list-item">{% checkbox True %}</span>
+            draft of the order sought;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox True %}</span>
+            proof that the case is an undefended family law case;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox True %}</span>
+            certificate of the registrar in Form F36;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox True %}</span>
+            filing fee;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox False %}</span>
+            proof of service of the notice of family claim or counterclaim, as the case may be;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">
+              {% if responses.num_actual_children > 0 and 'Child support' in responses.want_which_orders %}
                 {% checkbox True %}
-            {% else %}
-              {% checkbox False %}
-            {% endif %}
+              {% else %}
+                {% checkbox False %}
+              {% endif %}
+            </span>
             Child Support Affidavit in Form F37;
-          </p>
-          <p>
-            {% checkbox True %} affidavit in Form F38;
-          </p>
-          <p>
-            {% checkbox False %} signed consent order;
-          </p>
-          <p>
-            {% checkbox False %} notice of withdrawal;
-          </p>
-          <p>
-            {% checkbox False %} other.
-          </p>
-        </div>
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox True %}</span>
+             affidavit in Form F38;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">
+              {% if derived.f102_required %}
+                {% checkbox True %}
+              {% else %}
+                {% checkbox False %}
+              {% endif %}
+            </span>
+            the most current Form F102 statement of information for corollary relief proceedings, if any, filed by each party in accordance with Rule 10-10 (2) (h).
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox False %}</span>
+            signed consent order;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox False %}</span>
+            notice of withdrawal;
+          </div>
+          <br>
+          <div>
+            <span class="td-list-item">{% checkbox False %}</span>
+            other.
+          </div>
 
         {% include 'pdf/partials/party_signature.html' %}
         {% include 'pdf/partials/party_signature.html' %}
