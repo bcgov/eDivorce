@@ -338,15 +338,15 @@ class GraphQLAPITest(GraphQLTestCase):
         self._login()
         response = self.query('{documents{id file}}')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertContainsError('Cannot query field "id"', response)
-        self.assertContainsError('Cannot query field "file"', response)
+        self.assertContainsError("Cannot query field 'id'", response)
+        self.assertContainsError("Cannot query field 'file'", response)
 
     def test_must_specify_doctype_partycode(self):
         self._login()
         response = self.query('{documents{filename}}')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertContainsError('Field "documents" argument "docType" of type "String!" is required but not provided', response)
-        self.assertContainsError('Field "documents" argument "partyCode" of type "Int!" is required but not provided', response)
+        self.assertContainsError("Field 'documents' argument 'docType' of type 'String!' is required, but it was not provided", response)
+        self.assertContainsError("Field 'documents' argument 'partyCode' of type 'Int!' is required, but it was not provided", response)
 
     def test_get_only_returns_user_form_docs(self):
         self._login()

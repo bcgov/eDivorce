@@ -11,11 +11,12 @@ from edivorce.apps.core.utils.efiling_packaging import EFilingPackaging, PACKAGE
 class EFilingPackagingTests(TransactionTestCase):
 
     def setUp(self):
+        get_response = mock.MagicMock()
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
 
         self.request = self.factory.get('/')
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(get_response)
         middleware.process_request(self.request)
         self.request.session.save()
 
