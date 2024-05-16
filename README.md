@@ -16,6 +16,7 @@ Prerequisites:
 * Docker Compose
 * Python 3.8
 * Keycloak secrets for the BC Gov Keycloak Dev instance. These can be obtained from a member of the eDivorce team or a Keycloak Realm Admin.
+* Node 14.x for the Vue application (newer versions create an incompatible lock file)
 
 To run this project in your development machine, follow these steps:
 
