@@ -30,7 +30,7 @@ libsass==0.22.0
 marshmallow==3.18.0
 mozilla-django-oidc==3.0.0
 packaging==21.3
-pillow==10.2.0
+pillow==10.3.0
 promise==2.3
 psycopg2==2.9.5
 pycparser==2.20
