@@ -48,6 +48,8 @@ DEPLOYMENT_TYPE = env('ENVIRONMENT_TYPE', 'unittest')
 
 PROXY_URL_PREFIX = os.getenv('PROXY_URL_PREFIX', '/divorce')
 PROXY_BASE_URL = os.getenv('PROXY_BASE_URL', 'https://justice.gov.bc.ca')
+CSRF_TRUSTED_ORIGINS = [os.getenv('PROXY_BASE_URL', 'https://justice.gov.bc.ca')]
+
 
 # EFiling Hub Settings
 EFILING_ENABLED_GLOBALLY = False
