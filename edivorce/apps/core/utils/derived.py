@@ -48,6 +48,7 @@ DERIVED_DATA = [
     'show_fact_sheet_f_you',
     'show_fact_sheet_f_spouse',
     'show_fact_sheet_f',
+    'fact_sheet_f_high_income_support_amount',
     'fact_sheet_f_error',
     'has_fact_sheets',
     'child_support_payor_b',
@@ -204,7 +205,7 @@ def fact_sheet_c_error(responses, derived):
     questions = ['your_spouse_child_support_paid_c', 'your_child_support_paid_c']
     if derived['show_fact_sheet_c']:
         return _any_question_errors(responses, questions)
-    return False        
+    return False
 
 
 def show_fact_sheet_d(responses, derived):
@@ -280,6 +281,18 @@ def fact_sheet_f_error(responses, derived):
         if _any_question_errors(responses, fields_for_spouse):
             return True
     return False
+
+
+def fact_sheet_f_high_income_support_amount(responses, derived):
+    """
+    Return the amount of child support to be paid by the high income earner
+    """
+    payor = determine_child_support_payor(responses)
+    if payor == 'Claimant 1':
+        return float(responses.get('amount_income_over_high_income_limit_you', 0))
+    if payor == 'Claimant 2':
+        return float(responses.get('amount_income_over_high_income_limit_spouse', 0))
+    return 0
 
 
 def has_fact_sheets(responses, derived):
@@ -376,8 +389,13 @@ def guideline_amounts_difference_total(responses, derived):
     Return the sum of the guideline amounts B and C
     """
 
-    amount_b = derived['guideline_amounts_difference_b'] if derived['show_fact_sheet_b'] else 0
-    amount_c = derived['guideline_amounts_difference_c'] if derived['show_fact_sheet_c'] else 0
+    amount_b = (derived['guideline_amounts_difference_b']
+                + derived['fact_sheet_f_high_income_support_amount']
+                ) if derived['show_fact_sheet_b'] else 0
+
+    amount_c = (derived['guideline_amounts_difference_c']
+                + derived['fact_sheet_f_high_income_support_amount']
+                ) if derived['show_fact_sheet_c'] else 0
 
     payor_b = derived['child_support_payor_b']
     payor_c = derived['child_support_payor_c']
