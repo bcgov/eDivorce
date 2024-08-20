@@ -56,7 +56,7 @@ EFILING_ENABLED_GLOBALLY = False
 EFILING_HUB_ENABLED = True
 
 if DEPLOYMENT_TYPE == 'dev':
-    DEBUG = True
+    # DEBUG = True  ## dev should be in debug mode, but it causes an error with django-sass-processor
     CSRF_COOKIE_AGE = None
     SESSION_COOKIE_AGE = 3600
     REGISTER_BCEID_URL = 'https://www.test.bceid.ca/directories/bluepages/details.aspx?serviceID=5522'
