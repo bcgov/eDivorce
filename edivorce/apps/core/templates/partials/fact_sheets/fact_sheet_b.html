@@ -170,12 +170,20 @@
             </td>
             <td class="fact-sheet-answer" readonly>
                 <div class="dollar-prefix">
-                    {% money_input_field name="your_proportionate_share_amount" class="money fact-sheet-input" readonly="" %}
+                    {% if special_extraordinary_expenses == 'YES' %}
+                        {% money_input_field name="your_proportionate_share_amount" class="money fact-sheet-input" readonly="" %}
+                    {% else %}
+                        {% money_input_field name="" class="money fact-sheet-input" readonly="" %}
+                    {% endif %}
                 </div>
             </td>
             <td class="fact-sheet-answer" readonly="">
                 <div class="dollar-prefix">
-                    {% money_input_field name="spouse_proportionate_share_amount" class="money fact-sheet-input" readonly="" %}
+                    {% if special_extraordinary_expenses == 'YES' %}
+                        {% money_input_field name="spouse_proportionate_share_amount" class="money fact-sheet-input" readonly="" %}
+                    {% else %}
+                        {% money_input_field name="" class="money fact-sheet-input" readonly="" %}
+                    {% endif %}
                 </div>
             </td>
         </tr>
