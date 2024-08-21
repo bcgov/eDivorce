@@ -88,7 +88,6 @@ class UploadStorageTests(TransactionTestCase):
     def test_storage_redis_delete(self, mock_redis_an, mock_redis_save, mock_redis_delete):
         mock_redis_an.return_value = '6061bebb-f2be-4a74-8757-c4063f6f6993_file_txt'
         mock_redis_save.return_value = 'file.txt'
-        mock_redis_delete.return_value = True
 
         file = SimpleUploadedFile('file.txt', b'this is some content')
         test = Document()
@@ -100,3 +99,5 @@ class UploadStorageTests(TransactionTestCase):
         test.delete()
 
         self.assertTrue(mock_redis_delete.called)
+        self.assertEqual(Document.objects.count(), 0)
+
