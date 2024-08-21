@@ -28,6 +28,8 @@ class Command(BaseCommand):
             print(f'Checking link: {address}')
             response = session.get(address, headers=self.HEADERS, timeout=15)
             response.raise_for_status()
+        except requests.exceptions.Timeout:
+            return None  # Ignore timeouts
         except requests.exceptions.RequestException as e:
             return str(e)
         return None
