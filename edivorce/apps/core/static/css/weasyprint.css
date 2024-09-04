@@ -215,6 +215,16 @@ ol.numbered-paragraphs li {
   width: 6%;
 }
 
+.notary-signature td.collapse-width {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.notary-signature td.notary-line-text {
+  font-size: 0.88em;
+  padding-bottom: 8px;
+}
+
 .new-paragraph {
   margin-top: 0.5em;
 }
