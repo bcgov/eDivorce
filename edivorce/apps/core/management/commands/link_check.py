@@ -30,6 +30,10 @@ class Command(BaseCommand):
             response.raise_for_status()
         except requests.exceptions.Timeout:
             return None  # Ignore timeouts
+        except requests.exceptions.ConnectionError as e:
+            if "Connection reset by peer" in str(e):
+                return None  # Ignore connection reset errors, which can happen on Adobe links
+            return str(e)
         except requests.exceptions.RequestException as e:
             return str(e)
         return None
