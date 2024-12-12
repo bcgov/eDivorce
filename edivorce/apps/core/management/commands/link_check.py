@@ -1,10 +1,15 @@
 import os
 import sys
+import warnings
 
 import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+# Suppress only the single InsecureRequestWarning from urllib3 needed
+warnings.simplefilter('ignore', InsecureRequestWarning)
 
 
 class Command(BaseCommand):
@@ -26,7 +31,7 @@ class Command(BaseCommand):
     def _check_link(self, session, address):
         try:
             print(f'Checking link: {address}')
-            response = session.get(address, headers=self.HEADERS, timeout=15)
+            response = session.get(address, headers=self.HEADERS, timeout=15, verify=False)
             response.raise_for_status()
         except requests.exceptions.Timeout:
             return None  # Ignore timeouts
