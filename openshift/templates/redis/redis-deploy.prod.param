@@ -3,7 +3,7 @@
 # Component: .
 # Template File: ../openshift/templates/redis/redis-deploy.yaml
 #=========================================================
-# MEMORY_LIMIT=1Gi
+MEMORY_LIMIT=2Gi
 # DATABASE_SERVICE_NAME=redis
 # REDIS_PASSWORD=[a-zA-Z0-9]{16}
 # VOLUME_CAPACITY=20Gi

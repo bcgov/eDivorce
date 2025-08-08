@@ -130,7 +130,6 @@ objects:
                       name: "redis"
               resources:
                 limits:
-                  cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
                 requests:
                   cpu: ${CPU_REQUEST}
@@ -249,11 +248,6 @@ parameters:
     description: The resources CPU request (in cores) for this build.
     required: true
     value: 10m
-  - name: CPU_LIMIT
-    displayName: Resources CPU Limit
-    description: The resources CPU limit (in cores) for this build.
-    required: true
-    value: 500m
   - name: MEMORY_REQUEST
     displayName: Resources Memory Request
     description: The resources Memory request (in Mi, Gi, etc) for this build.
